@@ -1,3 +1,6 @@
+### VS Code ###
+.vscode/
+
 # Logs
 logs
 *.log
@@ -69,10 +72,6 @@ target
 # ---
 
 notes
-
-backend/.gradle
-backend/build
-backend/bin
 
 infrastructure/cdk.out
 infrastructure/node_modules

@@ -1,6 +1,6 @@
-# EditorConfig is awesome: https://EditorConfig.org
+# Ref: https://EditorConfig.org
 
-# top-most EditorConfig file
+# Top-most EditorConfig file
 root = true
 
 [*]
