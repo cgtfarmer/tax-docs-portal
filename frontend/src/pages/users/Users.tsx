@@ -1,19 +1,19 @@
-import { useEffect, useReducer } from 'react';
-import usersReducer, { usersInitialState } from '../../reducer/users-reducer';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import ApiAccessor from '../../accessors/api-accessor';
+import { User } from '../../models/user';
 
 const userClient = new ApiAccessor();
 
 export default function Page() {
-  const [users, dispatch] = useReducer(usersReducer, usersInitialState);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     async function fetchUsers() {
       const users = await userClient.listUsers();
 
-      dispatch({ type: 'SET_USERS', payload: users })
+      setUsers(users);
     }
 
     void fetchUsers();
