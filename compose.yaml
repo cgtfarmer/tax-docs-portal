@@ -16,7 +16,8 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./backend:/usr/local/backend
+      - ./backend:/usr/local/app
+      - gradle-cache:/home/gradle/.gradle
 
   db:
     image: postgres:16
@@ -30,6 +31,7 @@ services:
       # Uncomment the following line to enable DB persistence
       # - postgres:/var/lib/postgresql/data
 
-# Uncomment the following lines to enable DB persistence
-# volumes:
+volumes:
+  gradle-cache:
+  # Uncomment the following line to enable DB persistence
   # postgres:
