@@ -1,10 +1,25 @@
-FROM gradle:8.4.0-jdk21 AS development
+FROM amazoncorretto:21.0.10-al2023 AS development
 
-WORKDIR /usr/local/api
+WORKDIR /usr/local/app
 
-COPY . ./
+RUN yum -y update \
+  && yum -y install findutils git \
+  && yum clean all \
+  && rm -rf /var/cache/yum
 
-RUN ./gradlew clean && \
-  ./gradlew build
+ENV GRADLE_USER_HOME=/home/gradle/.gradle
 
-CMD ["./gradlew", "bootRun"]
+COPY gradlew gradlew.bat ./
+
+COPY gradle/ ./gradle/
+
+RUN chmod +x ./gradlew \
+  && ./gradlew --no-daemon --version
+
+COPY build.gradle.kts settings.gradle.kts ./
+
+RUN ./gradlew --no-daemon dependencies
+
+EXPOSE 80
+
+CMD ["./gradlew", "--no-daemon", "bootRun"]

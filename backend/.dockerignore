@@ -1,0 +1,46 @@
+# VCS
+.git
+.gitignore
+
+# IDEs / editors
+.idea/
+.vscode/
+*.iml
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Build outputs
+build/
+out/
+target/
+
+# Gradle local state (don’t bake host caches into image)
+.gradle/
+**/.gradle/
+
+# Logs
+*.log
+
+# Test / runtime artifacts
+hs_err_pid*
+*.pid
+
+# Env / secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+secrets/
+**/secrets/
+
+# Node (if present anywhere in repo)
+node_modules/
+dist/
+coverage/
+
+# Docker / compose artifacts
+docker-compose*.yml
