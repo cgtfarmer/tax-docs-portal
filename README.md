@@ -20,6 +20,30 @@ git clone git@github.com:Tax-Strategists-of-America/Pathway-To-Zero.git
 docker compose build
 ```
 
+## Development
+
+1. Bring up the stack
+
+```shell
+docker compose up -d
+```
+
+2. (Optional) Tail container logs (Ctrl+C to exit)
+
+```shell
+docker compose logs -f
+# OR
+docker compose logs -f frontend
+# OR
+docker compose logs -f backend
+```
+
+3. Bring down the stack
+
+```shell
+docker compose down
+```
+
 ## References
 
 [Connecting to the DB](https://github.com/cgtfarmer/tax-docs-portal/wiki/Connecting-to-the-DB)
