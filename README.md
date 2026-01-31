@@ -38,7 +38,11 @@ docker compose logs -f frontend
 docker compose logs -f backend
 ```
 
-3. Bring down the stack
+3. Check if the app is working end-to-end
+
+Test the frontend here: http://localhost
+
+4. Bring down the stack
 
 ```shell
 docker compose down
