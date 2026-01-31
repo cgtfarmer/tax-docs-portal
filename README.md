@@ -14,10 +14,10 @@
 git clone git@github.com:Tax-Strategists-of-America/Pathway-To-Zero.git
 ```
 
-2. Build the app image
+2. Build the images
 
 ```shell
-docker compose build app
+docker compose build
 ```
 
 ## References
