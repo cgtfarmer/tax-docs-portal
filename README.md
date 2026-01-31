@@ -11,7 +11,7 @@
 1. Clone this repository
 
 ```shell
-git clone git@github.com:Tax-Strategists-of-America/Pathway-To-Zero.git
+git clone git@github.com:/cgtfarmer/tax-docs-portal.git
 ```
 
 2. Build the images
