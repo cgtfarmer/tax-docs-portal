@@ -40,7 +40,7 @@ docker compose logs -f backend
 
 3. Check if the app is working end-to-end
 
-Test the frontend here: http://localhost
+Test the frontend here: http://localhost:5173
 
 4. Bring down the stack
 
