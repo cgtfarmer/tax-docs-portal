@@ -34,24 +34,22 @@ public class UserService {
   public User create(User user) {
     log.info("[UserService#create] user={}", user);
 
-    this.userRepository.create(user);
+    User result = this.userRepository.create(user);
 
-    // TODO: Retrieve + add new ID
-
-    return user;
+    return result;
   }
 
   public User update(User user) {
     log.info("[UserService#update] user={}", user);
 
-    this.userRepository.update(user);
+    User result = this.userRepository.update(user);
 
-    return user;
+    return result;
   }
 
-  public void destroy(UUID id) {
+  public boolean destroy(UUID id) {
     log.info("[UserService#destroy] id={}", id);
 
-    this.userRepository.delete(id);
+    return this.userRepository.destroy(id);
   }
 }

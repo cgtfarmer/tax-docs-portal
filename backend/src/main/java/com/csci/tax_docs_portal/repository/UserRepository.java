@@ -2,11 +2,12 @@ package com.csci.tax_docs_portal.repository;
 
 import com.csci.tax_docs_portal.entity.User;
 import com.csci.tax_docs_portal.mapper.UserMapper;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +29,9 @@ public class UserRepository {
         FROM users
         """;
 
-    SqlRowSet results = jdbc.queryForRowSet(sql, Map.of());
+    MapSqlParameterSource params = new MapSqlParameterSource();
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
 
     List<User> users = this.mapper.mapRowSetToUsers(results);
 
@@ -42,34 +45,43 @@ public class UserRepository {
         WHERE id = :id
         """;
 
-    SqlRowSet results = jdbc.queryForRowSet(sql, Map.of("id", id));
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("id", id);
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
 
     User user = this.mapper.mapRowSetToUser(results);
 
     return user;
   }
 
-  public int create(User user) {
-    // TODO: Finish & test
-
+  public User create(User user) {
     String sql = """
         INSERT INTO users (first_name, last_name, age, weight, smoker)
         VALUES (:firstName, :lastName, :age, :weight, :smoker)
         """;
 
-    Map<String, String> params = new HashMap<>();
-    params.put("firstName", user.getFirstName());
-    params.put("lastName", user.getLastName());
-    params.put("age", Integer.toString(user.getAge()));
-    params.put("weight", Float.toString(user.getWeight()));
-    params.put("smoker", Boolean.toString(user.isSmoker()));
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("firstName", user.getFirstName());
+    params.addValue("lastName", user.getLastName());
+    params.addValue("age", user.getAge());
+    params.addValue("weight", user.getWeight());
+    params.addValue("smoker", user.isSmoker());
 
-    return jdbc.update(sql, params);
+    KeyHolder keyHolder = new GeneratedKeyHolder();
+
+    jdbc.update(sql, params, keyHolder, new String[] {
+        "id"
+    });
+
+    UUID id = keyHolder.getKeyAs(UUID.class);
+
+    user.setId(id);
+
+    return user;
   }
 
-  public int update(User user) {
-    // TODO: Finish & test
-
+  public User update(User user) {
     String sql = """
         update users
         set first_name = :firstName,
@@ -80,24 +92,30 @@ public class UserRepository {
         where id = :id
         """;
 
-    Map<String, String> params = new HashMap<>();
-    params.put("firstName", user.getFirstName());
-    params.put("lastName", user.getLastName());
-    params.put("age", Integer.toString(user.getAge()));
-    params.put("weight", Float.toString(user.getWeight()));
-    params.put("smoker", Boolean.toString(user.isSmoker()));
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("id", user.getId());
+    params.addValue("firstName", user.getFirstName());
+    params.addValue("lastName", user.getLastName());
+    params.addValue("age", user.getAge());
+    params.addValue("weight", user.getWeight());
+    params.addValue("smoker", user.isSmoker());
 
-    return jdbc.update(sql, params);
+    jdbc.update(sql, params);
+
+    return user;
   }
 
-  public int delete(UUID id) {
-    // TODO: Finish & test
-
+  public boolean destroy(UUID id) {
     String sql = """
         DELETE FROM users
         WHERE id = :id
         """;
 
-    return jdbc.update(sql, Map.of("id", id));
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("id", id);
+
+    jdbc.update(sql, params);
+
+    return true;
   }
 }

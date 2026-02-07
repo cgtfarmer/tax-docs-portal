@@ -1,3 +1,2 @@
-.vite
 node_modules
-dist
+test-results
