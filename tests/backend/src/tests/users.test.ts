@@ -11,7 +11,7 @@ test('create user', async ({ request }) => {
 
   const response = await request.post('/users', { data: inputData });
 
-  expect(response.ok()).toBeTruthy();
+  expect(response.status()).toBe(201);
 
   const body = await response.json();
 
@@ -29,7 +29,7 @@ test('retrieve user', async ({ request }) => {
 
   const response = await request.get(`/users/${newUserId}`);
 
-  expect(response.ok()).toBeTruthy();
+  expect(response.status()).toBe(200);
 
   const body = await response.json();
 
@@ -50,7 +50,7 @@ test('update user', async ({ request }) => {
 
   const response = await request.put(`/users/${inputData.id}`, { data: inputData });
 
-  expect(response.ok()).toBeTruthy();
+  expect(response.status()).toBe(200);
 
   const body = await response.json();
 
@@ -68,17 +68,13 @@ test('destroy user', async ({ request }) => {
 
   const response = await request.delete(`/users/${newUserId}`);
 
-  expect(response.ok()).toBeTruthy();
-
-  const body = await response.json();
-
-  expect(body.msg).toBe('Deleted successfully');
+  expect(response.status()).toBe(204);
 });
 
 test('list users', async ({ request }) => {
   const response = await request.get('/users');
 
-  expect(response.ok()).toBeTruthy();
+  expect(response.status()).toBe(200);
 
   const body = await response.json();
 
