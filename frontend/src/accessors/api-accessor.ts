@@ -15,7 +15,10 @@ export default class ApiAccessor {
   }
 
   public async listUsers(): Promise<User[]> {
-    const response = await fetch(`${this.API_URL}/users`);
+    const response = await fetch(
+      `${this.API_URL}/users`,
+      { method: 'GET' }
+    );
 
     const data = await response.json() as any[];
 
@@ -25,7 +28,10 @@ export default class ApiAccessor {
   }
 
   public async getUser(userId: string): Promise<User> {
-    const response = await fetch(`${this.API_URL}/users/${userId}`);
+    const response = await fetch(
+      `${this.API_URL}/users/${userId}`,
+      { method: 'GET' }
+    );
 
     const data = await response.json() as any;
 
@@ -34,21 +40,48 @@ export default class ApiAccessor {
     return user;
   }
 
-  // public async create(user: any): Promise<any> {
-  //   // TODO: Implement
+  public async createUser(user: User): Promise<User> {
+    const response = await fetch(`${this.API_URL}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user)
+    });
 
-  //   return user;
-  // }
+    const data = await response.json() as any;
 
-  // public async update(user: any): Promise<any> {
-  //   // TODO: Implement
+    const result = this.mapper.mapUserToModel(data);
 
-  //   return user;
-  // }
+    return result;
+  }
 
-  // public async destroy(userId: string): Promise<boolean> {
-  //   // TODO: Implement
+  public async updateUser(user: User): Promise<User> {
+    const response = await fetch(`${this.API_URL}/users/${user.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user)
+    });
 
-  //   return false;
-  // }
+    const data = await response.json() as any;
+
+    const result = this.mapper.mapUserToModel(data);
+
+    return result;
+  }
+
+  public async destroyUser(userId: string): Promise<User> {
+    const response = await fetch(
+      `${this.API_URL}/users/${userId}`,
+      { method: 'DELETE' }
+    );
+
+    const data = await response.json() as any;
+
+    const user = this.mapper.mapUserToModel(data);
+
+    return user;
+  }
 }
