@@ -1,18 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { User } from '../models/user';
-import { ApiAccessorMapper } from './api-accessor-mapper';
 
 export default class ApiAccessor {
 
-  private readonly mapper: ApiAccessorMapper;
   private readonly API_URL = import.meta.env.VITE_API_URL as string;
-
-  constructor() {
-    this.mapper = new ApiAccessorMapper();
-  }
 
   public async listUsers(): Promise<User[]> {
     const response = await fetch(
@@ -20,11 +15,9 @@ export default class ApiAccessor {
       { method: 'GET' }
     );
 
-    const data = await response.json() as any[];
+    const data: User[] = await response.json();
 
-    const users = this.mapper.mapUsersToModels(data);
-
-    return users;
+    return data;
   }
 
   public async getUser(userId: string): Promise<User> {
@@ -33,11 +26,9 @@ export default class ApiAccessor {
       { method: 'GET' }
     );
 
-    const data = await response.json() as any;
+    const data: User = await response.json();
 
-    const user = this.mapper.mapUserToModel(data);
-
-    return user;
+    return data;
   }
 
   public async createUser(user: User): Promise<User> {
@@ -49,11 +40,9 @@ export default class ApiAccessor {
       body: JSON.stringify(user)
     });
 
-    const data = await response.json() as any;
+    const data: User = await response.json();
 
-    const result = this.mapper.mapUserToModel(data);
-
-    return result;
+    return data;
   }
 
   public async updateUser(user: User): Promise<User> {
@@ -65,23 +54,17 @@ export default class ApiAccessor {
       body: JSON.stringify(user)
     });
 
-    const data = await response.json() as any;
+    const data: User = await response.json();
 
-    const result = this.mapper.mapUserToModel(data);
-
-    return result;
+    return data;
   }
 
-  public async destroyUser(userId: string): Promise<User> {
+  public async destroyUser(userId: string): Promise<boolean> {
     const response = await fetch(
       `${this.API_URL}/users/${userId}`,
       { method: 'DELETE' }
     );
 
-    const data = await response.json() as any;
-
-    const user = this.mapper.mapUserToModel(data);
-
-    return user;
+    return (response.status == 204);
   }
 }

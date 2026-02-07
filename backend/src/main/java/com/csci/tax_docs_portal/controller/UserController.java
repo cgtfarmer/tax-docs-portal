@@ -36,7 +36,8 @@ public class UserController {
 
     List<User> response = this.userService.list();
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.status(200)
+        .body(response);
   }
 
   @PostMapping
@@ -45,7 +46,8 @@ public class UserController {
 
     User response = this.userService.create(request);
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.status(201)
+        .body(response);
   }
 
   @GetMapping("/{id}")
@@ -54,7 +56,8 @@ public class UserController {
 
     User response = this.userService.get(id);
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.status(200)
+        .body(response);
   }
 
   @PutMapping("/{id}")
@@ -68,7 +71,8 @@ public class UserController {
 
     User response = this.userService.update(request);
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.status(200)
+        .body(response);
   }
 
   @DeleteMapping("/{id}")
@@ -77,6 +81,7 @@ public class UserController {
 
     this.userService.destroy(id);
 
-    return ResponseEntity.ok("{ \"msg\": \"Deleted successfully\" }");
+    return ResponseEntity.status(204)
+        .build();
   }
 }

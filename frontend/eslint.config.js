@@ -63,19 +63,5 @@ export default tseslint.config(
     plugins: {
       'functional': functional
     },
-    rules: {
-      'functional/type-declaration-immutability': ['error', {
-        rules: [
-          {
-            identifiers: '^(?!I?Mutable).+',
-            immutability: 'ReadonlyShallow',
-            comparator: 'AtLeast',
-            fixer: false,
-            suggestions: false
-          },
-        ],
-        ignoreInterfaces: false
-      }],
-    }
   }
 )
