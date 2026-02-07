@@ -4,20 +4,36 @@ import { Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableH
 import ApiAccessor from '../../accessors/api-accessor';
 import { User } from '../../models/user';
 
-const userClient = new ApiAccessor();
+const apiAccessor = new ApiAccessor();
 
 export default function Page() {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     async function fetchUsers() {
-      const users = await userClient.listUsers();
+      const users = await apiAccessor.listUsers();
 
       setUsers(users);
     }
 
     void fetchUsers();
   }, []);
+
+  const handleDestroyUser = async (userId: string | undefined) => {
+    const confirmation = window.confirm('Are you sure you want to delete this user?');
+
+    if (!confirmation) return;
+
+    if (!userId) return;
+
+    const deleteSuccessful = await apiAccessor.destroyUser(userId);
+
+    if (!deleteSuccessful) return;
+
+    const users = await apiAccessor.listUsers();
+
+    setUsers(users);
+  };
 
   return (
     <>
@@ -61,6 +77,21 @@ export default function Page() {
                       to={`/users/${user.id ? user.id.toString() : ''}`}
                     >
                       Show
+                    </Link>
+
+                    <Link
+                      component={RouterLink}
+                      to={`/users/${user.id ? user.id.toString() : ''}/edit`}
+                    >
+                      Edit
+                    </Link>
+
+                    <Link
+                      component="button"
+                      variant="body2"
+                      onClick={() => void handleDestroyUser(user.id)}
+                    >
+                      Delete
                     </Link>
                   </Stack>
                 </TableCell>

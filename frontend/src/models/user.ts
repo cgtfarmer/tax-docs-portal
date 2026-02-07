@@ -1,13 +1,13 @@
 export interface User {
-  readonly id: string;
+  id: string | undefined;
 
-  readonly firstName: string;
+  firstName: string | undefined;
 
-  readonly lastName: string;
+  lastName: string | undefined;
 
-  readonly age: string;
+  age: number | undefined;
 
-  readonly weight: string;
+  weight: number | undefined;
 
-  readonly smoker: boolean;
+  smoker: boolean | undefined;
 }
