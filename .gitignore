@@ -75,9 +75,3 @@ notes
 
 infrastructure/cdk.out
 infrastructure/node_modules
-
-playwright/node_modules
-playwright/test-results
-
-frontend/dist
-frontend/node_modules
