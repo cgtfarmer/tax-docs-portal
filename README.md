@@ -1,5 +1,8 @@
 # Secure Tax Docs Portal
 
+## Summary
+This application is a Proof-of-Concept for a tax documentation portal. When the application is complete, it will be a web-based platform for customers of Tax Strategists of America to communicate with their assigned accountants. The platform gives clients the ability to upload tax documents and receipts for their accountants to review, as well as to communicate directly with their accountants. When it is running, it can be accessed via the browser. More details will be provided here as the application is developed.
+
 ## Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -55,3 +58,6 @@ docker compose down
 [Docker Commands](https://github.com/cgtfarmer/tax-docs-portal/wiki/Docker-Reference)
 
 [Learning References](https://github.com/cgtfarmer/tax-docs-portal/wiki/Learning-References)
+
+## Release Notes
+2026-02-26 - Application stack, initial database functionality, and preliminary Playwright tests are functional.
