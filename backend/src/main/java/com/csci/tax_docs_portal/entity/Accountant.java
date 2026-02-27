@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +23,5 @@ public class Accountant {
 
   private String username;
 
-  @JsonIgnore
   private String passwordHash;
 }
