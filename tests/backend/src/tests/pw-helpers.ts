@@ -13,4 +13,32 @@ export default class PwHelpers {
 
     return await createUserResponse.json();
   };
+
+  static async createDefaultAccountant(request: APIRequestContext) {
+    const createAccountantResponse = await request.post('/accountants', {
+      data: {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        username: 'johndoe',
+        passwordHash: 'hashed-password'
+      }
+    });
+
+    return await createAccountantResponse.json();
+  };
+
+  static async createDefaultClient(request: APIRequestContext) {
+    const createClientResponse = await request.post('/clients', {
+      data: {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        username: 'johndoe',
+        passwordHash: 'hashed-password'
+      }
+    });
+
+    return await createClientResponse.json();
+  }
 }

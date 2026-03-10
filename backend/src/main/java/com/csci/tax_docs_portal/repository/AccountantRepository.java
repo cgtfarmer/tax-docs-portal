@@ -84,13 +84,13 @@ public class AccountantRepository {
 
   public Accountant update(Accountant accountant) {
     String sql = """
-        update accountants
-        set first_name = :firstName,
-          last_name = :lastName,
-          email = :email,
-          username = :username,
-          password_hash = :password
-        where id = :id
+        UPDATE accountants
+        SET first_name = :firstName,
+            last_name = :lastName,
+            email = :email,
+            username = :username,
+            password_hash = :password
+        WHERE id = :id
         """;
 
     MapSqlParameterSource params = new MapSqlParameterSource();
@@ -98,8 +98,8 @@ public class AccountantRepository {
     params.addValue("firstName", accountant.getFirstName());
     params.addValue("lastName", accountant.getLastName());
     params.addValue("email", accountant.getEmail());
-    params.addValue("weight", accountant.getUsername());
-    params.addValue("smoker", accountant.getPasswordHash());
+    params.addValue("username", accountant.getUsername());
+    params.addValue("password", accountant.getPasswordHash());
 
     jdbc.update(sql, params);
 
