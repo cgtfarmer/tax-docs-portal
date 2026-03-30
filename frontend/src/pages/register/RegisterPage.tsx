@@ -2,20 +2,26 @@ import { Box, TextField} from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-export default function LoginPage() {
+export default function RegisterPage() {
 
 //state variables for email and password
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("")
+const [firstName, setFirstName] = useState("");
+const [lastName, setLastName] = useState("");
+const [username, setUserName] = useState("");
+const [emailAddress, setEmailAddress] = useState("");
+const [password, setPassword] = useState("");
 
 //Login Function
-const handleLogin = () => {
-  console.log("Email:", email);
-  console.log("Password:", password);
+const handleRegister = () => {
+  console.log("First Name:", firstName);
+  console.log("Last Name:", lastName);
+  console.log("Username: ", username);
+  console.log("Email Address: ", emailAddress);
 };
 
-//Creating navigation to Register Page
+//Creating navigation to LoginPage
 const navigate = useNavigate();
+
 //Entire Page Layout
   const pageStyle = {
     minHeight: "100vh",
@@ -23,6 +29,7 @@ const navigate = useNavigate();
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: "60px",
   };
 //The styling for the Header - Also making it below the NavBar for now
     const headerStyle = {
@@ -51,7 +58,7 @@ const navigate = useNavigate();
 //Login Container
   const cardStyle = {
     width: "700px",
-    height: "500px",
+    height: "650px",
     backgroundColor: "#1f1f1f",
     border: "1px solid #3a3a3a",
     borderRadius: "16px",
@@ -77,10 +84,10 @@ const navigate = useNavigate();
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: "70px",
+        marginTop: "35px",
     };
 //The styling for the Login button
-    const loginButtonStyle = {
+    const registerButtonStyle = {
     width: "240px",
     height: "55px",
     backgroundColor: "white",
@@ -101,7 +108,7 @@ const navigate = useNavigate();
     color: "#9ca3af",
     };
 //The styling for the register link
-    const registerLinkStyle = {
+    const loginHereLinkStyle = {
     fontSize: "16px",
     color: "white",
     fontWeight: 500,
@@ -115,9 +122,7 @@ const navigate = useNavigate();
                 TSoA
             </Box>
         <Box sx={navStyle}>
-            <Box>About</Box>
-            <Box>Contact</Box>
-            <Box>Services</Box>
+            <Box>Home</Box>
         </Box>
         </Box>
       <Box sx={cardStyle}>
@@ -139,16 +144,53 @@ const navigate = useNavigate();
 
         <Box sx={formContainerStyle}>
             <TextField
-            label="Username / Email"
+            label="First Name"
             variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             sx={{ width: "540px", 
               marginBottom: "20px", 
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
             }}
+            />
+            <TextField
+            label="Last Name"
+            variant="outlined"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            sx={{ width: "540px", 
+              marginBottom: "20px", 
+              backgroundColor: "#2a2a2a",
+              input: { color: "white" },
+              label: { color: "#9ca3af" },
+            }}           
+            />
+            <TextField
+            label="Username"
+            variant="outlined"
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
+            sx={{ width: "540px", 
+              marginBottom: "20px", 
+              backgroundColor: "#2a2a2a",
+              input: { color: "white" },
+              label: { color: "#9ca3af" },
+            }}           
+            />
+            <TextField
+            label="Email Address"
+            type="email"
+            variant="outlined"
+            value={emailAddress}
+            onChange={(e) => setEmailAddress(e.target.value)}
+            sx={{ width: "540px", 
+              marginBottom: "20px", 
+              backgroundColor: "#2a2a2a",
+              input: { color: "white" },
+              label: { color: "#9ca3af" },
+            }}           
             />
             <TextField
             label="Password"
@@ -163,17 +205,17 @@ const navigate = useNavigate();
               label: { color: "#9ca3af" },
             }}           
             />
-            <Box sx={loginButtonStyle} onClick={handleLogin}>
-                Login
+            <Box sx={registerButtonStyle} onClick={handleRegister}>
+                Register
             </Box>
             <Box sx={dontHaveAnAccount}>
-                Don't have an account?
+                Already have an account?
             </Box>
             <Box 
-            sx={registerLinkStyle}
-            onClick={() => navigate("/register")}
+                sx={loginHereLinkStyle}
+                onClick={() => navigate("/login")}
             >
-                Register here
+                Login Here
             </Box>
         </Box>
       </Box>
