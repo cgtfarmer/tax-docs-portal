@@ -78,5 +78,16 @@ export default class ApiAccessor {
   const data: Accountant[] = await response.json();
     return data;
   }
-  
+
+    public async getAccountant(accountantId: string): Promise<Accountant> {
+    const response = await fetch(
+      `${this.API_URL}/accountants/${accountantId}`,
+      { method: 'GET' }
+    );
+
+    const data: Accountant = await response.json();
+
+    return data;
+  }
+
 }

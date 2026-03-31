@@ -10,7 +10,7 @@ import User from './pages/users/User.tsx';
 import NewUser from './pages/users/NewUser.tsx';
 import EditUser from './pages/users/EditUser.tsx';
 import Accountants from './pages/accountants/Accountants.tsx';
-
+import Accountant from './pages/accountants/Accountant.tsx';
 const rootElement = document.getElementById("root");
 
 if (!rootElement) throw new Error("Root element not present");
@@ -33,10 +33,11 @@ createRoot(rootElement).render(
               <Route path="edit" element={<EditUser />} />
             </Route>
           </Route>
-
+  
           <Route path="accountants">
             <Route index element={<Accountants />} />
-          </Route>
+            <Route path=":accountantId" element={<Accountant />} />
+            </Route>
 
           <Route path="*" element={<NotFound />} />
         </Route>

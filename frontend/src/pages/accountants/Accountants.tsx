@@ -53,7 +53,7 @@ export default function Page() {
             ) : (
               accountants.map((a) => (
                 <TableRow key={a.id}>
-                  <TableCell>{a.id}</TableCell>
+                  <TableCell> <Link component={RouterLink} to={`/accountants/${a.id}`} underline="hover"> {a.id} </Link></TableCell>
                   <TableCell>{a.firstName}</TableCell>
                   <TableCell>{a.lastName}</TableCell>
                   <TableCell>{a.email}</TableCell>
