@@ -23,3 +23,18 @@ jobs:
 
       - name: Build
         run: gradle build --no-daemon
+
+    frontend:
+        name: Build Frontend Docker Image
+        runs-on: ubuntu-latest
+
+        defaults:
+          run:
+            working-directory: ./frontend
+
+        steps:
+          - name: Check out repository
+            uses: actions/checkout@v4
+
+          - name: Build Docker image
+            run: docker build -t frontend .
