@@ -9,6 +9,7 @@ import Users from './pages/users/Users.tsx';
 import User from './pages/users/User.tsx';
 import NewUser from './pages/users/NewUser.tsx';
 import EditUser from './pages/users/EditUser.tsx';
+import LoginPage from "./pages/login/LoginPage";
 
 const rootElement = document.getElementById("root");
 
@@ -20,6 +21,7 @@ createRoot(rootElement).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
 
           <Route path="users">
             <Route index element={<Users />} />
