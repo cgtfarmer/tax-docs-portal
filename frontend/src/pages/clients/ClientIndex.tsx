@@ -1,0 +1,30 @@
+import React from "react";
+
+const ClientIndex: React.FC = () => {
+  const userName = "John Doe";
+
+  return (
+    <div className="page">
+      <header className="header">
+        <div className="logo">TSoA</div>
+
+        <nav className="nav">
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Services</a>
+        </nav>
+      </header>
+
+      <div className="welcome-container">
+        <h1>Welcome, {userName}</h1>
+      </div>
+
+      <div className="button-group">
+        <button className="main-btn">My Account</button>
+        <button className="main-btn">Message Board</button>
+      </div>
+    </div>
+  );
+};
+
+export default ClientIndex;

@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { User } from '../models/user';
+import { Client} from '../models/client'
 
 export default class ApiAccessor {
 
@@ -62,6 +63,65 @@ export default class ApiAccessor {
   public async destroyUser(userId: string): Promise<boolean> {
     const response = await fetch(
       `${this.API_URL}/users/${userId}`,
+      { method: 'DELETE' }
+    );
+
+    return (response.status == 204);
+  }
+
+  public async listClients(): Promise<Client[]> {
+    const response = await fetch(
+      `${this.API_URL}/clients`,
+      { method: 'GET' }
+    );
+
+    const data: Client[] = await response.json();
+
+    return data;
+  }
+
+  public async getClient(clientId: string): Promise<Client> {
+    const response = await fetch(
+      `${this.API_URL}/clients/${clientId}`,
+      { method: 'GET' }
+    );
+
+    const data: Client = await response.json();
+
+    return data;
+  }
+
+  public async createClient(client: Client): Promise<Client> {
+    const response = await fetch(`${this.API_URL}/clients`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(client)
+    });
+
+    const data: Client = await response.json();
+
+    return data;
+  }
+
+  public async updateClient(client: Client): Promise<Client> {
+    const response = await fetch(`${this.API_URL}/clients/${client.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(client)
+    });
+
+    const data: Client = await response.json();
+
+    return data;
+  }
+
+  public async destroyClient(clientId: string): Promise<boolean> {
+    const response = await fetch(
+      `${this.API_URL}/clients/${clientId}`,
       { method: 'DELETE' }
     );
 
