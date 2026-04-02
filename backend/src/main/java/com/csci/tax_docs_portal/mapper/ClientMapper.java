@@ -9,8 +9,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class ClientMapper {
 
   public Client mapRowSetToClient(SqlRowSet rowSet) {
-    rowSet.first();
-    return this.mapRowSetEntryToClient(rowSet);
+
+    if (rowSet.next()) {
+      return this.mapRowSetEntryToClient(rowSet);
+    }
+    return null;
   }
 
   public List<Client> mapRowSetToClients(SqlRowSet rowSet) {
@@ -32,6 +35,11 @@ public class ClientMapper {
         .email(rowSet.getString("email"))
         .username(rowSet.getString("username"))
         .passwordHash(rowSet.getString("password_hash"))
+        .accountantId(
+            rowSet.getString("accountant_id") != null
+                ? UUID.fromString(rowSet.getString("accountant_id"))
+                : null
+        )
         .build();
   }
 }

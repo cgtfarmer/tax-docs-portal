@@ -52,4 +52,13 @@ public class ClientService {
 
     return this.clientRepository.destroy(id);
   }
+
+  public List<Client> getClientsByAccountant(UUID accountantId) {
+    return clientRepository.findByAccountantId(accountantId);
+  }
+
+  /*
+   * public List<Client> getUnassignedClients() { return
+   * clientRepository.findUnassigned(); }
+   */
 }
