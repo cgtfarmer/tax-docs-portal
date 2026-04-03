@@ -59,7 +59,7 @@ public class ClientRepository {
     String sql =
         """
             INSERT INTO clients (first_name, last_name, email, username, password_hash)
-            VALUES (:firstName, :lastName, :email, :username, :password)
+            VALUES (:firstName, :lastName, :email, :username, :password, :accountantId)
             """;
 
     MapSqlParameterSource params = new MapSqlParameterSource();
@@ -68,6 +68,7 @@ public class ClientRepository {
     params.addValue("email", client.getEmail());
     params.addValue("username", client.getUsername());
     params.addValue("password", client.getPasswordHash());
+    params.addValue("accountantId", client.getAccountantId());
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -86,10 +87,11 @@ public class ClientRepository {
     String sql = """
         update clients
         set first_name = :firstName,
-        last_name = :lastName,
-        email = :email,
-        username = :username,
-        password_hash = :password
+          last_name = :lastName,
+          email = :email,
+          username = :username,
+          password_hash = :password,
+          accountant_id = :accountantId
         where id = :id
         """;
 
@@ -100,6 +102,7 @@ public class ClientRepository {
     params.addValue("email", client.getEmail());
     params.addValue("username", client.getUsername());
     params.addValue("password", client.getPasswordHash());
+    params.addValue("accountantId", client.getAccountantId());
 
     jdbc.update(sql, params);
 
@@ -119,4 +122,40 @@ public class ClientRepository {
 
     return true;
   }
+
+  public List<Client> findUnassigned() {
+    String sql = """
+        SELECT *
+        FROM clients
+        WHERE accountant_id IS NULL
+        """;
+
+    MapSqlParameterSource params = new MapSqlParameterSource();
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
+
+    return mapper.mapRowSetToClients(results);
+  }
+
+  public List<Client> findByAccountantId(UUID accountantId) {
+    String sql = """
+        SELECT *
+        FROM clients
+        WHERE accountant_id = :accountantId
+        """;
+
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("accountantId", accountantId);
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
+
+    return mapper.mapRowSetToClients(results);
+  }
+
+  /*
+   * public List<Client> findUnassigned() { String sql = """ SELECT * FROM
+   * clients WHERE accountant_id IS NULL """; MapSqlParameterSource params = new
+   * MapSqlParameterSource(); SqlRowSet results = jdbc.queryForRowSet(sql,
+   * params); return mapper.mapRowSetToClients(results); }
+   */
 }

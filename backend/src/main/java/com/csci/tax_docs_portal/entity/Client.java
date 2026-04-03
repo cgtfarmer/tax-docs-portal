@@ -24,4 +24,6 @@ public class Client {
   private String username;
 
   private String passwordHash;
+
+  private UUID accountantId;
 }

@@ -84,4 +84,27 @@ public class ClientController {
     return ResponseEntity.status(204)
         .build();
   }
+
+  @GetMapping("/accountant/{accountantId}/clients")
+  public ResponseEntity<List<Client>> getClientsByAccountant(
+      @PathVariable UUID accountantId
+  ) {
+    log.info(
+        "[ClientController#getClientsByAccountant] accountantId={}",
+        accountantId
+    );
+
+    List<Client> response =
+        this.clientService.getClientsByAccountant(accountantId);
+
+    return ResponseEntity.status(200)
+        .body(response);
+  }
+
+  /*
+   * @GetMapping("/accountant/null") public ResponseEntity<List<Client>>
+   * unassignedClients() { log.info("[ClientController#unassignedClients]");
+   * List<Client> response = clientService.getUnassignedClients(); return
+   * ResponseEntity.ok(response); }
+   */
 }
