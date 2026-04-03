@@ -21,7 +21,8 @@ const pages: NavPage[] = [
   { name: 'Home', path: '/' },
   { name: 'Users', path: '/users' },
   { name: 'Clients', path: '/clients' },
-  { name: 'Client index', path: '/clientIndex' }
+  { name: 'Client index', path: '/clientIndex' },
+  { name: 'Accountants', path: '/accountants' }
 ];
 
 export default function Component() {
