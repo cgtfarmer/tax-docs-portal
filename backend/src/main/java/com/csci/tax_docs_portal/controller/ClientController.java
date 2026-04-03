@@ -85,7 +85,7 @@ public class ClientController {
         .build();
   }
 
-  @GetMapping("/accountant/{accountantId}")
+  @GetMapping("/accountant/{accountantId}/clients")
   public ResponseEntity<List<Client>> getClientsByAccountant(
       @PathVariable UUID accountantId
   ) {
