@@ -13,6 +13,8 @@ import Landing from "./pages/brochure/Landing.tsx";
 import AppLoggedIn from "./AppLoggedIn.tsx";
 import AppAdmin from "./AppAdmin.tsx";
 import AppBrochure from "./AppBrochure.tsx";
+import LoginPage from "./pages/login/LoginPage";
+import RegisterPage from "./pages/register/RegisterPage";
 
 const rootElement = document.getElementById("root");
 
@@ -23,6 +25,8 @@ createRoot(rootElement).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          
+          {/*<Route index element={<Home />} />*/}
 
           {/* index redirects to landing page (only brochure element as of the time of writing) */}
           <Route index element={<Navigate to="welcome/" replace />} />
@@ -38,8 +42,8 @@ createRoot(rootElement).render(
 
             {/* need an index to route based on auth */}
 
-            {/* <Route path="login" element={< />} /> */}
-            {/* <Route path="register" element={< />} /> */}
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
 
             {/*
             <Route path="taxpayer/" element={< />}>

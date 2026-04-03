@@ -23,6 +23,5 @@ public class Client {
 
   private String username;
 
-  @JsonIgnore
   private String passwordHash;
 }
