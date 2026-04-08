@@ -30,3 +30,22 @@ jobs:
 
       - name: Format check
         run: npm run format:check
+
+
+  frontend-build-image:
+    name: FE / Build Image
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker compose build frontend
+
+      - name: Run Docker image
+        run: docker compose up -d frontend
