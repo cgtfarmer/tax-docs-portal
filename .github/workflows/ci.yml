@@ -17,7 +17,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'corretto' # 'corretto'
+          distribution: 'corretto'
           java-version: '21'
           cache: 'gradle'
 
@@ -25,19 +25,19 @@ jobs:
         run: gradle build --no-daemon
 
   frontend:
-    name: Build Frontend Docker Image
-    runs-on: ubuntu-latest
+      name: Build Frontend Docker Image
+      runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./frontend
+      defaults:
+        run:
+          working-directory: ./frontend
 
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t frontend .
+        - name: Build Docker image
+          run: docker build -t frontend .
 
   frontend-format-check:
     name: FE / Format Check
