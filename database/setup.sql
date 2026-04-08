@@ -57,10 +57,10 @@ INSERT INTO accountants (first_name, last_name, email, username, password_hash)
 VALUES ('Alex', 'Dawn', 'alex@example.com', 'adawn', 'fakepass1');
 
 INSERT INTO accountants (first_name, last_name, email, username, password_hash)
-VALUES ('George', 'Smith', 'alex@example.com', 'adawn', 'fakepass1');
+VALUES ('George', 'Smith', 'alex@example.com', 'gsmith', 'fakepass1');
 
 INSERT INTO accountants (first_name, last_name, email, username, password_hash)
-VALUES ('Gordon', 'Freeman', 'alex@example.com', 'adawn', 'fakepass1');
+VALUES ('Gordon', 'Freeman', 'alex@example.com', 'gfreeman', 'fakepass1');
 
 -- Add Clients
 INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
