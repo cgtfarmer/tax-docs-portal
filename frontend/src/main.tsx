@@ -23,6 +23,7 @@ import EditClient from './pages/clients/EditClient.tsx';
 import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import AccountantHome from './pages/accountants/AccountantHome.tsx';
+import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';
 
 const rootElement = document.getElementById("root");
 
@@ -125,6 +126,10 @@ createRoot(rootElement).render(
 
           <Route path="accountant-home">
             <Route index element={<AccountantHome />} />
+          </Route>
+
+          <Route path="accountant-message-board">
+            <Route index element={<AccountantMessageBoard />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
