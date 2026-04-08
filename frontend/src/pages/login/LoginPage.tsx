@@ -27,7 +27,7 @@ const navigate = useNavigate();
 //The styling for the Header - Also making it below the NavBar for now
     const headerStyle = {
     position: "absolute" as const,
-    top: "85px",
+    top: "10px",
     left: "60px",
     right: "60px",
     display: "flex",
@@ -114,11 +114,18 @@ const navigate = useNavigate();
             <Box sx={logoTextStyle}>
                 TSoA
             </Box>
-        <Box sx={navStyle}>
-            <Box>About</Box>
-            <Box>Contact</Box>
-            <Box>Services</Box>
-        </Box>
+          <Box
+            sx={{
+              ...navStyle,
+              cursor: "pointer",
+              "&:hover": {
+                color: "white",
+              },
+            }}
+            onClick={() => navigate("/welcome")}
+          >
+            Brochure
+          </Box>
         </Box>
       <Box sx={cardStyle}>
         <Box sx={tabRowStyle}>
@@ -171,7 +178,7 @@ const navigate = useNavigate();
             </Box>
             <Box 
             sx={registerLinkStyle}
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/app/register")}
             >
                 Register here
             </Box>

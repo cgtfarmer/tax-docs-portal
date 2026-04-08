@@ -87,7 +87,7 @@ export default function BrochureNav() {
                 sx={{ my: 2, color: "black", display: "block",
                     borderRadius: 2, border: 2, borderColor: "black" }}
                 component={Link}
-                to={"app/login"}
+                to={"/app/login"}
                 >
                 Login
             </Button>
@@ -98,7 +98,7 @@ export default function BrochureNav() {
                 sx={{ my: 2, color: "white", display: "block",
                     borderRadius: 2, border: 2, borderColor: "black" }}
                 component={Link}
-                to={"app/register"}
+                to={"/app/register"}
                 >
                 Sign Up
             </Button>
