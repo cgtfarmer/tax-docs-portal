@@ -38,7 +38,7 @@ export default function BrochureNav() {
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
 
-          <Typography
+          {/* <Typography
             variant="h6"
             noWrap
             component="a"
@@ -54,64 +54,37 @@ export default function BrochureNav() {
             }}
           >
             TSoA
-          </Typography>
+          </Typography> */}
+
 
           <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                sx={{ my: 2, color: "white" }}
-                component={Link}
-                to={page.path}
-              >
-                {page.name}
-              </Button>
-            ))}
+            TSoA
           </Box>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <img src="/images/tsoa_logo_crop.jpg" alt="Photo" />
-          </Box> */}
           <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
-            <img src="/images/tsoa_logo_crop.jpg" alt="TSoA Logo" height={40} />
+            <img src="/images/tsoa_logo_crop.png" alt="TSoA Logo" height={40} />
           </Box>
 
-          {/*TODO NEED AN ICON*/}
-
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+          {/* <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}> */}
+          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end", gap: ".5em"}}>
               <Button
-                key={page.name}
-                sx={{ my: 2, color: "white", display: "block" }}
-                component={Link}
-                to={page.path}
-              >
-                {page.name}
+                  sx={{ my: 2, color: "black", display: "block", background: "white",
+                    borderRadius: 2, border: 1, borderColor: "black" }}
+                  component={Link}
+                  to={"app/login"}
+                  >
+                  Login
               </Button>
-            ))}
+              <Button
+                  sx={{ my: 2, color: "white", display: "block", background: "black",
+                      borderRadius: 2, border: 1, borderColor: "white" }}
+                  component={Link}
+                  to={"app/register"}
+                  >
+                  Sign Up
+              </Button>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-                sx={{ my: 2, color: "black", display: "block",
-                    borderRadius: 2, border: 2, borderColor: "black" }}
-                component={Link}
-                to={"app/login"}
-                >
-                Login
-            </Button>
-          </Box>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-                sx={{ my: 2, color: "white", display: "block",
-                    borderRadius: 2, border: 2, borderColor: "black" }}
-                component={Link}
-                to={"app/register"}
-                >
-                Sign Up
-            </Button>
-          </Box>
         </Toolbar>
       </Container>
     </AppBar>
