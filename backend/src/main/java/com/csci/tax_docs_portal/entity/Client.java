@@ -1,6 +1,5 @@
 package com.csci.tax_docs_portal.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
