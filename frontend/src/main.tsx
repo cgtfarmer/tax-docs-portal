@@ -22,6 +22,8 @@ import NewClient from './pages/clients/NewClient.tsx';
 import EditClient from './pages/clients/EditClient.tsx'; 
 import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
+import ClientDashboard from "./pages/clients/ClientDashboard.tsx";
+import ClientAccount from "./pages/clients/ClientAccount.tsx";
 import AccountantHome from './pages/accountants/AccountantHome.tsx';
 
 const rootElement = document.getElementById("root");
@@ -46,32 +48,24 @@ createRoot(rootElement).render(
           </Route>
 
           {/* webapp - login page + logged in clients and accountants */}
-          <Route path="app/" element={<AppLoggedIn />}>
+          <Route path="app" element={<AppLoggedIn />}>
 
-            {/* need an index to route based on auth */}
-
+            {/* auth routes */}
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
 
-            {/*
-            <Route path="taxpayer/" element={< />}>
-
-              <Route path="docs" element={< />} />
-              <Route path="meet" element={< />} />
-
+            {/* client dashboard and nested account */}
+            <Route path="client" element={<ClientDashboard />}>
+              <Route path="account" element={<ClientAccount />} />
             </Route>
-            */}
 
             {/*
-            <Route path="accountant/" element={< />}>
-
-              <Route path="info" element={< />} />
-              <Route path="clients" element={< />} />
-              <Route path="clients/:id" element={< />} />
-            
+            <Route path="accountant">
+              <Route path="info" element={<AccountantInfo />} />
+              <Route path="clients" element={<AccountantClients />} />
+              <Route path="clients/:id" element={<AccountantClientDetail />} />
             </Route>
             */}
-
           </Route>
 
           {/* admin - logged in admins only */}
