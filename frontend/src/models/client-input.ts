@@ -10,4 +10,6 @@ export interface ClientInput {
   username: string;
 
   passwordHash: string;
+
+  accountantId: string | null;
 }
