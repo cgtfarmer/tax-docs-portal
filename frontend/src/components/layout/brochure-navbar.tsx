@@ -1,68 +1,23 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { Link } from "react-router";
 
-interface NavPage {
-  readonly name: string;
-
-  readonly path: string;
-}
-
-const pages: NavPage[] = [
-  { name: 'About', path: '/' },
-  { name: 'Contact', path: '/contact-us' },
-  { name: 'Services', path: '/services' }
-];
 
 export default function BrochureNav() {
-  //const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    //null
-  //);
-
-  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorElNav(event.currentTarget);
-  // };
-
-  //const handleCloseNavMenu = () => {
-  //  setAnchorElNav(null);
-  //};
-
   return (
     // <AppBar position="static" color="primary" enableColorOnDark>
-    <AppBar position="static">
+    <AppBar position="static" color="transparent" elevation={3}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            color="primary"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              // color: 'inherit',
-              textDecoration: "none"
-            }}
-          >
-            TSoA
-          </Typography> */}
-
-
-          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
+        <Toolbar disableGutters sx={{ backgroundColor: "#ffffff", boxShadow: "none", height: 60}}>
+          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-start"}}>
             TSoA
           </Box>
 
           <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
-            <img src="/images/tsoa_logo_crop.png" alt="TSoA Logo" height={40} />
+            <img src="/images/tsoa_logo_crop.png" alt="TSoA Logo" height={60} />
           </Box>
 
           {/* <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}> */}
