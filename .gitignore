@@ -75,3 +75,6 @@ notes
 
 infrastructure/cdk.out
 infrastructure/node_modules
+
+# playwright test results
+*/test-results
