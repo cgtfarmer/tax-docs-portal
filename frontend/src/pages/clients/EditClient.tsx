@@ -20,7 +20,8 @@ export default function Page() {
     lastName: '',
     email: '',
     username: '',
-    passwordHash: ''
+    passwordHash: '',
+    accountantId: ''
   });
 
   const params = useParams<RouteParams>();
