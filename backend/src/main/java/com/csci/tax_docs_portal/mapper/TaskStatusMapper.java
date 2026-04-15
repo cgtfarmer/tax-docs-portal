@@ -1,7 +1,6 @@
 package com.csci.tax_docs_portal.mapper;
 
 import com.csci.tax_docs_portal.entity.TaskStatus;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +9,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class TaskStatusMapper {
 
   public TaskStatus mapRowSetToTaskStatus(SqlRowSet rowSet) {
+
     if (rowSet.next()) {
       return this.mapRowSetEntryToTaskStatus(rowSet);
     }
@@ -33,8 +33,10 @@ public class TaskStatusMapper {
         .taskStatus(rowSet.getString("task_status"))
         .updatedAt(
             rowSet.getTimestamp("updated_at") != null
-                ? rowSet.getTimestamp("updated_at").toLocalDateTime()
-                : null)
+                ? rowSet.getTimestamp("updated_at")
+                    .toLocalDateTime()
+                : null
+        )
         .build();
   }
 }

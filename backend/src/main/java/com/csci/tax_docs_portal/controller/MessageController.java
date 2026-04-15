@@ -40,7 +40,11 @@ public class MessageController {
       @RequestParam UUID clientId,
       @RequestParam UUID accountantId
   ) {
-    log.info("[MessageController#getConversation] clientId={}, accountantId={}", clientId, accountantId);
+    log.info(
+        "[MessageController#getConversation] clientId={}, accountantId={}",
+        clientId,
+        accountantId
+    );
 
     return ResponseEntity.ok(service.getConversation(clientId, accountantId));
   }
@@ -48,13 +52,15 @@ public class MessageController {
   @PostMapping
   public ResponseEntity<Message> create(@RequestBody Message request) {
     log.info("[MessageController#create] request={}", request);
-    return ResponseEntity.status(201).body(service.create(request));
+    return ResponseEntity.status(201)
+        .body(service.create(request));
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> destroy(@PathVariable UUID id) {
     log.info("[MessageController#destroy] id={}", id);
     service.destroy(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent()
+        .build();
   }
 }

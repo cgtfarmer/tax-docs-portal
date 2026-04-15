@@ -1,13 +1,12 @@
 package com.csci.tax_docs_portal.mapper;
 
 import com.csci.tax_docs_portal.entity.Task;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-public class TaskMapper {
+public class TasksMapper {
 
   public Task mapRowSetToTask(SqlRowSet rowSet) {
     rowSet.first();
@@ -34,8 +33,10 @@ public class TaskMapper {
         .description(rowSet.getString("description"))
         .createdAt(
             rowSet.getTimestamp("created_at") != null
-                ? rowSet.getTimestamp("created_at").toLocalDateTime()
-                : null)
+                ? rowSet.getTimestamp("created_at")
+                    .toLocalDateTime()
+                : null
+        )
         .build();
   }
 }

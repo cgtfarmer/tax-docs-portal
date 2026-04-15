@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 public class TaskStatusRepository {
 
   private final NamedParameterJdbcTemplate jdbc;
+
   private final TaskStatusMapper mapper;
 
   public TaskStatusRepository(NamedParameterJdbcTemplate jdbc) {
@@ -42,7 +43,8 @@ public class TaskStatusRepository {
   }
 
   public List<TaskStatus> findByTaskId(UUID taskId) {
-    String sql = "SELECT * FROM task_status WHERE task_id = :taskId ORDER BY updated_at DESC";
+    String sql =
+        "SELECT * FROM task_status WHERE task_id = :taskId ORDER BY updated_at DESC";
 
     MapSqlParameterSource params = new MapSqlParameterSource();
     params.addValue("taskId", taskId);
@@ -64,7 +66,9 @@ public class TaskStatusRepository {
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    jdbc.update(sql, params, keyHolder, new String[] { "id" });
+    jdbc.update(sql, params, keyHolder, new String[] {
+        "id"
+    });
 
     UUID id = keyHolder.getKeyAs(UUID.class);
     status.setId(id);

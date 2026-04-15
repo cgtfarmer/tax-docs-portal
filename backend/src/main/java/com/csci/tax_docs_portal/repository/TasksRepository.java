@@ -52,11 +52,10 @@ public class TasksRepository {
   }
 
   public Task create(Task task) {
-    String sql =
-        """
-            INSERT INTO tasks (client_id, accountant_id, title, description)
-            VALUES (:clientId, :accountantId, :title, :description)
-            """;
+    String sql = """
+        INSERT INTO tasks (client_id, accountant_id, title, description)
+        VALUES (:clientId, :accountantId, :title, :description)
+        """;
 
     MapSqlParameterSource params = new MapSqlParameterSource();
     params.addValue("clientId", task.getClientId());

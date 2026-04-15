@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 public class AdminRepository {
 
   private final NamedParameterJdbcTemplate jdbc;
+
   private final AdminMapper mapper;
 
   public AdminRepository(NamedParameterJdbcTemplate jdbc) {
@@ -42,21 +43,24 @@ public class AdminRepository {
   }
 
   public Admin create(Admin admin) {
-    String sql = """
-        INSERT INTO admins (first_name, last_name, email, username, password_hash)
-        VALUES (:firstName, :lastName, :email, :username, :password)
-        """;
+    String sql =
+        """
+            INSERT INTO admins (first_name, last_name, email, username, password_hash)
+            VALUES (:firstName, :lastName, :email, :username, :passwordHash)
+            """;
 
     MapSqlParameterSource params = new MapSqlParameterSource();
     params.addValue("firstName", admin.getFirstName());
     params.addValue("lastName", admin.getLastName());
     params.addValue("email", admin.getEmail());
     params.addValue("username", admin.getUsername());
-    params.addValue("password", admin.getPasswordHash());
+    params.addValue("passwordHash", admin.getPasswordHash());
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    jdbc.update(sql, params, keyHolder, new String[] { "id" });
+    jdbc.update(sql, params, keyHolder, new String[] {
+        "id"
+    });
 
     UUID id = keyHolder.getKeyAs(UUID.class);
     admin.setId(id);
@@ -71,7 +75,7 @@ public class AdminRepository {
             last_name = :lastName,
             email = :email,
             username = :username,
-            password_hash = :password
+            password_hash = :passwordHash
         WHERE id = :id
         """;
 
@@ -81,7 +85,7 @@ public class AdminRepository {
     params.addValue("lastName", admin.getLastName());
     params.addValue("email", admin.getEmail());
     params.addValue("username", admin.getUsername());
-    params.addValue("password", admin.getPasswordHash());
+    params.addValue("passwordHash", admin.getPasswordHash());
 
     jdbc.update(sql, params);
 

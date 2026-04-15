@@ -28,7 +28,8 @@ public class TaskController {
 
     List<Task> response = this.taskService.list();
 
-    return ResponseEntity.status(200).body(response);
+    return ResponseEntity.status(200)
+        .body(response);
   }
 
   @PostMapping
@@ -37,7 +38,8 @@ public class TaskController {
 
     Task response = this.taskService.create(request);
 
-    return ResponseEntity.status(201).body(response);
+    return ResponseEntity.status(201)
+        .body(response);
   }
 
   @GetMapping("/{id}")
@@ -46,7 +48,8 @@ public class TaskController {
 
     Task response = this.taskService.get(id);
 
-    return ResponseEntity.status(200).body(response);
+    return ResponseEntity.status(200)
+        .body(response);
   }
 
   @PutMapping("/{id}")
@@ -60,7 +63,8 @@ public class TaskController {
 
     Task response = this.taskService.update(request);
 
-    return ResponseEntity.status(200).body(response);
+    return ResponseEntity.status(200)
+        .body(response);
   }
 
   @DeleteMapping("/{id}")
@@ -69,6 +73,7 @@ public class TaskController {
 
     this.taskService.destroy(id);
 
-    return ResponseEntity.status(204).build();
+    return ResponseEntity.status(204)
+        .build();
   }
 }

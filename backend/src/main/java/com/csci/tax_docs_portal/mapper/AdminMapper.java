@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class AdminMapper {
 
   public Admin mapRowSetToAdmin(SqlRowSet rowSet) {
+
     if (rowSet.next()) {
       return this.mapRowSetEntryToAdmin(rowSet);
     }

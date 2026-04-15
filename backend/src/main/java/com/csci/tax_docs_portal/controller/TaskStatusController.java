@@ -43,13 +43,15 @@ public class TaskStatusController {
   @PostMapping
   public ResponseEntity<TaskStatus> create(@RequestBody TaskStatus request) {
     log.info("[TaskStatusController#create] request={}", request);
-    return ResponseEntity.status(201).body(service.create(request));
+    return ResponseEntity.status(201)
+        .body(service.create(request));
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> destroy(@PathVariable UUID id) {
     log.info("[TaskStatusController#destroy] id={}", id);
     service.destroy(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent()
+        .build();
   }
 }

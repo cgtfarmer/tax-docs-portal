@@ -30,7 +30,11 @@ public class MessageService {
   }
 
   public List<Message> getConversation(UUID clientId, UUID accountantId) {
-    log.info("[MessageService#getConversation] clientId={}, accountantId={}", clientId, accountantId);
+    log.info(
+        "[MessageService#getConversation] clientId={}, accountantId={}",
+        clientId,
+        accountantId
+    );
     return repository.findByClientAndAccountant(clientId, accountantId);
   }
 

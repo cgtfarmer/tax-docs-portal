@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class MessageMapper {
 
   public Message mapRowSetToMessage(SqlRowSet rowSet) {
+
     if (rowSet.next()) {
       return this.mapRowSetEntryToMessage(rowSet);
     }
@@ -34,8 +35,10 @@ public class MessageMapper {
         .messageText(rowSet.getString("message_text"))
         .createdAt(
             rowSet.getTimestamp("created_at") != null
-                ? rowSet.getTimestamp("created_at").toLocalDateTime()
-                : null)
+                ? rowSet.getTimestamp("created_at")
+                    .toLocalDateTime()
+                : null
+        )
         .build();
   }
 }

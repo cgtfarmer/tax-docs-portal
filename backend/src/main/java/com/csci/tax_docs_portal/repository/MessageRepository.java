@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 public class MessageRepository {
 
   private final NamedParameterJdbcTemplate jdbc;
+
   private final MessageMapper mapper;
 
   public MessageRepository(NamedParameterJdbcTemplate jdbc) {
@@ -41,7 +42,10 @@ public class MessageRepository {
     return mapper.mapRowSetToMessage(results);
   }
 
-  public List<Message> findByClientAndAccountant(UUID clientId, UUID accountantId) {
+  public List<Message> findByClientAndAccountant(
+      UUID clientId,
+      UUID accountantId
+  ) {
     String sql = """
         SELECT * FROM messages
         WHERE client_id = :clientId
@@ -59,10 +63,11 @@ public class MessageRepository {
   }
 
   public Message create(Message message) {
-    String sql = """
-        INSERT INTO messages (client_id, accountant_id, sender_type, message_text)
-        VALUES (:clientId, :accountantId, :senderType, :messageText)
-        """;
+    String sql =
+        """
+            INSERT INTO messages (client_id, accountant_id, sender_type, message_text)
+            VALUES (:clientId, :accountantId, :senderType, :messageText)
+            """;
 
     MapSqlParameterSource params = new MapSqlParameterSource();
     params.addValue("clientId", message.getClientId());
@@ -72,7 +77,9 @@ public class MessageRepository {
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    jdbc.update(sql, params, keyHolder, new String[] { "id" });
+    jdbc.update(sql, params, keyHolder, new String[] {
+        "id"
+    });
 
     UUID id = keyHolder.getKeyAs(UUID.class);
     message.setId(id);

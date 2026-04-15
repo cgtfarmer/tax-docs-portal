@@ -31,13 +31,18 @@ public class AdminController {
   @GetMapping("/{id}")
   public ResponseEntity<Admin> show(@PathVariable UUID id) {
     log.info("[AdminController#show] id={}", id);
-    return ResponseEntity.ok(service.get(id));
+
+    Admin response = this.service.get(id);
+
+    return ResponseEntity.status(200)
+        .body(response);
   }
 
   @PostMapping
   public ResponseEntity<Admin> create(@RequestBody Admin request) {
     log.info("[AdminController#create] request={}", request);
-    return ResponseEntity.status(201).body(service.create(request));
+    return ResponseEntity.status(201)
+        .body(service.create(request));
   }
 
   @PutMapping("/{id}")
@@ -58,6 +63,7 @@ public class AdminController {
 
     service.destroy(id);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent()
+        .build();
   }
 }
