@@ -8,11 +8,11 @@ services:
       VIRTUAL_HOST: localhost
       VIRTUAL_PROTO: http
       VIRTUAL_PATH: /
-      VITE_API_URL: 'http://localhost'
+      VITE_API_URL: 'http://backend'
     expose:
       - 5173
     tty: true
-    extra_hosts: # For Linux
+    extra_hosts:
       - host.docker.internal:host-gateway
     ports:
       - 5173:5173
@@ -31,7 +31,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_PROFILES_ACTIVE: local
     tty: true
-    extra_hosts: # For Linux
+    extra_hosts:
       - host.docker.internal:host-gateway
     ports:
       - 80:80
@@ -48,10 +48,28 @@ services:
       - 5432:5432
     volumes:
       - ./database/setup.sql:/docker-entrypoint-initdb.d/setup.sql
-      # Uncomment the following line to enable DB persistence
       # - postgres:/var/lib/postgresql/data
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.50.0-jammy
+    working_dir: /app
+    profiles: ["test"]
+    volumes:
+      - ./tests:/app
+      - playwright-node-modules:/app/node_modules
+    depends_on:
+      - frontend
+      - backend
+    environment:
+      - BASE_URL=http://frontend:5173
+    command: >
+      sh -c "
+        npm ci &&
+        npx wait-on http://frontend:5173 http://backend:80/health &&
+        npx playwright test
+      "
 
 volumes:
   gradle-cache:
-  # Uncomment the following line to enable DB persistence
+  playwright-node-modules:
   # postgres:

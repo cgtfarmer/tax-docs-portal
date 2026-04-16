@@ -1,8 +1,9 @@
-import { APIRequestContext } from '@playwright/test';
+import { APIRequestContext, expect } from '@playwright/test';
 
 export default class PwHelpers {
+
   static async createDefaultUser(request: APIRequestContext) {
-    const createUserResponse = await request.post('/users', {
+    const response = await request.post('/users', {
       data: {
         firstName: 'John',
         lastName: 'Doe',
@@ -11,34 +12,116 @@ export default class PwHelpers {
       }
     });
 
-    return await createUserResponse.json();
-  };
+    expect(response.status()).toBe(201);
+
+    return await response.json();
+  }
 
   static async createDefaultAccountant(request: APIRequestContext) {
-    const createAccountantResponse = await request.post('/accountants', {
+    const unique = Date.now();
+
+    const response = await request.post('/accountants', {
       data: {
         firstName: 'John',
         lastName: 'Doe',
-        email: 'john.doe@example.com',
-        username: 'johndoe',
+        email: `accountant${unique}@example.com`,
+        username: `accountant${unique}`,
         passwordHash: 'hashed-password'
       }
     });
 
-    return await createAccountantResponse.json();
-  };
+    expect(response.status()).toBe(201);
+
+    return await response.json();
+  }
 
   static async createDefaultClient(request: APIRequestContext) {
-    const createClientResponse = await request.post('/clients', {
+    const unique = Date.now();
+
+    const response = await request.post('/clients', {
       data: {
         firstName: 'John',
         lastName: 'Doe',
-        email: 'john.doe@example.com',
-        username: 'johndoe',
+        email: `client${unique}@example.com`,
+        username: `client${unique}`,
         passwordHash: 'hashed-password'
       }
     });
 
-    return await createClientResponse.json();
+    expect(response.status()).toBe(201);
+
+    return await response.json();
+  }
+
+  static async createDefaultAdmin(request: APIRequestContext) {
+    const unique = Date.now();
+
+    const response = await request.post('/admins', {
+      data: {
+        firstName: 'Admin',
+        lastName: 'User',
+        email: `admin${unique}@example.com`,
+        username: `admin${unique}`,
+        passwordHash: 'hashed-password'
+      }
+    });
+
+    expect(response.status()).toBe(201);
+
+    return await response.json();
+  }
+
+  static async createDefaultTask(
+    request: APIRequestContext,
+    clientId: string,
+    accountantId: string
+  ) {
+    const response = await request.post('/tasks', {
+      data: {
+        clientId,
+        accountantId,
+        title: 'Test Task',
+        description: 'This is a test task'
+      }
+    });
+
+    expect(response.status()).toBe(201);
+
+    return await response.json();
+  }
+
+  static async createDefaultTaskStatus(
+    request: APIRequestContext,
+    taskId: string
+  ) {
+    const response = await request.post('/task-status', {
+      data: {
+        taskId,
+        taskStatus: 'PENDING'
+      }
+    });
+
+    expect(response.status()).toBe(201);
+
+    return await response.json();
+  }
+
+  static async createDefaultMessage(
+    request: APIRequestContext,
+    clientId: string,
+    accountantId: string
+  ) {
+    const response = await request.post('/messages', {
+      data: {
+        clientId,
+        accountantId,
+        senderType: 'CLIENT',
+        messageText: 'Hello, this is a test message'
+      }
+    });
+
+    expect(response.status()).toBe(201);
+
+    return await response.json();
   }
 }
