@@ -58,7 +58,7 @@ public class ClientRepository {
   public Client create(Client client) {
     String sql =
         """
-            INSERT INTO clients (first_name, last_name, email, username, password_hash)
+            INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
             VALUES (:firstName, :lastName, :email, :username, :password, :accountantId)
             """;
 
