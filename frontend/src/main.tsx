@@ -47,13 +47,68 @@ createRoot(rootElement).render(
 
           </Route>
 
+<<<<<<< HEAD
+        
+||||||| 209a4b6
+          {/* webapp - login page + logged in clients and accountants */}
+=======
+          {/* webapp - login page + logged in clients and accountants */}
+<<<<<<< HEAD
+>>>>>>> main
+          <Route path="app" element={<AppLoggedIn />}>
+||||||| 952fca6
+          <Route path="app/" element={<AppLoggedIn />}>
+
+            {/* need an index to route based on auth */}
+=======
         
           <Route path="app" element={<AppLoggedIn />}>
+>>>>>>> f8b6fe6a6924a8190e3003c0d95a5597a1cffc46
 
             {/* auth routes */}
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
 
+<<<<<<< HEAD
+            
+||||||| 209a4b6
+            {/* client dashboard and nested account */}
+=======
+<<<<<<< HEAD
+            {/* client dashboard and nested account */}
+>>>>>>> main
+            <Route path="client" element={<ClientDashboard />}>
+              <Route path="account" element={<ClientAccount />} />
+              <Route path="messages" element={<ClientMessages />} />
+              <Route path="tasks" element={<ClientTasks />} />
+            </Route>
+
+            {/*
+            <Route path="accountant">
+              <Route path="info" element={<AccountantInfo />} />
+              <Route path="clients" element={<AccountantClients />} />
+              <Route path="clients/:id" element={<AccountantClientDetail />} />
+||||||| 952fca6
+            {/*
+            <Route path="taxpayer/" element={< />}>
+
+              <Route path="docs" element={< />} />
+              <Route path="meet" element={< />} />
+
+            </Route>
+            */}
+
+            {/*
+            <Route path="accountant/" element={< />}>
+
+              <Route path="info" element={< />} />
+              <Route path="clients" element={< />} />
+              <Route path="clients/:id" element={< />} />
+            
+=======
+            {/* client dashboard and nested account */}
+            <Route path="client" element={<ClientDashboard />}>
+              <Route path="account" element={<ClientAccount />} />
             
             <Route path="client" element={<ClientDashboard />}>
               <Route path="account" element={<ClientAccount />} />
@@ -66,6 +121,7 @@ createRoot(rootElement).render(
               <Route path="info" element={<AccountantInfo />} />
               <Route path="clients" element={<AccountantClients />} />
               <Route path="clients/:id" element={<AccountantClientDetail />} />
+>>>>>>> f8b6fe6a6924a8190e3003c0d95a5597a1cffc46
             </Route>
             */}
           </Route>
