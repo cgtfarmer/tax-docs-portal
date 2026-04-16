@@ -25,6 +25,8 @@ import RegisterPage from "./pages/register/RegisterPage";
 import ClientDashboard from "./pages/clients/ClientDashboard.tsx";
 import ClientAccount from "./pages/clients/ClientAccount.tsx";
 import AccountantHome from './pages/accountants/AccountantHome.tsx';
+import ClientMessages from "./pages/clients/ClientMessages.tsx";
+import ClientTasks from "./pages/clients/ClientTasks.tsx";
 
 const rootElement = document.getElementById("root");
 
@@ -36,9 +38,7 @@ createRoot(rootElement).render(
       <Routes>
         <Route path="/" element={<App />}>
           
-          {/*<Route index element={<Home />} />*/}
-
-          {/* index redirects to landing page (only brochure element as of the time of writing) */}
+          
           <Route index element={<Navigate to="welcome/" replace />} />
 
           <Route path="welcome/" element={<AppBrochure />}>
@@ -48,12 +48,22 @@ createRoot(rootElement).render(
           </Route>
 
           {/* webapp - login page + logged in clients and accountants */}
+<<<<<<< HEAD
           <Route path="app" element={<AppLoggedIn />}>
+||||||| 952fca6
+          <Route path="app/" element={<AppLoggedIn />}>
+
+            {/* need an index to route based on auth */}
+=======
+        
+          <Route path="app" element={<AppLoggedIn />}>
+>>>>>>> f8b6fe6a6924a8190e3003c0d95a5597a1cffc46
 
             {/* auth routes */}
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
 
+<<<<<<< HEAD
             {/* client dashboard and nested account */}
             <Route path="client" element={<ClientDashboard />}>
               <Route path="account" element={<ClientAccount />} />
@@ -64,6 +74,40 @@ createRoot(rootElement).render(
               <Route path="info" element={<AccountantInfo />} />
               <Route path="clients" element={<AccountantClients />} />
               <Route path="clients/:id" element={<AccountantClientDetail />} />
+||||||| 952fca6
+            {/*
+            <Route path="taxpayer/" element={< />}>
+
+              <Route path="docs" element={< />} />
+              <Route path="meet" element={< />} />
+
+            </Route>
+            */}
+
+            {/*
+            <Route path="accountant/" element={< />}>
+
+              <Route path="info" element={< />} />
+              <Route path="clients" element={< />} />
+              <Route path="clients/:id" element={< />} />
+            
+=======
+            {/* client dashboard and nested account */}
+            <Route path="client" element={<ClientDashboard />}>
+              <Route path="account" element={<ClientAccount />} />
+            
+            <Route path="client" element={<ClientDashboard />}>
+              <Route path="account" element={<ClientAccount />} />
+              <Route path="messages" element={<ClientMessages />} />
+              <Route path="tasks" element={<ClientTasks />} />
+            </Route>
+
+            {/*
+            <Route path="accountant">
+              <Route path="info" element={<AccountantInfo />} />
+              <Route path="clients" element={<AccountantClients />} />
+              <Route path="clients/:id" element={<AccountantClientDetail />} />
+>>>>>>> f8b6fe6a6924a8190e3003c0d95a5597a1cffc46
             </Route>
             */}
           </Route>
