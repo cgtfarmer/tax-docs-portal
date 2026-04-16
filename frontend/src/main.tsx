@@ -47,6 +47,7 @@ createRoot(rootElement).render(
 
           </Route>
 
+          {/* webapp - login page + logged in clients and accountants */}
         
           <Route path="app" element={<AppLoggedIn />}>
 
@@ -54,6 +55,9 @@ createRoot(rootElement).render(
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
 
+            {/* client dashboard and nested account */}
+            <Route path="client" element={<ClientDashboard />}>
+              <Route path="account" element={<ClientAccount />} />
             
             <Route path="client" element={<ClientDashboard />}>
               <Route path="account" element={<ClientAccount />} />
