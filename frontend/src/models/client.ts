@@ -10,4 +10,6 @@ export interface Client {
   username: string | undefined;
 
   passwordHash: string | undefined;
+
+  accountantId: string | null;
 }

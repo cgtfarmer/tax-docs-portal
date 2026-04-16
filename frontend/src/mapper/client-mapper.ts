@@ -10,7 +10,8 @@ export class ClientMapper {
       lastName: input.lastName,
       email: input.email,
       username: input.username,
-      passwordHash: input.passwordHash
+      passwordHash: input.passwordHash,
+      accountantId: input.accountantId
     };
   }
 
@@ -21,7 +22,8 @@ export class ClientMapper {
       lastName: model.lastName ?? '',
       email: model.email ?? '',
       username: model.username ?? '',
-      passwordHash: model.passwordHash ?? ''
+      passwordHash: model.passwordHash ?? '',
+      accountantId: model.accountantId ?? null
     };
   }
 }

@@ -16,7 +16,8 @@ export default function Page() {
     lastName: '',
     email: '',
     username: '',
-    passwordHash: ''
+    passwordHash: '',
+    accountantId: null
   });
 
   const navigate = useNavigate();
@@ -93,7 +94,7 @@ export default function Page() {
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setClientInput(client => ({
               ...client,
-              password: e.target.value
+              passwordHash: e.target.value
             }))
           }}
         />

@@ -39,6 +39,60 @@ CREATE TABLE clients (
     ON DELETE SET NULL
 );
 
+CREATE TABLE admins (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  username VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  client_id UUID NOT NULL,
+  accountant_id UUID NOT NULL,
+  sender_type VARCHAR(20) NOT NULL, -- 'CLIENT' or 'ACCOUNTANT'
+  message_text TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_message_client
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+    ON DELETE CASCADE,
+
+  CONSTRAINT fk_message_accountant
+    FOREIGN KEY (accountant_id) REFERENCES accountants(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE tasks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  client_id UUID NOT NULL,
+  accountant_id UUID NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_task_client
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+    ON DELETE CASCADE,
+
+  CONSTRAINT fk_task_accountant
+    FOREIGN KEY (accountant_id) REFERENCES accountants(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE status (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  task_id UUID NOT NULL,
+  task_status VARCHAR(50) NOT NULL, -- PENDING, IN_PROGRESS, COMPLETED, etc.
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_task_status_task
+    FOREIGN KEY (task_id) REFERENCES tasks(id)
+    ON DELETE CASCADE
+);
+
 -- Add Users
 INSERT INTO users (first_name, last_name, age, weight, smoker)
 VALUES ('John', 'Doe', 35, 183.7, false);
