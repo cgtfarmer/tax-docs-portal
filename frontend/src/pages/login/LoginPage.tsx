@@ -1,17 +1,48 @@
-import { Box, TextField} from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import ApiAccessor from "../../accessors/api-accessor";
+
+const apiAccessor = new ApiAccessor();
 
 export default function LoginPage() {
 
 //state variables for email and password
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("")
+const [selectedTab, setSelectedTab] = useState<"taxpayer" | "accountant">("taxpayer");
+const [loginError, setLoginError] = useState("");
 
 //Login Function
-const handleLogin = () => {
-  console.log("Email:", email);
-  console.log("Password:", password);
+const handleLogin = async (): Promise<void> => {
+  try {
+    console.log("LoginPage#handleLogin");
+    setLoginError("");
+
+    if (selectedTab !== "taxpayer") {
+      console.log("Accountant login is not wired up yet.");
+      return;
+    }
+
+    const existingClients = await apiAccessor.listClients();
+
+    const matchingClient = existingClients.find(
+      (client) =>
+        (client.email?.toLowerCase() === email.toLowerCase() ||
+          client.username?.toLowerCase() === email.toLowerCase()) &&
+        client.passwordHash === password
+    );
+
+    if (!matchingClient) {
+      setLoginError("You don't have an account.");
+      return;
+    }
+
+    navigate("/app/client/account/");
+  } catch (error) {
+    console.error("Login failed:", error);
+    setLoginError("Something went wrong while logging in.");
+  }
 };
 
 //Creating navigation to Register Page
@@ -71,6 +102,7 @@ const navigate = useNavigate();
     alignItems: "center",
     fontSize: "24px",
     fontWeight: 500,
+    cursor: "pointer",
   };
 //The styling that is used for everything under the tabs, Email, Password, Login Button and Register Text
     const formContainerStyle = {
@@ -129,16 +161,24 @@ const navigate = useNavigate();
         </Box>
       <Box sx={cardStyle}>
         <Box sx={tabRowStyle}>
-          <Box sx={{ ...tabStyle, backgroundColor: "#1f1f1f", color: "white" }}> 
+          <Box
+            sx={{
+              ...tabStyle,
+              backgroundColor: selectedTab === "taxpayer" ? "#1f1f1f" : "#2a2a2a",
+              color: selectedTab === "taxpayer" ? "white" : "#9ca3af",
+            }}
+            onClick={() => setSelectedTab("taxpayer")}
+          >
             Taxpayer
           </Box>
 
           <Box
             sx={{
-              ...tabStyle, //Taking Everything from tabStyle and adding some more styling
-              backgroundColor: "#2a2a2a",
-              color: "#9ca3af",
+              ...tabStyle,
+              backgroundColor: selectedTab === "accountant" ? "#1f1f1f" : "#2a2a2a",
+              color: selectedTab === "accountant" ? "white" : "#9ca3af",
             }}
+            onClick={() => setSelectedTab("accountant")}
           >
             Accountant
           </Box>
@@ -170,7 +210,12 @@ const navigate = useNavigate();
               label: { color: "#9ca3af" },
             }}           
             />
-            <Box sx={loginButtonStyle} onClick={handleLogin}>
+            {loginError && (
+              <Box sx={{ color: "#ff6b6b", fontSize: "14px", marginBottom: "5px" }}>
+                {loginError}
+              </Box>
+            )}
+            <Box sx={loginButtonStyle} onClick={() => void handleLogin()}>
                 Login
             </Box>
             <Box sx={dontHaveAnAccount}>

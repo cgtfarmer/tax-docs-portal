@@ -74,7 +74,7 @@ CREATE TABLE tasks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id UUID,
   accountant_id UUID,
-  title VARCHAR(255)L,
+  title VARCHAR(255),
   description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

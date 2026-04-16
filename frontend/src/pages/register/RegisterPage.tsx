@@ -1,22 +1,64 @@
-import { Box, TextField} from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import ApiAccessor from "../../accessors/api-accessor";
+import { ClientMapper } from "../../mapper/client-mapper";
+import { ClientInput } from "../../models/client-input";
+
+const apiAccessor = new ApiAccessor();
+const clientMapper = new ClientMapper();
 
 export default function RegisterPage() {
 
 //state variables for email and password
-const [firstName, setFirstName] = useState("");
-const [lastName, setLastName] = useState("");
-const [username, setUserName] = useState("");
-const [emailAddress, setEmailAddress] = useState("");
-const [password, setPassword] = useState("");
+const [clientInput, setClientInput] = useState<ClientInput>({
+  id: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  username: "",
+  passwordHash: "",
+  accountantId: null
+});
 
-//Login Function
-const handleRegister = () => {
-  console.log("First Name:", firstName);
-  console.log("Last Name:", lastName);
-  console.log("Username: ", username);
-  console.log("Email Address: ", emailAddress);
+const [selectedTab, setSelectedTab] = useState<"taxpayer" | "accountant">("taxpayer");
+const [registerError, setRegisterError] = useState("");
+
+
+const handleRegister = async (): Promise<void> => {
+  try {
+    console.log("RegisterPage#handleRegister");
+    setRegisterError("");
+
+    if (selectedTab !== "taxpayer") {
+      console.log("Accountant registration is not wired up yet.");
+      return;
+    }
+
+    const existingClients = await apiAccessor.listClients();
+
+    const emailExists = existingClients.some(
+      (client) => client.email?.toLowerCase() === clientInput.email.toLowerCase()
+    );
+
+    const usernameExists = existingClients.some(
+      (client) => client.username?.toLowerCase() === clientInput.username.toLowerCase()
+    );
+
+    if (emailExists || usernameExists) {
+      setRegisterError("That username or email is already registered.");
+      return;
+    }
+
+    const client = clientMapper.mapInputToModel(clientInput);
+
+    await apiAccessor.createClient(client);
+
+    navigate("/app/client/account/");
+  } catch (error) {
+    console.error("Registration failed:", error);
+    setRegisterError("Something went wrong while registering.");
+  }
 };
 
 //Creating navigation to LoginPage
@@ -78,13 +120,14 @@ const navigate = useNavigate();
     alignItems: "center",
     fontSize: "24px",
     fontWeight: 500,
+    cursor: "pointer",
   };
 //The styling that is used for everything under the tabs, Email, Password, Login Button and Register Text
     const formContainerStyle = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: "35px",
+        marginTop: "20px",
     };
 //The styling for the Login button
     const registerButtonStyle = {
@@ -97,7 +140,7 @@ const navigate = useNavigate();
     alignItems: "center",
     borderRadius: "10px",
     fontSize: "20px",
-    marginTop: "20px",
+    marginTop: "10px",
     cursor: "pointer",
     fontWeight: 600,
     };
@@ -134,29 +177,42 @@ const navigate = useNavigate();
             Brochure
           </Box>
         </Box>
-      <Box sx={cardStyle}>
-        <Box sx={tabRowStyle}>
-          <Box sx={{ ...tabStyle, backgroundColor: "#1f1f1f", color: "white" }}> 
-            Taxpayer
-          </Box>
+        <Box sx={cardStyle}>
+          <Box sx={tabRowStyle}>
+            <Box
+              sx={{
+                ...tabStyle,
+                backgroundColor: selectedTab === "taxpayer" ? "#1f1f1f" : "#2a2a2a",
+                color: selectedTab === "taxpayer" ? "white" : "#9ca3af",
+              }}
+              onClick={() => setSelectedTab("taxpayer")}
+            >
+              Taxpayer
+            </Box>
 
-          <Box
-            sx={{
-              ...tabStyle, //Taking Everything from tabStyle and adding some more styling
-              backgroundColor: "#2a2a2a",
-              color: "#9ca3af",
-            }}
-          >
-            Accountant
+            <Box
+              sx={{
+                ...tabStyle,
+                backgroundColor: selectedTab === "accountant" ? "#1f1f1f" : "#2a2a2a",
+                color: selectedTab === "accountant" ? "white" : "#9ca3af",
+              }}
+              onClick={() => setSelectedTab("accountant")}
+            >
+              Accountant
+            </Box>
           </Box>
-        </Box>
 
         <Box sx={formContainerStyle}>
             <TextField
             label="First Name"
             variant="outlined"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={clientInput.firstName}
+            onChange={(e) =>
+              setClientInput((client) => ({
+                ...client,
+                firstName: e.target.value,
+              }))
+            }
             sx={{ width: "540px", 
               marginBottom: "20px", 
               backgroundColor: "#2a2a2a",
@@ -167,8 +223,13 @@ const navigate = useNavigate();
             <TextField
             label="Last Name"
             variant="outlined"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={clientInput.lastName}
+            onChange={(e) =>
+              setClientInput((client) => ({
+                ...client,
+                lastName: e.target.value,
+              }))
+            }
             sx={{ width: "540px", 
               marginBottom: "20px", 
               backgroundColor: "#2a2a2a",
@@ -179,8 +240,13 @@ const navigate = useNavigate();
             <TextField
             label="Username"
             variant="outlined"
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
+            value={clientInput.username}
+            onChange={(e) =>
+              setClientInput((client) => ({
+                ...client,
+                username: e.target.value,
+              }))
+            }
             sx={{ width: "540px", 
               marginBottom: "20px", 
               backgroundColor: "#2a2a2a",
@@ -192,8 +258,13 @@ const navigate = useNavigate();
             label="Email Address"
             type="email"
             variant="outlined"
-            value={emailAddress}
-            onChange={(e) => setEmailAddress(e.target.value)}
+            value={clientInput.email}
+            onChange={(e) =>
+              setClientInput((client) => ({
+                ...client,
+                email: e.target.value,
+              }))
+            }
             sx={{ width: "540px", 
               marginBottom: "20px", 
               backgroundColor: "#2a2a2a",
@@ -205,8 +276,13 @@ const navigate = useNavigate();
             label="Password"
             type="password"
             variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={clientInput.passwordHash}
+            onChange={(e) =>
+              setClientInput((client) => ({
+                ...client,
+                passwordHash: e.target.value,
+              }))
+            }
             sx={{ width: "540px", 
               marginBottom: "20px", 
               backgroundColor: "#2a2a2a",
@@ -214,7 +290,12 @@ const navigate = useNavigate();
               label: { color: "#9ca3af" },
             }}           
             />
-            <Box sx={registerButtonStyle} onClick={handleRegister}>
+            {registerError && (
+              <Box sx={{ color: "#ff6b6b", fontSize: "16px", marginBottom: "10px" }}>
+                {registerError}
+              </Box>
+            )}
+            <Box sx={registerButtonStyle} onClick={() => void handleRegister()}>
                 Register
             </Box>
             <Box sx={dontHaveAnAccount}>
