@@ -25,6 +25,8 @@ import RegisterPage from "./pages/register/RegisterPage";
 import ClientDashboard from "./pages/clients/ClientDashboard.tsx";
 import ClientAccount from "./pages/clients/ClientAccount.tsx";
 import AccountantHome from './pages/accountants/AccountantHome.tsx';
+import ClientMessages from "./pages/clients/ClientMessages.tsx";
+import ClientTasks from "./pages/clients/ClientTasks.tsx";
 
 const rootElement = document.getElementById("root");
 
@@ -36,9 +38,7 @@ createRoot(rootElement).render(
       <Routes>
         <Route path="/" element={<App />}>
           
-          {/*<Route index element={<Home />} />*/}
-
-          {/* index redirects to landing page (only brochure element as of the time of writing) */}
+          
           <Route index element={<Navigate to="welcome/" replace />} />
 
           <Route path="welcome/" element={<AppBrochure />}>
@@ -47,16 +47,18 @@ createRoot(rootElement).render(
 
           </Route>
 
-          {/* webapp - login page + logged in clients and accountants */}
+        
           <Route path="app" element={<AppLoggedIn />}>
 
             {/* auth routes */}
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
 
-            {/* client dashboard and nested account */}
+            
             <Route path="client" element={<ClientDashboard />}>
               <Route path="account" element={<ClientAccount />} />
+              <Route path="messages" element={<ClientMessages />} />
+              <Route path="tasks" element={<ClientTasks />} />
             </Route>
 
             {/*
