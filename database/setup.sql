@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS task_status;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS clients;
@@ -74,28 +73,18 @@ CREATE TABLE tasks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id UUID,
   accountant_id UUID,
-  title VARCHAR(255)L,
-  description TEXT,
+  title VARCHAR(255),
+  task_description TEXT,
+  task_status VARCHAR(50) DEFAULT 'In Progress', -- IN_PROGRESS, COMPLETED
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL,
+  deleted_at TIMESTAMP NULL,
 
   CONSTRAINT fk_task_client
     FOREIGN KEY (client_id) REFERENCES clients(id)
     ON DELETE CASCADE,
-
   CONSTRAINT fk_task_accountant
     FOREIGN KEY (accountant_id) REFERENCES accountants(id)
-    ON DELETE CASCADE
-);
-
--- Task Status Table (history tracking)
-CREATE TABLE task_status (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  task_id UUID,
-  task_status VARCHAR(50), -- PENDING, IN_PROGRESS, COMPLETED
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-  CONSTRAINT fk_task_status
-    FOREIGN KEY (task_id) REFERENCES tasks(id)
     ON DELETE CASCADE
 );
 

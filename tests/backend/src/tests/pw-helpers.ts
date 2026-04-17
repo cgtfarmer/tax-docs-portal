@@ -71,41 +71,6 @@ export default class PwHelpers {
     return await response.json();
   }
 
-  static async createDefaultTask(
-    request: APIRequestContext,
-    clientId: string,
-    accountantId: string
-  ) {
-    const response = await request.post('/tasks', {
-      data: {
-        clientId,
-        accountantId,
-        title: 'Test Task',
-        description: 'This is a test task'
-      }
-    });
-
-    expect(response.status()).toBe(201);
-
-    return await response.json();
-  }
-
-  static async createDefaultTaskStatus(
-    request: APIRequestContext,
-    taskId: string
-  ) {
-    const response = await request.post('/task-status', {
-      data: {
-        taskId,
-        taskStatus: 'PENDING'
-      }
-    });
-
-    expect(response.status()).toBe(201);
-
-    return await response.json();
-  }
-
   static async createDefaultMessage(
     request: APIRequestContext,
     clientId: string,
@@ -117,6 +82,26 @@ export default class PwHelpers {
         accountantId,
         senderType: 'CLIENT',
         messageText: 'Hello, this is a test message'
+      }
+    });
+
+    expect(response.status()).toBe(201);
+
+    return await response.json();
+  }
+
+  static async createDefaultTask(
+    request: APIRequestContext,
+    clientId: string,
+    accountantId: string
+  ) {
+    const response = await request.post('/tasks', {
+      data: {
+        clientId,
+        accountantId,
+        title: 'Test Task',
+        description: 'This is a test task',
+        taskStatus: 'In Progress'
       }
     });
 

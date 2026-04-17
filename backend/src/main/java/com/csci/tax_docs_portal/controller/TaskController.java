@@ -25,31 +25,20 @@ public class TaskController {
   @GetMapping
   public ResponseEntity<List<Task>> index() {
     log.info("[TaskController#index]");
-
-    List<Task> response = this.taskService.list();
-
-    return ResponseEntity.status(200)
-        .body(response);
+    return ResponseEntity.ok(this.taskService.list());
   }
 
   @PostMapping
   public ResponseEntity<Task> create(@RequestBody Task request) {
     log.info("[TaskController#create] request={}", request);
-
-    Task response = this.taskService.create(request);
-
     return ResponseEntity.status(201)
-        .body(response);
+        .body(this.taskService.create(request));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<Task> show(@PathVariable UUID id) {
     log.info("[TaskController#show] id={}", id);
-
-    Task response = this.taskService.get(id);
-
-    return ResponseEntity.status(200)
-        .body(response);
+    return ResponseEntity.ok(this.taskService.get(id));
   }
 
   @PutMapping("/{id}")
@@ -61,19 +50,35 @@ public class TaskController {
 
     request.setId(id);
 
-    Task response = this.taskService.update(request);
-
-    return ResponseEntity.status(200)
-        .body(response);
+    return ResponseEntity.ok(this.taskService.update(request));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> destroy(@PathVariable UUID id) {
+  public ResponseEntity<Void> destroy(@PathVariable UUID id) {
     log.info("[TaskController#destroy] id={}", id);
 
-    this.taskService.destroy(id);
+    this.taskService.destroy(id); // soft delete
 
-    return ResponseEntity.status(204)
+    return ResponseEntity.noContent()
         .build();
+  }
+
+  @PutMapping("/{id}/status")
+  public ResponseEntity<Task> updateStatus(
+      @PathVariable UUID id,
+      @RequestParam String status
+  ) {
+    log.info("[TaskController#updateStatus] id={}, status={}", id, status);
+
+    Task updated = this.taskService.updateStatus(id, status);
+
+    return ResponseEntity.ok(updated);
+  }
+
+  @GetMapping("/active")
+  public ResponseEntity<List<Task>> getActiveTasks() {
+    log.info("[TaskController#getActiveTasks]");
+
+    return ResponseEntity.ok(this.taskService.listActive());
   }
 }

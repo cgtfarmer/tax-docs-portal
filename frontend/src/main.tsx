@@ -11,11 +11,11 @@ import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import ClientDashboard from "./pages/clients/ClientDashboard.tsx";
 import ClientAccount from "./pages/clients/ClientAccount.tsx";
-import AccountantHome from './pages/accountants/AccountantHome.tsx';
-import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';
+{/*import AccountantHome from './pages/accountants/AccountantHome.tsx';
+import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';*/}
 import ClientMessages from "./pages/clients/ClientMessages.tsx";
 import ClientTasks from "./pages/clients/ClientTasks.tsx";
-import AppAdmin from "./AppAdmin.tsx";
+{/*import AppAdmin from "./AppAdmin.tsx";
 import Users from "./pages/users/Users.tsx";
 import User from "./pages/users/User.tsx";
 import NewUser from "./pages/users/NewUser.tsx";
@@ -27,7 +27,7 @@ import Client from "./pages/clients/Client.tsx";
 import NewClient from "./pages/clients/NewClient.tsx";
 import EditClient from "./pages/clients/EditClient.tsx";
 import ClientIndex from "./pages/clients/ClientIndex.tsx";
-import AccountantHome from "./pages/accountants/AccountantHome.tsx";
+*/}
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element not present");
@@ -82,16 +82,16 @@ createRoot(rootElement).render(
               <Route path="edit" element={<EditClient />} />
             </Route>
           </Route>
-
+           
           <Route path="clientIndex" element={<ClientIndex />} />
           <Route path="accountant-home" element={<AccountantHome />} />
 
           <Route path="accountant-message-board">
             <Route index element={<AccountantMessageBoard />} />
           </Route>
-
-          <Route path="*" element={<NotFound />} />
           */}
+          <Route path="*" element={<NotFound />} />
+          
         </Route>
       </Routes>
     </BrowserRouter>
