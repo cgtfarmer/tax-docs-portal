@@ -1,16 +1,22 @@
 import "./App.css";
 import { Outlet } from "react-router";
-import { Container, Stack } from "@mui/material";
+import AdminNavbarLeft from './components/layout/admin-navbar-left';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export default function AppAdmin() {
   return (
-      <Stack sx={{ height: "100vh" }}>
-        {/* Still needs custom styling */}
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
 
-        <Container component="main" sx={{ pt: 3 }}>
-          <Outlet />
-        </Container>
+      <AdminNavbarLeft />
 
-      </Stack>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+      >
+        <Outlet />
+      </Box>
+    </Box>
   );
 }

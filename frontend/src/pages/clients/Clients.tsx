@@ -41,7 +41,7 @@ export default function Page() {
         Clients
       </Typography>
 
-      <Link component={RouterLink} to="/clients/new">Create</Link>
+      <Link component={RouterLink} to="/admin/clients/new">Create</Link>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -74,14 +74,14 @@ export default function Page() {
                   <Stack direction="row" gap="0.5rem">
                     <Link
                       component={RouterLink}
-                      to={`/clients/${client.id ? client.id.toString() : ''}`}
+                      to={`/admin/clients/${client.id ?? ''}`}
                     >
                       Show
                     </Link>
 
                     <Link
                       component={RouterLink}
-                      to={`/clients/${client.id ? client.id.toString() : ''}/edit`}
+                      to={`/admin/clients/${client.id ?? ''}/edit`}
                     >
                       Edit
                     </Link>

@@ -4,7 +4,6 @@ import { Divider, Link, Paper, Stack, Table, TableBody, TableCell, TableContaine
 import ApiAccessor from '../../accessors/api-accessor';
 import { Client } from '../../models/client';
 
-// eslint-disable-next-line functional/type-declaration-immutability
 interface RouteParams extends Params {
   clientId: string
 };
@@ -48,11 +47,11 @@ export default function Page() {
       </Typography>
 
       <Stack direction="row" gap="0.5rem">
-        <Link component={RouterLink} to="/clients">Back</Link>
+        <Link component={RouterLink} to="/admin/clients">Back</Link>
 
         <Divider orientation="vertical" variant="middle" flexItem />
 
-        <Link component={RouterLink} to={`/clients/${client.id}/edit`}>Edit</Link>
+        <Link component={RouterLink} to={`/admin/clients/${client.id ?? ''}/edit`}>Edit</Link>
       </Stack>
 
       <TableContainer component={Paper}>

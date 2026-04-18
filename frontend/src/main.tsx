@@ -11,23 +11,23 @@ import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import ClientDashboard from "./pages/clients/ClientDashboard.tsx";
 import ClientAccount from "./pages/clients/ClientAccount.tsx";
-{/*import AccountantHome from './pages/accountants/AccountantHome.tsx';
-import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';*/}
 import ClientMessages from "./pages/clients/ClientMessages.tsx";
 import ClientTasks from "./pages/clients/ClientTasks.tsx";
-{/*import AppAdmin from "./AppAdmin.tsx";
-import Users from "./pages/users/Users.tsx";
-import User from "./pages/users/User.tsx";
-import NewUser from "./pages/users/NewUser.tsx";
-import EditUser from "./pages/users/EditUser.tsx";
-import Accountants from "./pages/accountants/Accountants.tsx";
-import Accountant from "./pages/accountants/Accountant.tsx";
+import AppAdmin from "./AppAdmin.tsx";
 import Clients from "./pages/clients/Clients.tsx";
 import Client from "./pages/clients/Client.tsx";
 import NewClient from "./pages/clients/NewClient.tsx";
 import EditClient from "./pages/clients/EditClient.tsx";
-import ClientIndex from "./pages/clients/ClientIndex.tsx";
-*/}
+import Accountants from "./pages/accountants/Accountants.tsx";
+import Accountant from "./pages/accountants/Accountant.tsx";
+import AdminHome from './pages/admin/AdminHome.tsx';
+// import AccountantHome from './pages/accountants/AccountantHome.tsx';
+// import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';
+// import Users from "./pages/users/Users.tsx";
+// import User from "./pages/users/User.tsx";
+// import NewUser from "./pages/users/NewUser.tsx";
+// import EditUser from "./pages/users/EditUser.tsx";
+// import ClientIndex from "./pages/clients/ClientIndex.tsx";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element not present");
@@ -45,7 +45,6 @@ createRoot(rootElement).render(
           </Route>
 
           <Route path="app" element={<AppLoggedIn />}>
-
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
 
@@ -55,10 +54,27 @@ createRoot(rootElement).render(
               <Route path="messages" element={<ClientMessages />} />
               <Route path="tasks" element={<ClientTasks />} />
             </Route>
-
           </Route>
+
+          <Route path="admin" element={<AppAdmin />}>
+            <Route index element={<AdminHome />} />
+
+            <Route path="clients">
+              <Route index element={<Clients />} />
+              <Route path="new" element={<NewClient />} />
+              <Route path=":clientId">
+                <Route index element={<Client />} />
+                <Route path="edit" element={<EditClient />} />
+              </Route>
+            </Route>
+
+            <Route path="accountants">
+              <Route index element={<Accountants />} />
+              <Route path=":accountantId" element={<Accountant />} />
+            </Route>
+          </Route>
+
           {/*
-          <Route path="admin" element={<AppAdmin />} />
 
           <Route path="users">
             <Route index element={<Users />} />
@@ -69,20 +85,6 @@ createRoot(rootElement).render(
             </Route>
           </Route>
 
-          <Route path="accountants">
-            <Route index element={<Accountants />} />
-            <Route path=":accountantId" element={<Accountant />} />
-          </Route>
-
-          <Route path="clients">
-            <Route index element={<Clients />} />
-            <Route path="new" element={<NewClient />} />
-            <Route path=":clientId">
-              <Route index element={<Client />} />
-              <Route path="edit" element={<EditClient />} />
-            </Route>
-          </Route>
-           
           <Route path="clientIndex" element={<ClientIndex />} />
           <Route path="accountant-home" element={<AccountantHome />} />
 
@@ -91,7 +93,7 @@ createRoot(rootElement).render(
           </Route>
           */}
           <Route path="*" element={<NotFound />} />
-          
+
         </Route>
       </Routes>
     </BrowserRouter>
