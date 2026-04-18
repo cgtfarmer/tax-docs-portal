@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Button, Stack, TextField, Typography } from '@mui/material';
-import { Params, useNavigate, useParams } from 'react-router';
+import { Link, Button, Stack, TextField, Typography, Box } from '@mui/material';
 import ApiAccessor from '../../accessors/api-accessor';
 import { ClientInput } from '../../models/client-input';
 import { ClientMapper } from '../../mapper/client-mapper';
+import { Link as RouterLink, Params, useParams, useNavigate } from 'react-router';
 
 interface RouteParams extends Params {
   clientId: string
@@ -57,6 +57,10 @@ export default function Page() {
       <Typography component="h1" variant="h4" gutterBottom>
         Update client
       </Typography>
+
+      <Box sx={{ py: 3 }}>
+        <Link component={RouterLink} to="/admin/clients">Back</Link>
+      </Box>
 
       <Stack gap="1rem" maxWidth="30rem">
         <TextField

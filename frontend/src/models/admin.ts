@@ -1,4 +1,4 @@
-export interface Accountant {
+export interface Admin {
   id: string | undefined;
 
   firstName: string | undefined;

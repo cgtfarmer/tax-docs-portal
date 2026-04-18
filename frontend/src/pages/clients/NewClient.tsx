@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
-import { Button, Stack, TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router';
+import { Link, Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Link as RouterLink, useNavigate } from 'react-router';
 import ApiAccessor from '../../accessors/api-accessor';
 import { ClientMapper } from '../../mapper/client-mapper';
 import { ClientInput } from '../../models/client-input';
@@ -37,6 +37,10 @@ export default function Page() {
       <Typography component="h1" variant="h4" gutterBottom>
         Add client
       </Typography>
+
+      <Box sx={{ py: 3 }}>
+        <Link component={RouterLink} to="/admin/clients">Back</Link>
+      </Box>
 
       <Stack gap="1rem" maxWidth="30rem">
         <TextField
