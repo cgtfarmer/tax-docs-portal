@@ -41,13 +41,13 @@ const navigate = useNavigate();
     justifyContent: "space-between",
     alignItems: "center",
     };
-//The styling for TSoA
+//The styling for STAbill
     const logoTextStyle = {
     fontSize: "22px",
     fontWeight: 600,
     color: "white",
     };
-//The styling for the Navigation portion in the top right 
+//The styling for the Navigation portion in the top right
     const navStyle = {
     display: "flex",
     gap: "30px",
@@ -119,7 +119,7 @@ const navigate = useNavigate();
     <Box sx={pageStyle}>
         <Box sx={headerStyle}>
             <Box sx={logoTextStyle}>
-                TSoA
+                STAbill
             </Box>
           <Box
             sx={{
@@ -136,7 +136,7 @@ const navigate = useNavigate();
         </Box>
       <Box sx={cardStyle}>
         <Box sx={tabRowStyle}>
-          <Box sx={{ ...tabStyle, backgroundColor: "#1f1f1f", color: "white" }}> 
+          <Box sx={{ ...tabStyle, backgroundColor: "#1f1f1f", color: "white" }}>
             Taxpayer
           </Box>
 
@@ -157,8 +157,8 @@ const navigate = useNavigate();
             variant="outlined"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
@@ -169,24 +169,24 @@ const navigate = useNavigate();
             variant="outlined"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             <TextField
             label="Username"
             variant="outlined"
             value={username}
             onChange={(e) => setUserName(e.target.value)}
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             <TextField
             label="Email Address"
@@ -194,12 +194,12 @@ const navigate = useNavigate();
             variant="outlined"
             value={emailAddress}
             onChange={(e) => setEmailAddress(e.target.value)}
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             <TextField
             label="Password"
@@ -207,12 +207,12 @@ const navigate = useNavigate();
             variant="outlined"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             <Box sx={registerButtonStyle} onClick={handleRegister}>
                 Register
@@ -220,7 +220,7 @@ const navigate = useNavigate();
             <Box sx={dontHaveAnAccount}>
                 Already have an account?
             </Box>
-            <Box 
+            <Box
                 sx={loginHereLinkStyle}
                 onClick={() => navigate("/app/login")}
             >

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, Params, useParams } from 'react-router';
 import { Divider, Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
-import ApiAccessor from '../../accessors/api-accessor';
-import { Client } from '../../models/client';
+import ApiAccessor from '../../../accessors/api-accessor';
+import { Client } from '../../../models/client';
 
 interface RouteParams extends Params {
   clientId: string

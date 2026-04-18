@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router';
 import { Alert, Box, CircularProgress, Link, Paper, Typography } from '@mui/material';
-import ApiAccessor from '../../accessors/api-accessor';
-import { Accountant } from '../../models/accountant';
+import ApiAccessor from '../../../accessors/api-accessor';
+import { Accountant } from '../../../models/accountant';
 
 const apiAccessor = new ApiAccessor();
 

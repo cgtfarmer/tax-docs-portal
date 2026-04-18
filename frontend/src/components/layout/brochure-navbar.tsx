@@ -53,7 +53,7 @@ export default function BrochureNav() {
               textDecoration: "none"
             }}
           >
-            Tax Strategists of America
+            STAbill
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

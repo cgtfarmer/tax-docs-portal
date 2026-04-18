@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import ApiAccessor from '../../accessors/api-accessor';
-import { Client } from '../../models/client';
+import ApiAccessor from '../../../accessors/api-accessor';
+import { Client } from '../../../models/client';
 
 const apiAccessor = new ApiAccessor();
 

@@ -1,7 +1,8 @@
 # Secure Tax Docs Portal
 
 ## Summary
-This application is a Proof-of-Concept for a tax documentation portal. When the application is complete, it will be a web-based platform for customers of Tax Strategists of America to communicate with their assigned accountants. The platform gives clients the ability to upload tax documents and receipts for their accountants to review, as well as to communicate directly with their accountants. When it is running, it can be accessed via the browser. More details will be provided here as the application is developed.
+
+This application is a Proof-of-Concept for a tax documentation portal. When the application is complete, it will be a web-based platform for customers of STAbill to communicate with their assigned accountants. The platform gives clients the ability to upload tax documents and receipts for their accountants to review, as well as to communicate directly with their accountants. When it is running, it can be accessed via the browser. More details will be provided here as the application is developed.
 
 ## Prerequisites
 

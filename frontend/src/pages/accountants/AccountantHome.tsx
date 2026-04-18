@@ -5,14 +5,14 @@ export default function AccountantHome() {
     <div>
       <h1>Welcome, Mary Jane</h1>
 
-      <Link to="/accountants/ef3620f9-e1fb-4017-9725-9a29cb368c8d">
+      <Link to="/app/accountant/account">
         <button>My Account</button>
       </Link>
 
       <br />
       <br />
 
-      <Link to="/clients">
+      <Link to="/app/accountant/clients">
         <button>View Clients</button>
       </Link>
     </div>
