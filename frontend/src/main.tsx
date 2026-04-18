@@ -1,13 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import App from "./App.tsx";
-import NotFound from "./pages/not-found/NotFound.tsx";
+import NotFound from "./pages/NotFound.tsx";
 import Landing from "./pages/brochure/Landing.tsx";
-import AppBrochure from "./AppBrochure.tsx";
+import BrochureLayout from "./components/layout/BrochureLayout.tsx";
 import ClientLayout from "./components/layout/ClientLayout.tsx";
-import LoginPage from "./pages/login/LoginPage";
+import LoginPage from "./pages/auth/LoginPage.tsx";
 import ClientDashboard from "./pages/clients/ClientDashboard.tsx";
 import ClientAccount from "./pages/clients/ClientAccount.tsx";
 import ClientMessages from "./pages/clients/ClientMessages.tsx";
@@ -29,6 +29,10 @@ import AccountantClientMessages from './pages/accountants/AccountantClientMessag
 import AccountantClientTasks from './pages/accountants/AccountantClientTasks.tsx';
 import AccountantClientDocuments from './pages/accountants/AccountantClientDocuments.tsx';
 import AccountantClient from './pages/accountants/AccountantClient.tsx';
+import About from './pages/brochure/About.tsx';
+import Contact from './pages/brochure/Contact.tsx';
+import Services from './pages/brochure/Services.tsx';
+import ClientDocuments from './pages/clients/ClientDocuments.tsx';
 // import RegisterPage from "./pages/register/RegisterPage";
 // import AccountantHome from './pages/accountants/AccountantHome.tsx';
 // import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';
@@ -47,10 +51,11 @@ createRoot(rootElement).render(
       <Routes>
         <Route path="/" element={<App />}>
 
-          <Route index element={<Navigate to="welcome" replace />} />
-
-          <Route path="welcome" element={<AppBrochure />}>
+          <Route element={<BrochureLayout />}>
             <Route index element={<Landing />} />
+            <Route path="about" element={<About />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="services" element={<Services />} />
           </Route>
 
           <Route path="login" element={<LoginPage />} />
@@ -62,6 +67,7 @@ createRoot(rootElement).render(
               <Route path="account" element={<ClientAccount />} />
               <Route path="messages" element={<ClientMessages />} />
               <Route path="tasks" element={<ClientTasks />} />
+              <Route path="documents" element={<ClientDocuments />} />
             </Route>
 
             <Route path="accountant" element={<AccountantLayout />}>

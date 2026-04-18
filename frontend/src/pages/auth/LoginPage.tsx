@@ -71,7 +71,7 @@ const navigate = useNavigate();
     fontWeight: 600,
     color: "white",
     };
-//The styling for the Navigation portion in the top right 
+//The styling for the Navigation portion in the top right
     const navStyle = {
     display: "flex",
     gap: "30px",
@@ -190,8 +190,8 @@ const navigate = useNavigate();
             variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
@@ -203,12 +203,12 @@ const navigate = useNavigate();
             variant="outlined"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             {loginError && (
               <Box sx={{ color: "#ff6b6b", fontSize: "14px", marginBottom: "5px" }}>
@@ -221,9 +221,9 @@ const navigate = useNavigate();
             <Box sx={dontHaveAnAccount}>
                 Don't have an account?
             </Box>
-            <Box 
+            <Box
             sx={registerLinkStyle}
-            onClick={() => navigate("/app/register")}
+            onClick={() => navigate("/register")}
             >
                 Register here
             </Box>

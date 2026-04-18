@@ -1,9 +1,9 @@
 import { Outlet } from "react-router";
 import { Container, Stack, } from "@mui/material";
 // import Footer from './components/layout/footer';
-import BrochureNav from "./components/layout/brochure-navbar";
+import BrochureNav from "./BrochureNavbar";
 
-export default function AppBrochure() {
+export default function Component() {
   return (
     <Stack sx={{ height: "100vh" }}>
         <BrochureNav />

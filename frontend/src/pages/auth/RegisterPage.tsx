@@ -89,7 +89,7 @@ const navigate = useNavigate();
     fontWeight: 600,
     color: "white",
     };
-//The styling for the Navigation portion in the top right 
+//The styling for the Navigation portion in the top right
     const navStyle = {
     display: "flex",
     gap: "30px",
@@ -213,8 +213,8 @@ const navigate = useNavigate();
                 firstName: e.target.value,
               }))
             }
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
@@ -230,12 +230,12 @@ const navigate = useNavigate();
                 lastName: e.target.value,
               }))
             }
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             <TextField
             label="Username"
@@ -247,12 +247,12 @@ const navigate = useNavigate();
                 username: e.target.value,
               }))
             }
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             <TextField
             label="Email Address"
@@ -265,12 +265,12 @@ const navigate = useNavigate();
                 email: e.target.value,
               }))
             }
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             <TextField
             label="Password"
@@ -283,12 +283,12 @@ const navigate = useNavigate();
                 passwordHash: e.target.value,
               }))
             }
-            sx={{ width: "540px", 
-              marginBottom: "20px", 
+            sx={{ width: "540px",
+              marginBottom: "20px",
               backgroundColor: "#2a2a2a",
               input: { color: "white" },
               label: { color: "#9ca3af" },
-            }}           
+            }}
             />
             {registerError && (
               <Box sx={{ color: "#ff6b6b", fontSize: "16px", marginBottom: "10px" }}>
@@ -301,9 +301,9 @@ const navigate = useNavigate();
             <Box sx={dontHaveAnAccount}>
                 Already have an account?
             </Box>
-            <Box 
+            <Box
                 sx={loginHereLinkStyle}
-                onClick={() => navigate("/app/login")}
+                onClick={() => navigate("/login")}
             >
                 Login Here
             </Box>

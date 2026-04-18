@@ -10,6 +10,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import MessageIcon from '@mui/icons-material/Message';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const drawerWidth = 240;
 
@@ -61,6 +62,16 @@ export default function Component() {
               </ListItemIcon>
 
               <ListItemText primary={"Messages"} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton href="/app/client/documents">
+              <ListItemIcon>
+                <ArticleIcon />
+              </ListItemIcon>
+
+              <ListItemText primary={"Documents"} />
             </ListItemButton>
           </ListItem>
 
