@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS client_files;
+DROP TABLE IF EXISTS documents;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS clients;
@@ -91,13 +91,11 @@ CREATE TABLE tasks (
     ON DELETE CASCADE
 );
 
--- File System Table
-CREATE TABLE client_files (
+-- Documents Table
+CREATE TABLE documents (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     client_id UUID,
     storage_key VARCHAR(255) UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_client_files_client
         FOREIGN KEY (client_id)
