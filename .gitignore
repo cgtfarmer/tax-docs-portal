@@ -80,5 +80,5 @@ infrastructure/node_modules
 */test-results
 
 # Private storage for uploaded files
-/backend/storage/
-/backend/storage/*
+*/backend/storage/
+*/backend/storage/*
