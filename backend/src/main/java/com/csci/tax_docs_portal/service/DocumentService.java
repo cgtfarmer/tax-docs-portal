@@ -28,14 +28,6 @@ public class DocumentService {
   ) throws IOException {
     String storageKey = buildStorageKey(clientId, documentType);
 
-    Document existing = repository.findByStorageKey(storageKey);
-
-    if (existing != null) {
-      throw new RuntimeException(
-          "Document already exists for this client and type"
-      );
-    }
-
     Path folder = Paths.get("./backend/storage");
     Files.createDirectories(folder);
 
@@ -47,12 +39,18 @@ public class DocumentService {
         StandardCopyOption.REPLACE_EXISTING
     );
 
-    Document document = Document.builder()
-        .clientId(clientId)
-        .storageKey(storageKey)
-        .build();
+    Document existing = repository.findByStorageKey(storageKey);
 
-    return repository.create(document);
+    if (existing == null) {
+      Document document = Document.builder()
+          .clientId(clientId)
+          .storageKey(storageKey)
+          .build();
+
+      return repository.create(document);
+    }
+
+    return existing;
   }
 
   public Resource download(UUID id) throws IOException {
