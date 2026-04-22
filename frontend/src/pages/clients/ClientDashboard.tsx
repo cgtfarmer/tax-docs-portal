@@ -1,8 +1,11 @@
 import { Stack, Container, Box, Typography, Button, Paper } from "@mui/material";
 import { Outlet } from "react-router";
+import { useNavigate } from "react-router";
 
 
 export default function ClientDashboard() {
+  const navigate = useNavigate();
+
   return (
     <Stack sx={{ height: "100vh" }}>
 
@@ -25,7 +28,11 @@ export default function ClientDashboard() {
                 not satisfied with your accountant? contact STAbill
               </Typography>
 
-              <Button variant="outlined" sx={{ mt: 1 }}>
+              <Button 
+              variant="outlined" 
+              sx={{ mt: 1 }}
+                onClick={() => navigate("/app/client/messages")}
+              >
                 Schedule Meeting
               </Button>
             </Paper>
