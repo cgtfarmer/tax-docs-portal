@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router';
 import { Alert, Box, CircularProgress, Link, Paper, Typography } from '@mui/material';
-import ApiAccessor from '../../accessors/api-accessor';
-import { Accountant } from '../../models/accountant';
+import ApiAccessor from '../../../accessors/api-accessor';
+import { Accountant } from '../../../models/accountant';
 
 const apiAccessor = new ApiAccessor();
 
@@ -22,6 +22,7 @@ export default function Page() {
 
         const data = await apiAccessor.getAccountant(accountantId);
         setAccountant(data);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError('Failed to load accountant.');
       } finally {
@@ -75,7 +76,7 @@ export default function Page() {
           <Typography><strong>Username:</strong> {accountant.username}</Typography>
         </Box>
 
-        <Link component={RouterLink} to="/accountants">
+        <Link component={RouterLink} to="/admin/accountants">
           Back to Accountants
         </Link>
       </Paper>

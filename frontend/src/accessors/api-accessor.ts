@@ -16,9 +16,13 @@ export default class ApiAccessor {
 
   /* User API */
   public async listUsers(): Promise<User[]> {
+    const path = `${this.API_URL}/users`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/users`,
-      { method: 'GET' }
+      path,
+      { method: method }
     );
 
     const data: User[] = await response.json();
@@ -27,9 +31,13 @@ export default class ApiAccessor {
   }
 
   public async getUser(userId: string): Promise<User> {
+    const path = `${this.API_URL}/users/${userId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/users/${userId}`,
-      { method: 'GET' }
+      path,
+      { method: method }
     );
 
     const data: User = await response.json();
@@ -38,12 +46,17 @@ export default class ApiAccessor {
   }
 
   public async createUser(user: User): Promise<User> {
-    const response = await fetch(`${this.API_URL}/users`, {
-      method: 'POST',
+    const path = `${this.API_URL}/users`;
+    const method = 'POST';
+    const body = JSON.stringify(user);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(user)
+      body: body
     });
 
     const data: User = await response.json();
@@ -52,12 +65,17 @@ export default class ApiAccessor {
   }
 
   public async updateUser(user: User): Promise<User> {
-    const response = await fetch(`${this.API_URL}/users/${user.id}`, {
-      method: 'PUT',
+    const path = `${this.API_URL}/users/${user.id ?? ''}`;
+    const method = 'PUT';
+    const body = JSON.stringify(user);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(user)
+      body: body
     });
 
     const data: User = await response.json();
@@ -66,9 +84,13 @@ export default class ApiAccessor {
   }
 
   public async destroyUser(userId: string): Promise<boolean> {
+    const path = `${this.API_URL}/users/${userId}`;
+    const method = 'DELETE';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/users/${userId}`,
-      { method: 'DELETE' }
+      path,
+      { method: method }
     );
 
     return (response.status == 204);
@@ -76,9 +98,13 @@ export default class ApiAccessor {
 
   /* Accountant API */
   public async listAccountants(): Promise<Accountant[]> {
+    const path = `${this.API_URL}/accountants`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/accountants`,
-      { method: 'GET' }
+      path,
+      { method: method }
     );
 
     const data: Accountant[] = await response.json();
@@ -86,20 +112,29 @@ export default class ApiAccessor {
   }
 
   public async getAccountant(accountantId: string): Promise<Accountant> {
+    const path = `${this.API_URL}/accountants/${accountantId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/accountants/${accountantId}`,
-      { method: 'GET' }
+      path,
+      { method: method }
     );
 
     const data: Accountant = await response.json();
     return data;
   }
   
+
   /* Clients API */
   public async listClients(): Promise<Client[]> {
+    const path = `${this.API_URL}/clients`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/clients`,
-      { method: 'GET' }
+      path,
+      { method: method }
     );
 
     const data: Client[] = await response.json();
@@ -108,9 +143,13 @@ export default class ApiAccessor {
   }
 
   public async getClient(clientId: string): Promise<Client> {
+    const path = `${this.API_URL}/clients/${clientId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/clients/${clientId}`,
-      { method: 'GET' }
+      path,
+      { method: method }
     );
 
     const data: Client = await response.json();
@@ -119,12 +158,17 @@ export default class ApiAccessor {
   }
 
   public async createClient(client: Client): Promise<Client> {
-    const response = await fetch(`${this.API_URL}/clients`, {
-      method: 'POST',
+    const path = `${this.API_URL}/clients`;
+    const method = 'POST';
+    const body = JSON.stringify(client);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(client)
+      body: body
     });
 
     const data: Client = await response.json();
@@ -133,12 +177,17 @@ export default class ApiAccessor {
   }
 
   public async updateClient(client: Client): Promise<Client> {
-    const response = await fetch(`${this.API_URL}/clients/${client.id}`, {
-      method: 'PUT',
+    const path = `${this.API_URL}/clients/${client.id ?? ''}`;
+    const method = 'PUT';
+    const body = JSON.stringify(client);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(client)
+      body: body
     });
 
     const data: Client = await response.json();
@@ -147,9 +196,13 @@ export default class ApiAccessor {
   }
 
   public async destroyClient(clientId: string): Promise<boolean> {
+    const path = `${this.API_URL}/clients/${clientId}`;
+    const method = 'DELETE';
+    this.logRequest(method, path);
+
     const response = await fetch(
-      `${this.API_URL}/clients/${clientId}`,
-      { method: 'DELETE' }
+      path,
+      { method: method }
     );
 
     return (response.status == 204);
@@ -160,6 +213,31 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/admins`,
       { method: 'GET' }
+  // gets only the clients assigned to a specific accountant
+  public async getClientsByAccountant(accountantId: string): Promise<Client[]> {
+    const path = `${this.API_URL}/clients/accountant/${accountantId}/clients`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
+    );
+
+    const data: Client[] = await response.json();
+
+    return data;
+  }
+
+  /* Admin API */
+  public async listAdmins(): Promise<Admin[]> {
+    const path = `${this.API_URL}/admins`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Admin[] = await response.json();
@@ -171,6 +249,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/admins/${adminId}`,
       { method: 'GET' }
+    const path = `${this.API_URL}/admins/${adminId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Admin = await response.json();
@@ -185,6 +270,17 @@ export default class ApiAccessor {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(admin)
+    const path = `${this.API_URL}/admins`;
+    const method = 'POST';
+    const body = JSON.stringify(admin);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
     });
 
     const data: Admin = await response.json();
@@ -199,6 +295,17 @@ export default class ApiAccessor {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(admin)
+    const path = `${this.API_URL}/admins/${admin.id ?? ''}`;
+    const method = 'PUT';
+    const body = JSON.stringify(admin);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
     });
 
     const data: Admin = await response.json();
@@ -210,6 +317,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/admins/${adminId}`,
       { method: 'DELETE' }
+    const path = `${this.API_URL}/admins/${adminId}`;
+    const method = 'DELETE';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     return (response.status === 204);
@@ -220,6 +334,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/messages`,
       { method: 'GET' }
+    const path = `${this.API_URL}/messages`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Message[] = await response.json();
@@ -230,6 +351,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/messages/${messageId}`,
       { method: 'GET' }
+    const path = `${this.API_URL}/messages/${messageId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Message = await response.json();
@@ -240,6 +368,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/messages/client/${clientId}`,
       { method: 'GET' }
+    const path = `${this.API_URL}/messages/client/${clientId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Message[] = await response.json();
@@ -253,6 +388,17 @@ export default class ApiAccessor {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(message)
+    const path = `${this.API_URL}/messages`;
+    const method = 'POST';
+    const body = JSON.stringify(message);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
     });
 
     const data: Message = await response.json();
@@ -266,6 +412,17 @@ export default class ApiAccessor {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(message)
+    const path = `${this.API_URL}/messages/${message.id}`;
+    const method = 'PUT';
+    const body = JSON.stringify(message);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
     });
 
     const data: Message = await response.json();
@@ -276,6 +433,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/messages/${messageId}`,
       { method: 'DELETE' }
+    const path = `${this.API_URL}/messages/${messageId}`;
+    const method = 'DELETE';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     return (response.status === 204);
@@ -286,6 +450,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/tasks`,
       { method: 'GET' }
+    const path = `${this.API_URL}/tasks`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Task[] = await response.json();
@@ -296,6 +467,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/tasks/${taskId}`,
       { method: 'GET' }
+    const path = `${this.API_URL}/tasks/${taskId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Task = await response.json();
@@ -306,6 +484,13 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/tasks/client/${clientId}`,
       { method: 'GET' }
+    const path = `${this.API_URL}/tasks/client/${clientId}`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     const data: Task[] = await response.json();
@@ -324,6 +509,17 @@ export default class ApiAccessor {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(task)
+    const path = `${this.API_URL}/tasks`;
+    const method = 'POST';
+    const body = JSON.stringify(task);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
     });
 
     const data: Task = await response.json();
@@ -337,6 +533,17 @@ export default class ApiAccessor {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(task)
+    const path = `${this.API_URL}/tasks/${task.id}`;
+    const method = 'PUT';
+    const body = JSON.stringify(task);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
     });
 
     const data: Task = await response.json();
@@ -347,8 +554,23 @@ export default class ApiAccessor {
     const response = await fetch(
       `${this.API_URL}/tasks/${taskId}`,
       { method: 'DELETE' }
+    const path = `${this.API_URL}/tasks/${taskId}`;
+    const method = 'DELETE';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
     );
 
     return (response.status === 204);
+  }
+
+  private logRequest(method: string, path: string, body?: string) {
+    console.log(`Fetch: ${method} - ${path}`);
+
+    if (body) {
+      console.log("\n ${body}");
+    }
   }
 }
