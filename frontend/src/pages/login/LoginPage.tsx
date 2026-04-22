@@ -1,4 +1,4 @@
-import { Box, TextField, Stack } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import ApiAccessor from "../../accessors/api-accessor";
@@ -53,16 +53,16 @@ const navigate = useNavigate();
 
 //Entire Page Layout
   const pageStyle = {
-    minHeight: "100%",
+    flexGrow: "1",
     backgroundColor: "transparent",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
+    justify: "center",
+    marginTop: "200px"
   };
 //Login Container
   const cardStyle = {
-    width: "600px",
-    height: "600px",
+    width: "500px",
+    height: "300px",
     backgroundColor: "#F7F7F7",
     border: "1px solid #000000",
     overflow: "hidden",
@@ -72,39 +72,26 @@ const navigate = useNavigate();
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: "90px",
+        marginTop: "50px",
     };
 //The styling for the Login button
     const loginButtonStyle = {
-    width: "240px",
-    height: "55px",
+    width: "200px",
+    height: "45px",
     backgroundColor: "#ffffff",
     color: "#000000",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: "10px",
+    borderRadius: "5px",
     border: "1px solid #000000",
     fontSize: "20px",
     marginTop: "0px",
     cursor: "pointer",
     };
-//The styling for the part that says "Don't have an account?"
-    const dontHaveAnAccount = {
-    marginTop: "80px",
-    fontSize: "18px",
-    color: "#9ca3af",
-    };
-//The styling for the register link
-    const registerLinkStyle = {
-    fontSize: "16px",
-    textDecoration: 'underline',
-    color: "9ca3af",
-    cursor: "pointer",
-    };
 
   return (
-    <Stack sx={{ height: "100vh", padding: 0, margin: 0, }}>
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", padding: 0, margin: 0, }}>
       <ModularNav variant="login" />
       <Box sx={pageStyle}>
         <Box sx={cardStyle}>
@@ -114,7 +101,7 @@ const navigate = useNavigate();
               variant="outlined"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              sx={{ width: "540px", 
+              sx={{ width: "300px", 
                 marginBottom: "20px", 
                 backgroundColor: "#E6E6E6",
                 input: { color: "#000000" },
@@ -127,7 +114,7 @@ const navigate = useNavigate();
               variant="outlined"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              sx={{ width: "540px", 
+              sx={{ width: "300px", 
                 marginBottom: "20px", 
                 backgroundColor: "#E6E6E6",
                 input: { color: "#000000" },
@@ -142,20 +129,9 @@ const navigate = useNavigate();
               <Box sx={loginButtonStyle} onClick={() => void handleLogin()}>
                   Login
               </Box>
-              <Box sx={dontHaveAnAccount}>
-                  Don't have an account?
-              </Box>
-              <Box 
-              sx={registerLinkStyle}
-              onClick={() => navigate("/app/register")}
-              >
-                  Register here
-              </Box>
           </Box>
         </Box>
       </Box>
-    </Stack>
-
-
+    </Box>
   );
 }

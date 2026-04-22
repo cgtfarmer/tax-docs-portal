@@ -18,9 +18,8 @@ type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin" ;
 const navLinks: Record<NavVariant, NavPage[]> = {
   brochure: [
     { name: "Login", path: "/admin/home" },
-    { name: "Sign Up", path: "/admin/view-all-accountants" },
   ],
-    login: [
+  login: [
     { name: "Brochure", path: "/admin/home" },
   ],
   client: [
@@ -65,12 +64,6 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
                 key={page.name}
                 component={Link}
                 to={page.path}
-                // sx={{ color: "black",
-                //   ...(variant === "brochure" && {
-                //   border: "1px solid black",
-                //   px: 2,
-                //   }),
-                // }}
                 sx={{
                 color: "black",
 
@@ -78,12 +71,6 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
                   border: "1px solid black",
                   px: 3,
                   backgroundColor: "transparent",
-                }),
-
-                ...(variant === "brochure" && page.name === "Sign Up" && {
-                  px: 3,
-                  backgroundColor: "black",
-                  color: "white",
                 }),
                 }}
               >
