@@ -1,8 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Link, Button, Stack, TextField, Typography, Box } from '@mui/material';
+import { Link, Button, Stack, TextField, Typography, Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import ApiAccessor from '../../../accessors/api-accessor';
 import { ClientInput } from '../../../models/client-input';
 import { ClientMapper } from '../../../mapper/client-mapper';
+import { Accountant } from '../../../models/accountant';
+
 import { Link as RouterLink, Params, useParams, useNavigate } from 'react-router';
 
 interface RouteParams extends Params {
@@ -24,6 +26,9 @@ export default function Page() {
     accountantId: ''
   });
 
+  // all accountants for the dropdown
+  const [accountants, setAccountants] = useState<Accountant[]>([]);
+
   const params = useParams<RouteParams>();
 
   const navigate = useNavigate();
@@ -37,11 +42,18 @@ export default function Page() {
       setClientInput(input);
     }
 
+    //gets all accountants for the dropdown
+    async function fetchAccountants() {
+      const accountantList = await apiAccessor.listAccountants();
+      setAccountants(accountantList)
+    }
+
     if (!params.clientId) return;
 
     console.log(`Client ID: ${params.clientId}`);
 
     void fetchClient(params.clientId);
+    void fetchAccountants();
   }, [params.clientId]);
 
   const handleUpdateClient = async () => {
@@ -49,7 +61,7 @@ export default function Page() {
 
     const newClient = await apiAccessor.updateClient(client);
 
-    await navigate(`/clients/${newClient.id ?? ''}`);
+    await navigate('/admin/clients');
   };
 
   return (
@@ -122,6 +134,31 @@ export default function Page() {
             }))
           }}
         />
+        {/* Drop Down so admin can assign this client to an accountant */}
+        <FormControl fullWidth>
+          <InputLabel id="accountant-select-label">Assign Accountant</InputLabel>
+          <Select
+            labelId="accountant-select-label"
+            value={clientInput.accountantId ?? ''}
+            label="Assign Accountant"
+            onChange={(e: SelectChangeEvent) => {
+              setClientInput(client => ({
+                ...client,
+                accountantId: e.target.value
+              }));
+            }}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+
+            {accountants.map((accountant) => (
+              <MenuItem key={accountant.id} value={accountant.id ?? ''}>
+                {accountant.firstName} {accountant.lastName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <Button
           variant="contained"
