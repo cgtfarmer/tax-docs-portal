@@ -36,6 +36,20 @@ public class DocumentRepository {
     return mapper.mapRowSetToDocument(results);
   }
 
+  public Document findById(UUID id) {
+    String sql = """
+        SELECT * FROM documents
+        WHERE id = :id
+        """;
+
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("id", id);
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
+
+    return mapper.mapRowSetToDocument(results);
+  }
+
   public Document create(Document document) {
     String sql = """
         INSERT INTO documents
@@ -57,20 +71,6 @@ public class DocumentRepository {
     document.setId(keyHolder.getKeyAs(UUID.class));
 
     return document;
-  }
-
-  public Document findById(UUID id) {
-    String sql = """
-        SELECT * FROM documents
-        WHERE id = :id
-        """;
-
-    MapSqlParameterSource params = new MapSqlParameterSource();
-    params.addValue("id", id);
-
-    SqlRowSet results = jdbc.queryForRowSet(sql, params);
-
-    return mapper.mapRowSetToDocument(results);
   }
 
   public boolean destroy(UUID id) {
