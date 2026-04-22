@@ -52,7 +52,7 @@ public class TasksRepository {
     String sql =
         """
             INSERT INTO tasks (client_id, accountant_id, title, task_description, task_status, created_at)
-            VALUES (:clientId, :accountantId, :title, :description, :status, :createdAt)
+            VALUES (:clientId, :accountantId, :title, :description, CAST(:status AS task_status_enum), :createdAt)
             """;
 
     MapSqlParameterSource params = new MapSqlParameterSource();
@@ -87,7 +87,7 @@ public class TasksRepository {
             accountant_id = :accountantId,
             title = :title,
             task_description = :description,
-            task_status = :status,
+            task_status = CAST(:status AS task_status_enum),
             updated_at = :updatedAt,
             deleted_at = :deletedAt
         WHERE id = :id
