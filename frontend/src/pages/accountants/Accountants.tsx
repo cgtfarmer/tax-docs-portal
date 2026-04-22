@@ -51,13 +51,13 @@ export default function Page() {
                 <TableCell colSpan={5}>No accountants found.</TableCell>
               </TableRow>
             ) : (
-              accountants.map((a) => (
-                <TableRow key={a.id}>
-                  <TableCell> <Link component={RouterLink} to={`/accountants/${a.id}`} underline="hover"> {a.id} </Link></TableCell>
-                  <TableCell>{a.firstName}</TableCell>
-                  <TableCell>{a.lastName}</TableCell>
-                  <TableCell>{a.email}</TableCell>
-                  <TableCell>{a.username}</TableCell>
+              accountants.map((accountant) => (
+                <TableRow key={accountant.id}>
+                  <TableCell> <Link component={RouterLink} to={`/admin/accountants/${accountant.id ?? ''}`} underline="hover"> {accountant.id} </Link></TableCell>
+                  <TableCell>{accountant.firstName}</TableCell>
+                  <TableCell>{accountant.lastName}</TableCell>
+                  <TableCell>{accountant.email}</TableCell>
+                  <TableCell>{accountant.username}</TableCell>
                 </TableRow>
               ))
             )}

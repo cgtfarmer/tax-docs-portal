@@ -1,6 +1,11 @@
--- User Table
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS clients;
+DROP TABLE IF EXISTS accountants;
+DROP TABLE IF EXISTS admins;
 DROP TABLE IF EXISTS users;
 
+-- Users Table
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   first_name VARCHAR(255),
@@ -11,8 +16,6 @@ CREATE TABLE users (
 );
 
 -- Accountants Table 
-DROP TABLE IF EXISTS accountants;
-
 CREATE TABLE accountants (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   first_name VARCHAR(255),
@@ -22,9 +25,7 @@ CREATE TABLE accountants (
   password_hash VARCHAR(255)
 );
 
--- Clients table
-DROP TABLE IF EXISTS clients;
-
+-- Clients Table
 CREATE TABLE clients (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   first_name VARCHAR(255),
@@ -39,41 +40,74 @@ CREATE TABLE clients (
     ON DELETE SET NULL
 );
 
--- Add Users
-INSERT INTO users (first_name, last_name, age, weight, smoker)
-VALUES ('John', 'Doe', 35, 183.7, false);
+-- Admins Table
+CREATE TABLE admins (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
+  email VARCHAR(255),
+  username VARCHAR(255),
+  password_hash VARCHAR(255)
+);
 
-INSERT INTO users (first_name, last_name, age, weight, smoker)
-VALUES ('Jane', 'Doe', 33, 155.1, false);
+-- Messages Table
+CREATE TABLE messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  client_id UUID,
+  accountant_id UUID,
+  sender_type VARCHAR(20), -- CLIENT or ACCOUNTANT
+  message_text TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-INSERT INTO users (first_name, last_name, age, weight, smoker)
-VALUES ('Chad', 'Smith', 35, 185.3, true);
+  CONSTRAINT fk_message_client
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+    ON DELETE CASCADE,
 
-INSERT INTO users (first_name, last_name, age, weight, smoker)
-VALUES ('Karen', 'Smith', 33, 159.5, false);
+  CONSTRAINT fk_message_accountant
+    FOREIGN KEY (accountant_id) REFERENCES accountants(id)
+    ON DELETE CASCADE
+);
 
--- Add Accountants
+-- Tasks Table
+CREATE TABLE tasks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  client_id UUID,
+  accountant_id UUID,
+  title VARCHAR(255),
+  task_description TEXT,
+  task_status VARCHAR(50) DEFAULT 'In Progress', -- IN_PROGRESS, COMPLETED
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL,
+  deleted_at TIMESTAMP NULL,
+
+  CONSTRAINT fk_task_client
+    FOREIGN KEY (client_id) REFERENCES clients(id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_task_accountant
+    FOREIGN KEY (accountant_id) REFERENCES accountants(id)
+    ON DELETE CASCADE
+);
+
+-- Users
+INSERT INTO users (first_name, last_name, age, weight, smoker)
+VALUES 
+('John', 'Doe', 35, 183.7, false),
+('Jane', 'Doe', 33, 155.1, false),
+('Chad', 'Smith', 35, 185.3, true),
+('Karen', 'Smith', 33, 159.5, false);
+
+-- Accountants
 INSERT INTO accountants (first_name, last_name, email, username, password_hash)
-VALUES ('Alex', 'Dawn', 'alex@example.com', 'adawn', 'fakepass1');
+VALUES 
+('Alex', 'Dawn', 'alex@example.com', 'adawn', 'fakepass1'),
+('George', 'Smith', 'george@example.com', 'gsmith', 'fakepass1'),
+('Gordon', 'Freeman', 'gordon@example.com', 'gfreeman', 'fakepass1');
 
-INSERT INTO accountants (first_name, last_name, email, username, password_hash)
-VALUES ('George', 'Smith', 'alex@example.com', 'adawn', 'fakepass1');
-
-INSERT INTO accountants (first_name, last_name, email, username, password_hash)
-VALUES ('Gordon', 'Freeman', 'alex@example.com', 'adawn', 'fakepass1');
-
--- Add Clients
+-- Clients
 INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
-VALUES ('Kaleb', 'Mallory', 'kaleb@example.com', 'kmall', 'fakepass2', NULL);
-
-INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
-VALUES ('AnhPhat', 'Nguyen', 'kaleb@example.com', 'kmall', 'fakepass2', NULL);
-
-INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
-VALUES ('Joseph', 'Manno', 'kaleb@example.com', 'kmall', 'fakepass2', NULL);
-
-INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
-VALUES ('Ryan', 'Dilley', 'kaleb@example.com', 'kmall', 'fakepass2', NULL);
-
-INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
-VALUES ('John', 'Snyder', 'kaleb@example.com', 'kmall', 'fakepass2', NULL);
+VALUES 
+('Kaleb', 'Mallory', 'kaleb@example.com', 'kmall', 'fakepass2', NULL),
+('AnhPhat', 'Nguyen', 'anh@example.com', 'anguyen', 'fakepass2', NULL),
+('Joseph', 'Manno', 'joseph@example.com', 'jmanno', 'fakepass2', NULL),
+('Ryan', 'Dilley', 'ryan@example.com', 'rdilley', 'fakepass2', NULL),
+('John', 'Snyder', 'johns@example.com', 'jsnyder', 'fakepass2', NULL);

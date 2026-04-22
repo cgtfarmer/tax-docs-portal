@@ -1,7 +1,13 @@
 export interface Accountant {
-  id?: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
+  id: string | undefined;
+
+  firstName: string | undefined;
+
+  lastName: string | undefined;
+
+  email: string | undefined;
+
+  username: string | undefined;
+
+  passwordHash: string | undefined;
 }

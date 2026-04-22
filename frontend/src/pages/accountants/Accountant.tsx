@@ -22,6 +22,7 @@ export default function Page() {
 
         const data = await apiAccessor.getAccountant(accountantId);
         setAccountant(data);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError('Failed to load accountant.');
       } finally {
@@ -75,7 +76,7 @@ export default function Page() {
           <Typography><strong>Username:</strong> {accountant.username}</Typography>
         </Box>
 
-        <Link component={RouterLink} to="/accountants">
+        <Link component={RouterLink} to="/admin/accountants">
           Back to Accountants
         </Link>
       </Paper>
