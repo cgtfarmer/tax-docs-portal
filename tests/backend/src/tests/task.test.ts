@@ -10,7 +10,7 @@ test('create task', async ({ request }) => {
     accountantId: accountant.id,
     title: 'Test Task',
     description: 'This is a test task',
-    taskStatus: 'OPEN'
+    taskStatus: 'In Progress'
   };
 
   const response = await request.post('/tasks', { data: inputData });
@@ -49,14 +49,14 @@ test('update task status', async ({ request }) => {
   const task = await PwHelpers.createDefaultTask(request, client.id, accountant.id);
 
   const response = await request.put(
-    `/tasks/${task.id}/status?status=COMPLETED`
+    `/tasks/${task.id}/status?status=Completed`
   );
 
   expect(response.status()).toBe(200);
 
   const body = await response.json();
 
-  expect(body.taskStatus).toBe('COMPLETED');
+  expect(body.taskStatus).toBe('Completed');
 });
 
 test('destroy task (soft delete)', async ({ request }) => {

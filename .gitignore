@@ -78,3 +78,7 @@ infrastructure/node_modules
 
 # playwright test results
 */test-results
+
+# Private storage for uploaded files
+*/backend/storage/
+*/backend/storage/*

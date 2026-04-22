@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS documents;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS clients;
@@ -51,12 +52,13 @@ CREATE TABLE admins (
 );
 
 -- Messages Table
+CREATE TYPE sender_type_enum AS ENUM ('CLIENT', 'ACCOUNTANT');
 CREATE TABLE messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id UUID,
   accountant_id UUID,
-  sender_type VARCHAR(20), -- CLIENT or ACCOUNTANT
-  message_text TEXT,
+  sender_type sender_type_enum NOT NULL,
+  message_text TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
   CONSTRAINT fk_message_client
@@ -69,13 +71,14 @@ CREATE TABLE messages (
 );
 
 -- Tasks Table
+CREATE TYPE task_status_enum AS ENUM ('OPEN', 'IN REVIEW', 'COMPLETED');
 CREATE TABLE tasks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id UUID,
   accountant_id UUID,
   title VARCHAR(255),
   task_description TEXT,
-  task_status VARCHAR(50) DEFAULT 'In Progress', -- IN_PROGRESS, COMPLETED
+  task_status task_status_enum DEFAULT 'OPEN',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NULL,
   deleted_at TIMESTAMP NULL,
@@ -86,6 +89,18 @@ CREATE TABLE tasks (
   CONSTRAINT fk_task_accountant
     FOREIGN KEY (accountant_id) REFERENCES accountants(id)
     ON DELETE CASCADE
+);
+
+-- Documents Table
+CREATE TABLE documents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    client_id UUID,
+    storage_key VARCHAR(255) UNIQUE,
+
+    CONSTRAINT fk_client_files_client
+        FOREIGN KEY (client_id)
+        REFERENCES clients(id)
+        ON DELETE CASCADE
 );
 
 -- Users
@@ -111,3 +126,10 @@ VALUES
 ('Joseph', 'Manno', 'joseph@example.com', 'jmanno', 'fakepass2', NULL),
 ('Ryan', 'Dilley', 'ryan@example.com', 'rdilley', 'fakepass2', NULL),
 ('John', 'Snyder', 'johns@example.com', 'jsnyder', 'fakepass2', NULL);
+
+-- Admins
+INSERT INTO admins (first_name, last_name, email, username, password_hash)
+VALUES
+('System', 'Admin', 'sysadmin@taxportal.com', 'sysadmin', 'hash_admin_001'),
+('Laura', 'Mitchell', 'laura.mitchell@taxportal.com', 'lmitchell', 'hash_admin_002'),
+('Brian', 'Turner', 'brian.turner@taxportal.com', 'bturner', 'hash_admin_003');

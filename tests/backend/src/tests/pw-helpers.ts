@@ -101,7 +101,7 @@ export default class PwHelpers {
         accountantId,
         title: 'Test Task',
         description: 'This is a test task',
-        taskStatus: 'OPEN'
+        taskStatus: 'In Progress'
       }
     });
 
