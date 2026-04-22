@@ -1,10 +1,10 @@
-import "./App.css";
+import "../../App.css";
 import { Outlet } from "react-router";
-import AdminNavbarLeft from './components/layout/admin-navbar-left';
+import AdminNavbarLeft from './AdminNavbarLeft';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 
-export default function AppAdmin() {
+export default function Component() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />

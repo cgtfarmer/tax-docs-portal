@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import ApiAccessor from "../../accessors/api-accessor";
 import { ClientMapper } from "../../mapper/client-mapper";
 import { ClientInput } from "../../models/client-input";
-
 import ModularNav from "../../components/layout/modular-navbar";
 
 

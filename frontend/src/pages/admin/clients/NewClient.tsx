@@ -1,13 +1,9 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Link, Button, Stack, TextField, Typography, Box } from '@mui/material';
-import ApiAccessor from '../../accessors/api-accessor';
-import { ClientInput } from '../../models/client-input';
-import { ClientMapper } from '../../mapper/client-mapper';
-import { Link as RouterLink, Params, useParams, useNavigate } from 'react-router';
-
-interface RouteParams extends Params {
-  clientId: string
-};
+import { ChangeEvent, useState } from 'react';
+import { Link, Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Link as RouterLink, useNavigate } from 'react-router';
+import ApiAccessor from '../../../accessors/api-accessor';
+import { ClientMapper } from '../../../mapper/client-mapper';
+import { ClientInput } from '../../../models/client-input';
 
 const apiAccessor = new ApiAccessor();
 
@@ -21,33 +17,17 @@ export default function Page() {
     email: '',
     username: '',
     passwordHash: '',
-    accountantId: ''
+    accountantId: null
   });
-
-  const params = useParams<RouteParams>();
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetchClient(clientId: string) {
-      const client = await apiAccessor.getClient(clientId);
+  const handleCreateClient = async (): Promise<void> => {
+    console.log('NewClient#handleCreateClient');
 
-      const input = clientMapper.mapModelToInput(client);
-
-      setClientInput(input);
-    }
-
-    if (!params.clientId) return;
-
-    console.log(`Client ID: ${params.clientId}`);
-
-    void fetchClient(params.clientId);
-  }, [params.clientId]);
-
-  const handleUpdateClient = async () => {
     const client = clientMapper.mapInputToModel(clientInput);
 
-    const newClient = await apiAccessor.updateClient(client);
+    const newClient = await apiAccessor.createClient(client);
 
     await navigate(`/clients/${newClient.id ?? ''}`);
   };
@@ -55,7 +35,7 @@ export default function Page() {
   return (
     <>
       <Typography component="h1" variant="h4" gutterBottom>
-        Update client
+        Add client
       </Typography>
 
       <Box sx={{ py: 3 }}>
@@ -125,7 +105,7 @@ export default function Page() {
 
         <Button
           variant="contained"
-          onClick={() => void handleUpdateClient()}
+          onClick={() => void handleCreateClient()}
           sx={{ maxWidth: '10rem' }}
         >
           Submit

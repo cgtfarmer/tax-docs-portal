@@ -1,17 +1,20 @@
 import { Stack, Container, Box, Typography, Button, Paper } from "@mui/material";
 import { Outlet } from "react-router";
+import { useNavigate } from "react-router";
 
 
 export default function ClientDashboard() {
+  const navigate = useNavigate();
+
   return (
     <Stack sx={{ height: "100vh" }}>
 
       <Container component="main" sx={{ pt: 3, height: "100%" }}>
 
         <Box sx={{ display: "flex", gap: 3, height: "100%" }}>
-          
+
           <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
-            
+
             <Paper sx={{ p: 2 }}>
               <Typography variant="h6">
                 Your Accountant : Mary Jane
@@ -22,10 +25,14 @@ export default function ClientDashboard() {
               </Typography>
 
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                not satisfied with your accountant? contact TSoA
+                not satisfied with your accountant? contact STAbill
               </Typography>
 
-              <Button variant="outlined" sx={{ mt: 1 }}>
+              <Button 
+              variant="outlined" 
+              sx={{ mt: 1 }}
+                onClick={() => navigate("/app/client/messages")}
+              >
                 Schedule Meeting
               </Button>
             </Paper>
@@ -36,7 +43,7 @@ export default function ClientDashboard() {
 
           <Box sx={{ flex: 1 }}>
             <Paper sx={{ p: 2, height: "100%" }}>
-              
+
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Your Tasks:
               </Typography>
@@ -73,10 +80,10 @@ export default function ClientDashboard() {
           </Box>
 
         </Box>
-            
+
       </Container>
       <Outlet />
     </Stack>
-    
+
   );
 }

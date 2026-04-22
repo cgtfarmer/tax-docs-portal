@@ -11,8 +11,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import ApiAccessor from '../../accessors/api-accessor';
-import { Accountant } from '../../models/accountant';
+import ApiAccessor from '../../../accessors/api-accessor';
+import { Accountant } from '../../../models/accountant';
 
 const apiAccessor = new ApiAccessor();
 

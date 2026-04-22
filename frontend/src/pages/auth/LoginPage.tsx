@@ -2,7 +2,6 @@ import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import ApiAccessor from "../../accessors/api-accessor";
-
 import ModularNav from "../../components/layout/modular-navbar";
 
 

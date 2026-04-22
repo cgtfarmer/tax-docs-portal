@@ -9,9 +9,16 @@ const apiAccessor = new ApiAccessor();
 export default function Page() {
   const [clients, setClients] = useState<Client[]>([]);
 
+  // only grabs the clients assigned to the logged in accountant
   useEffect(() => {
     async function fetchClients() {
-      const clients = await apiAccessor.listClients();
+      // const accountantId = localStorage.getItem('accountantId');
+      // TEMP: using fake logged-in accountant id until Login Verification works
+      const accountantId = 'f9762ee1-ec1e-442a-b5fe-6912e4849829';
+
+      if (!accountantId) return;
+
+      const clients = await apiAccessor.getClientsByAccountant(accountantId);
 
       setClients(clients);
     }
@@ -19,29 +26,11 @@ export default function Page() {
     void fetchClients();
   }, []);
 
-  const handleDestroyClient = async (clientId: string | undefined) => {
-    const confirmation = window.confirm('Are you sure you want to delete this client?');
-
-    if (!confirmation) return;
-
-    if (!clientId) return;
-
-    const deleteSuccessful = await apiAccessor.destroyClient(clientId);
-
-    if (!deleteSuccessful) return;
-
-    const clients = await apiAccessor.listClients();
-
-    setClients(clients);
-  };
-
   return (
     <>
       <Typography component="h1" variant="h4" gutterBottom>
-        Clients
+        My Clients
       </Typography>
-
-      <Link component={RouterLink} to="/admin/clients/new">Create</Link>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -74,24 +63,9 @@ export default function Page() {
                   <Stack direction="row" gap="0.5rem">
                     <Link
                       component={RouterLink}
-                      to={`/admin/clients/${client.id ?? ''}`}
+                      to={`/app/accountant/clients/${client.id ?? ''}`}
                     >
                       Show
-                    </Link>
-
-                    <Link
-                      component={RouterLink}
-                      to={`/admin/clients/${client.id ?? ''}/edit`}
-                    >
-                      Edit
-                    </Link>
-
-                    <Link
-                      component="button"
-                      variant="body2"
-                      onClick={() => void handleDestroyClient(client.id)}
-                    >
-                      Delete
                     </Link>
                   </Stack>
                 </TableCell>

@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 import { Container, Stack, } from "@mui/material";
 import ModularNav from "./components/layout/modular-navbar";
 
-export default function AppBrochure() {
+export default function Component() {
   return (
     <Stack sx={{ height: "100vh" }}>
         <ModularNav variant="brochure" />

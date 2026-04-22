@@ -207,6 +207,22 @@ export default class ApiAccessor {
     return (response.status == 204);
   }
 
+  // gets only the clients assigned to a specific accountant
+  public async getClientsByAccountant(accountantId: string): Promise<Client[]> {
+    const path = `${this.API_URL}/clients/accountant/${accountantId}/clients`;
+    const method = 'GET';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
+    );
+
+    const data: Client[] = await response.json();
+
+    return data;
+  }
+
   /* Admin API */
   public async listAdmins(): Promise<Admin[]> {
     const path = `${this.API_URL}/admins`;
