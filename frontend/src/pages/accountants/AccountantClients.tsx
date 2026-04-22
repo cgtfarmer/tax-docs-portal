@@ -9,9 +9,16 @@ const apiAccessor = new ApiAccessor();
 export default function Page() {
   const [clients, setClients] = useState<Client[]>([]);
 
+  // only grabs the clients assigned to the logged in accountant
   useEffect(() => {
     async function fetchClients() {
-      const clients = await apiAccessor.listClients();
+      // const accountantId = localStorage.getItem('accountantId');
+      // TEMP: using fake logged-in accountant id until Login Verification works
+      const accountantId = 'f9762ee1-ec1e-442a-b5fe-6912e4849829';
+
+      if (!accountantId) return;
+
+      const clients = await apiAccessor.getClientsByAccountant(accountantId);
 
       setClients(clients);
     }
