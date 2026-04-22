@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { Container, Stack, } from "@mui/material";
-import ModularNav from "./components/layout/modular-navbar";
+import ModularNav from "./modular-navbar";
 
 export default function Component() {
   return (

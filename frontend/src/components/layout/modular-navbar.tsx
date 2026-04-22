@@ -17,10 +17,10 @@ type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin" ;
 
 const navLinks: Record<NavVariant, NavPage[]> = {
   brochure: [
-    { name: "Login", path: "/admin/home" },
+    { name: "Login", path: "/login" },
   ],
   login: [
-    { name: "Brochure", path: "/admin/home" },
+    { name: "Brochure", path: "/" },
   ],
   client: [
     { name: "Home", path: "/client/home" },
