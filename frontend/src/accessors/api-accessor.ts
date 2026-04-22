@@ -1,576 +1,401 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { User } from '../models/user';
-import { Accountant } from '../models/accountant';
-import { Client} from '../models/client'
-import { Admin } from '../models/admin'
-import { Message } from '../models/message'
-import { Task } from '../models/task'
+import { User } from "../models/user";
+import { Client } from "../models/client";
+import { Accountant } from "../models/accountant";
+import { Admin } from "../models/admin";
+import { Message } from "../models/message";
+import { Task } from "../models/task";
 
 export default class ApiAccessor {
+  private readonly API_URL =
+    import.meta.env.VITE_API_URL as string;
 
-  private readonly API_URL = import.meta.env.VITE_API_URL as string;
+  /* =========================
+     Users
+  ========================= */
 
-  /* User API */
   public async listUsers(): Promise<User[]> {
-    const path = `${this.API_URL}/users`;
-    const method = 'GET';
-    this.logRequest(method, path);
+    return this.get<User[]>("/users");
+  }
 
-    const response = await fetch(
-      path,
-      { method: method }
+  public async getUser(
+    userId: string
+  ): Promise<User> {
+    return this.get<User>(
+      `/users/${userId}`
     );
-
-    const data: User[] = await response.json();
-
-    return data;
   }
 
-  public async getUser(userId: string): Promise<User> {
-    const path = `${this.API_URL}/users/${userId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async createUser(
+    user: User
+  ): Promise<User> {
+    return this.send<User>(
+      "POST",
+      "/users",
+      user
     );
-
-    const data: User = await response.json();
-
-    return data;
   }
 
-  public async createUser(user: User): Promise<User> {
-    const path = `${this.API_URL}/users`;
-    const method = 'POST';
-    const body = JSON.stringify(user);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: User = await response.json();
-
-    return data;
-  }
-
-  public async updateUser(user: User): Promise<User> {
-    const path = `${this.API_URL}/users/${user.id ?? ''}`;
-    const method = 'PUT';
-    const body = JSON.stringify(user);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: User = await response.json();
-
-    return data;
-  }
-
-  public async destroyUser(userId: string): Promise<boolean> {
-    const path = `${this.API_URL}/users/${userId}`;
-    const method = 'DELETE';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async updateUser(
+    user: User
+  ): Promise<User> {
+    return this.send<User>(
+      "PUT",
+      `/users/${user.id}`,
+      user
     );
-
-    return (response.status == 204);
   }
 
-  /* Accountant API */
-  public async listAccountants(): Promise<Accountant[]> {
-    const path = `${this.API_URL}/accountants`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async destroyUser(
+    userId: string
+  ): Promise<boolean> {
+    return this.remove(
+      `/users/${userId}`
     );
-
-    const data: Accountant[] = await response.json();
-    return data;
   }
 
-  public async getAccountant(accountantId: string): Promise<Accountant> {
-    const path = `${this.API_URL}/accountants/${accountantId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
+  /* =========================
+     Clients
+  ========================= */
 
-    const response = await fetch(
-      path,
-      { method: method }
-    );
-
-    const data: Accountant = await response.json();
-    return data;
-  }
-  
-
-  /* Clients API */
   public async listClients(): Promise<Client[]> {
-    const path = `${this.API_URL}/clients`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+    return this.get<Client[]>(
+      "/clients"
     );
-
-    const data: Client[] = await response.json();
-
-    return data;
   }
 
-  public async getClient(clientId: string): Promise<Client> {
-    const path = `${this.API_URL}/clients/${clientId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async getClient(
+    clientId: string
+  ): Promise<Client> {
+    return this.get<Client>(
+      `/clients/${clientId}`
     );
-
-    const data: Client = await response.json();
-
-    return data;
   }
 
-  public async createClient(client: Client): Promise<Client> {
-    const path = `${this.API_URL}/clients`;
-    const method = 'POST';
-    const body = JSON.stringify(client);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Client = await response.json();
-
-    return data;
-  }
-
-  public async updateClient(client: Client): Promise<Client> {
-    const path = `${this.API_URL}/clients/${client.id ?? ''}`;
-    const method = 'PUT';
-    const body = JSON.stringify(client);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Client = await response.json();
-
-    return data;
-  }
-
-  public async destroyClient(clientId: string): Promise<boolean> {
-    const path = `${this.API_URL}/clients/${clientId}`;
-    const method = 'DELETE';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async createClient(
+    client: Client
+  ): Promise<Client> {
+    return this.send<Client>(
+      "POST",
+      "/clients",
+      client
     );
-
-    return (response.status == 204);
   }
 
-  /* Admin API */
+  public async updateClient(
+    client: Client
+  ): Promise<Client> {
+    return this.send<Client>(
+      "PUT",
+      `/clients/${client.id}`,
+      client
+    );
+  }
+
+  public async destroyClient(
+    clientId: string
+  ): Promise<boolean> {
+    return this.remove(
+      `/clients/${clientId}`
+    );
+  }
+
+  public async getClientsByAccountant(
+    accountantId: string
+  ): Promise<Client[]> {
+    return this.get<Client[]>(
+      `/clients/accountant/${accountantId}/clients`
+    );
+  }
+
+  /* =========================
+     Accountants
+  ========================= */
+
+  public async listAccountants(): Promise<Accountant[]> {
+    return this.get<Accountant[]>(
+      "/accountants"
+    );
+  }
+
+  public async getAccountant(
+    accountantId: string
+  ): Promise<Accountant> {
+    return this.get<Accountant>(
+      `/accountants/${accountantId}`
+    );
+  }
+
+  public async createAccountant(
+    accountant: Accountant
+  ): Promise<Accountant> {
+    return this.send<Accountant>(
+      "POST",
+      "/accountants",
+      accountant
+    );
+  }
+
+  public async updateAccountant(
+    accountant: Accountant
+  ): Promise<Accountant> {
+    return this.send<Accountant>(
+      "PUT",
+      `/accountants/${accountant.id}`,
+      accountant
+    );
+  }
+
+  public async destroyAccountant(
+    accountantId: string
+  ): Promise<boolean> {
+    return this.remove(
+      `/accountants/${accountantId}`
+    );
+  }
+
+  /* =========================
+     Admins
+  ========================= */
+
   public async listAdmins(): Promise<Admin[]> {
-    const response = await fetch(
-      `${this.API_URL}/admins`,
-      { method: 'GET' }
-  // gets only the clients assigned to a specific accountant
-  public async getClientsByAccountant(accountantId: string): Promise<Client[]> {
-    const path = `${this.API_URL}/clients/accountant/${accountantId}/clients`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+    return this.get<Admin[]>(
+      "/admins"
     );
-
-    const data: Client[] = await response.json();
-
-    return data;
   }
 
-  /* Admin API */
-  public async listAdmins(): Promise<Admin[]> {
-    const path = `${this.API_URL}/admins`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async getAdmin(
+    adminId: string
+  ): Promise<Admin> {
+    return this.get<Admin>(
+      `/admins/${adminId}`
     );
-
-    const data: Admin[] = await response.json();
-
-    return data;
   }
 
-  public async getAdmin(adminId: string): Promise<Admin> {
-    const response = await fetch(
-      `${this.API_URL}/admins/${adminId}`,
-      { method: 'GET' }
-    const path = `${this.API_URL}/admins/${adminId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async createAdmin(
+    admin: Admin
+  ): Promise<Admin> {
+    return this.send<Admin>(
+      "POST",
+      "/admins",
+      admin
     );
-
-    const data: Admin = await response.json();
-
-    return data;
   }
 
-  public async createAdmin(admin: Admin): Promise<Admin> {
-    const response = await fetch(`${this.API_URL}/admins`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(admin)
-    const path = `${this.API_URL}/admins`;
-    const method = 'POST';
-    const body = JSON.stringify(admin);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Admin = await response.json();
-
-    return data;
-  }
-
-  public async updateAdmin(admin: Admin): Promise<Admin> {
-    const response = await fetch(`${this.API_URL}/admins/${admin.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(admin)
-    const path = `${this.API_URL}/admins/${admin.id ?? ''}`;
-    const method = 'PUT';
-    const body = JSON.stringify(admin);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Admin = await response.json();
-
-    return data;
-  }
-
-  public async destroyAdmin(adminId: string): Promise<boolean> {
-    const response = await fetch(
-      `${this.API_URL}/admins/${adminId}`,
-      { method: 'DELETE' }
-    const path = `${this.API_URL}/admins/${adminId}`;
-    const method = 'DELETE';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async updateAdmin(
+    admin: Admin
+  ): Promise<Admin> {
+    return this.send<Admin>(
+      "PUT",
+      `/admins/${admin.id}`,
+      admin
     );
-
-    return (response.status === 204);
   }
 
-  /* Message API */
+  public async destroyAdmin(
+    adminId: string
+  ): Promise<boolean> {
+    return this.remove(
+      `/admins/${adminId}`
+    );
+  }
+
+  /* =========================
+     Messages
+  ========================= */
+
   public async listMessages(): Promise<Message[]> {
-    const response = await fetch(
-      `${this.API_URL}/messages`,
-      { method: 'GET' }
-    const path = `${this.API_URL}/messages`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+    return this.get<Message[]>(
+      "/messages"
     );
-
-    const data: Message[] = await response.json();
-    return data;
   }
 
-  public async getMessage(messageId: string): Promise<Message> {
-    const response = await fetch(
-      `${this.API_URL}/messages/${messageId}`,
-      { method: 'GET' }
-    const path = `${this.API_URL}/messages/${messageId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async getMessage(
+    messageId: string
+  ): Promise<Message> {
+    return this.get<Message>(
+      `/messages/${messageId}`
     );
-
-    const data: Message = await response.json();
-    return data;
   }
 
-  public async getMessagesByClient(clientId: string): Promise<Message[]> {
-    const response = await fetch(
-      `${this.API_URL}/messages/client/${clientId}`,
-      { method: 'GET' }
-    const path = `${this.API_URL}/messages/client/${clientId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async getMessagesByClient(
+    clientId: string
+  ): Promise<Message[]> {
+    return this.get<Message[]>(
+      `/messages/client/${clientId}`
     );
-
-    const data: Message[] = await response.json();
-    return data;
   }
 
-  public async createMessage(message: Message): Promise<Message> {
-    const response = await fetch(`${this.API_URL}/messages`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message)
-    const path = `${this.API_URL}/messages`;
-    const method = 'POST';
-    const body = JSON.stringify(message);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Message = await response.json();
-    return data;
-  }
-
-  public async updateMessage(message: Message): Promise<Message> {
-    const response = await fetch(`${this.API_URL}/messages/${message.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message)
-    const path = `${this.API_URL}/messages/${message.id}`;
-    const method = 'PUT';
-    const body = JSON.stringify(message);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Message = await response.json();
-    return data;
-  }
-
-  public async destroyMessage(messageId: string): Promise<boolean> {
-    const response = await fetch(
-      `${this.API_URL}/messages/${messageId}`,
-      { method: 'DELETE' }
-    const path = `${this.API_URL}/messages/${messageId}`;
-    const method = 'DELETE';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+  public async createMessage(
+    message: Message
+  ): Promise<Message> {
+    return this.send<Message>(
+      "POST",
+      "/messages",
+      message
     );
-
-    return (response.status === 204);
   }
 
-  /* Task API */
+  public async updateMessage(
+    message: Message
+  ): Promise<Message> {
+    return this.send<Message>(
+      "PUT",
+      `/messages/${message.id}`,
+      message
+    );
+  }
+
+  public async destroyMessage(
+    messageId: string
+  ): Promise<boolean> {
+    return this.remove(
+      `/messages/${messageId}`
+    );
+  }
+
+  /* =========================
+     Tasks
+  ========================= */
+
   public async listTasks(): Promise<Task[]> {
-    const response = await fetch(
-      `${this.API_URL}/tasks`,
-      { method: 'GET' }
-    const path = `${this.API_URL}/tasks`;
-    const method = 'GET';
-    this.logRequest(method, path);
+    return this.get<Task[]>(
+      "/tasks"
+    );
+  }
 
-    const response = await fetch(
-      path,
-      { method: method }
+  public async getTask(
+    taskId: string
+  ): Promise<Task> {
+    return this.get<Task>(
+      `/tasks/${taskId}`
+    );
+  }
+
+  public async getTasksByClient(
+    clientId: string
+  ): Promise<Task[]> {
+    return this.get<Task[]>(
+      `/tasks/client/${clientId}`
+    );
+  }
+
+  public async createTask(
+    task: Task
+  ): Promise<Task> {
+    return this.send<Task>(
+      "POST",
+      "/tasks",
+      task
+    );
+  }
+
+  public async updateTask(
+    task: Task
+  ): Promise<Task> {
+    return this.send<Task>(
+      "PUT",
+      `/tasks/${task.id}`,
+      task
+    );
+  }
+
+  public async deleteTask(
+    taskId: string
+  ): Promise<boolean> {
+    return this.remove(
+      `/tasks/${taskId}`
+    );
+  }
+
+  /* =========================
+     Core Helpers
+  ========================= */
+
+  private async get<T>(
+    endpoint: string
+  ): Promise<T> {
+    const path =
+      `${this.API_URL}${endpoint}`;
+
+    this.logRequest(
+      "GET",
+      path
     );
 
-    const data: Task[] = await response.json();
-    return data;
+    const response =
+      await fetch(path, {
+        method: "GET"
+      });
+
+    return await response.json();
   }
 
-  public async getTask(taskId: string): Promise<Task> {
-    const response = await fetch(
-      `${this.API_URL}/tasks/${taskId}`,
-      { method: 'GET' }
-    const path = `${this.API_URL}/tasks/${taskId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
+  private async send<T>(
+    method:
+      | "POST"
+      | "PUT",
+    endpoint: string,
+    bodyObj: any
+  ): Promise<T> {
+    const path =
+      `${this.API_URL}${endpoint}`;
 
-    const response = await fetch(
+    const body =
+      JSON.stringify(bodyObj);
+
+    this.logRequest(
+      method,
       path,
-      { method: method }
+      body
     );
 
-    const data: Task = await response.json();
-    return data;
+    const response =
+      await fetch(path, {
+        method,
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body
+      });
+
+    return await response.json();
   }
 
-  public async getTasksByClient(clientId: string): Promise<Task[]> {
-    const response = await fetch(
-      `${this.API_URL}/tasks/client/${clientId}`,
-      { method: 'GET' }
-    const path = `${this.API_URL}/tasks/client/${clientId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
+  private async remove(
+    endpoint: string
+  ): Promise<boolean> {
+    const path =
+      `${this.API_URL}${endpoint}`;
 
-    const response = await fetch(
-      path,
-      { method: method }
+    this.logRequest(
+      "DELETE",
+      path
     );
 
-    const data: Task[] = await response.json();
-    return data;
-  }
+    const response =
+      await fetch(path, {
+        method: "DELETE"
+      });
 
-  public async getActiveTasksByClient(clientId: string): Promise<Task[]> {
-    const tasks = await this.getTasksByClient(clientId);
-    return tasks.filter(t => !t.deleted_at);
-  }
-
-  public async createTask(task: Task): Promise<Task> {
-    const response = await fetch(`${this.API_URL}/tasks`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(task)
-    const path = `${this.API_URL}/tasks`;
-    const method = 'POST';
-    const body = JSON.stringify(task);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Task = await response.json();
-    return data;
-  }
-
-  public async updateTask(task: Task): Promise<Task> {
-    const response = await fetch(`${this.API_URL}/tasks/${task.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(task)
-    const path = `${this.API_URL}/tasks/${task.id}`;
-    const method = 'PUT';
-    const body = JSON.stringify(task);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Task = await response.json();
-    return data;
-  }
-
-  public async deleteTask(taskId: string): Promise<boolean> {
-    const response = await fetch(
-      `${this.API_URL}/tasks/${taskId}`,
-      { method: 'DELETE' }
-    const path = `${this.API_URL}/tasks/${taskId}`;
-    const method = 'DELETE';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+    return (
+      response.status === 204
     );
-
-    return (response.status === 204);
   }
 
-  private logRequest(method: string, path: string, body?: string) {
-    console.log(`Fetch: ${method} - ${path}`);
+  private logRequest(
+    method: string,
+    path: string,
+    body?: string
+  ) {
+    console.log(
+      `Fetch: ${method} ${path}`
+    );
 
     if (body) {
-      console.log("\n ${body}");
+      console.log(body);
     }
   }
 }
