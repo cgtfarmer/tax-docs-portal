@@ -13,9 +13,16 @@ interface NavPage {
 
 
 
-type NavVariant = "client" | "accountant" | "admin";
+type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin" ;
 
 const navLinks: Record<NavVariant, NavPage[]> = {
+  brochure: [
+    { name: "Login", path: "/admin/home" },
+    { name: "Sign Up", path: "/admin/view-all-accountants" },
+  ],
+    login: [
+    { name: "Brochure", path: "/admin/home" },
+  ],
   client: [
     { name: "Home", path: "/client/home" },
     { name: "Messages", path: "/client/messages" },
@@ -41,7 +48,7 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
 
   return (
     <AppBar position="static" color="transparent" elevation={3}>
-      <Container maxWidth="xl">
+      <Box sx={{ px: 1, }}>
         <Toolbar disableGutters sx={{ backgroundColor: "#ffffff", height: 60 }}>
 
           <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
@@ -58,7 +65,27 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
                 key={page.name}
                 component={Link}
                 to={page.path}
-                sx={{ color: "black" }}
+                // sx={{ color: "black",
+                //   ...(variant === "brochure" && {
+                //   border: "1px solid black",
+                //   px: 2,
+                //   }),
+                // }}
+                sx={{
+                color: "black",
+
+                ...(variant === "brochure" && page.name === "Login" && {
+                  border: "1px solid black",
+                  px: 3,
+                  backgroundColor: "transparent",
+                }),
+
+                ...(variant === "brochure" && page.name === "Sign Up" && {
+                  px: 3,
+                  backgroundColor: "black",
+                  color: "white",
+                }),
+                }}
               >
                 {page.name}
               </Button>
@@ -66,7 +93,7 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
           </Box>
 
         </Toolbar>
-      </Container>
+      </Box>
     </AppBar>
   );
 }
