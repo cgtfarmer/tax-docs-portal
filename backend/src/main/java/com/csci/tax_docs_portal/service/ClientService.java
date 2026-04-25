@@ -49,9 +49,15 @@ public class ClientService {
   public Client update(Client client) {
     log.info("[ClientService#update] client={}", client);
 
-    Client result = this.clientRepository.update(client);
+    // only hash if password is NOT already hashed
+    if (
+      !client.getPasswordHash()
+          .startsWith("$2a$")
+    ) {
+      client.setPasswordHash(passwordEncoder.encode(client.getPasswordHash()));
+    }
 
-    return result;
+    return this.clientRepository.update(client);
   }
 
   public boolean destroy(UUID id) {

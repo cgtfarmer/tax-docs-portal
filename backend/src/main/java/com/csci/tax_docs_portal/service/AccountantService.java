@@ -50,6 +50,17 @@ public class AccountantService {
   public Accountant update(Accountant accountant) {
     log.info("[AccountantService#update] accountant={}", accountant);
 
+    // only hash password if it is not already a BCrypt hash
+    if (
+      accountant.getPasswordHash() != null
+          && !accountant.getPasswordHash()
+              .startsWith("$2a$")
+    ) {
+      accountant.setPasswordHash(
+          passwordEncoder.encode(accountant.getPasswordHash())
+      );
+    }
+
     Accountant result = this.accountantRepository.update(accountant);
 
     return result;

@@ -223,6 +223,35 @@ export default class ApiAccessor {
     return data;
   }
 
+/* Auth API */
+public async authorize(email: string, password: string): Promise<any> {
+  const path = `${this.API_URL}/authorize`;
+  const method = 'POST';
+
+  const body = JSON.stringify({
+    email,
+    password: btoa(password), // base64 encode here
+  });
+
+  this.logRequest(method, path, body);
+
+  const response = await fetch(path, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: body,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Login failed');
+  }
+
+  return data;
+}
+
   /* Admin API */
   public async listAdmins(): Promise<Admin[]> {
     const path = `${this.API_URL}/admins`;

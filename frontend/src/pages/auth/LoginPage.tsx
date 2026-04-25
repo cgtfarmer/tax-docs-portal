@@ -21,29 +21,25 @@ const handleLogin = async (): Promise<void> => {
     console.log("LoginPage#handleLogin");
     setLoginError("");
 
-    if (selectedTab !== "taxpayer") {
-      console.log("Accountant login is not wired up yet.");
+    const result = await apiAccessor.authorize(email, password);
+
+    if (!result.success) {
+      setLoginError(result.message || "Login failed.");
       return;
     }
 
-    const existingClients = await apiAccessor.listClients();
-
-    const matchingClient = existingClients.find(
-      (client) =>
-        (client.email?.toLowerCase() === email.toLowerCase() ||
-          client.username?.toLowerCase() === email.toLowerCase()) &&
-        client.passwordHash === password
-    );
-
-    if (!matchingClient) {
-      setLoginError("You don't have an account.");
-      return;
+    if (result.role === "ADMIN") {
+      navigate("/admin");
+    } else if (result.role === "ACCOUNTANT") {
+      navigate("/app/accountant");
+    } else if (result.role === "CLIENT") {
+      navigate("/app/client/account");
+    } else {
+      setLoginError("Unknown role.");
     }
-
-    navigate("/app/client/account/");
   } catch (error) {
     console.error("Login failed:", error);
-    setLoginError("Something went wrong while logging in.");
+    setLoginError(error instanceof Error ? error.message : "Something went wrong while logging in.");
   }
 };
 

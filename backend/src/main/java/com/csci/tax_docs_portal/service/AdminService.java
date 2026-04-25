@@ -46,6 +46,16 @@ public class AdminService {
 
   public Admin update(Admin admin) {
     log.info("[AdminService#update] admin={}", admin);
+
+    // only hash password if it is not already a BCrypt hash
+    if (
+      admin.getPasswordHash() != null
+          && !admin.getPasswordHash()
+              .startsWith("$2a$")
+    ) {
+      admin.setPasswordHash(passwordEncoder.encode(admin.getPasswordHash()));
+    }
+
     return adminRepository.update(admin);
   }
 
