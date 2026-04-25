@@ -1,5 +1,6 @@
 package com.csci.tax_docs_portal.controller;
 
+import com.csci.tax_docs_portal.auth.AdminResponse;
 import com.csci.tax_docs_portal.entity.Admin;
 import com.csci.tax_docs_portal.service.AdminService;
 import java.util.List;
@@ -23,38 +24,49 @@ public class AdminController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Admin>> index() {
+  public ResponseEntity<List<AdminResponse>> index() {
     log.info("[AdminController#index]");
-    return ResponseEntity.ok(service.list());
+
+    List<AdminResponse> response = service.list()
+        .stream()
+        .map(this::toAdminResponse)
+        .toList();
+
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Admin> show(@PathVariable UUID id) {
+  public ResponseEntity<AdminResponse> show(@PathVariable UUID id) {
     log.info("[AdminController#show] id={}", id);
 
-    Admin response = this.service.get(id);
+    Admin admin = this.service.get(id);
 
     return ResponseEntity.status(200)
-        .body(response);
+        .body(toAdminResponse(admin));
   }
 
   @PostMapping
-  public ResponseEntity<Admin> create(@RequestBody Admin request) {
-    log.info("[AdminController#create] request={}", request);
+  public ResponseEntity<AdminResponse> create(@RequestBody Admin request) {
+    log.info("[AdminController#create]");
+
+    Admin admin = service.create(request);
+
     return ResponseEntity.status(201)
-        .body(service.create(request));
+        .body(toAdminResponse(admin));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Admin> update(
+  public ResponseEntity<AdminResponse> update(
       @PathVariable UUID id,
       @RequestBody Admin request
   ) {
-    log.info("[AdminController#update] id={}, request={}", id, request);
+    log.info("[AdminController#update] id={}", id);
 
     request.setId(id);
 
-    return ResponseEntity.ok(service.update(request));
+    Admin admin = service.update(request);
+
+    return ResponseEntity.ok(toAdminResponse(admin));
   }
 
   @DeleteMapping("/{id}")
@@ -65,5 +77,17 @@ public class AdminController {
 
     return ResponseEntity.noContent()
         .build();
+  }
+
+  // mapping admin entity to response object so passwordHash never gets sent
+  // back
+  private AdminResponse toAdminResponse(Admin admin) {
+    return new AdminResponse(
+        admin.getId(),
+        admin.getFirstName(),
+        admin.getLastName(),
+        admin.getEmail(),
+        admin.getUsername()
+    );
   }
 }

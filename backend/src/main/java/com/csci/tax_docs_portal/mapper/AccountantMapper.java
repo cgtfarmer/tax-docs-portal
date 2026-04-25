@@ -9,8 +9,12 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class AccountantMapper {
 
   public Accountant mapRowSetToAccountant(SqlRowSet rowSet) {
-    rowSet.first();
-    return this.mapRowSetEntryToAccountant(rowSet);
+
+    if (rowSet.next()) {
+      return this.mapRowSetEntryToAccountant(rowSet);
+    }
+
+    return null;
   }
 
   public List<Accountant> mapRowSetToAccountants(SqlRowSet rowSet) {

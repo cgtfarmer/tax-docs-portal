@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class ClientService {
+
+  @Autowired
+  private BCryptPasswordEncoder passwordEncoder;
 
   private final ClientRepository clientRepository;
 
@@ -33,6 +37,9 @@ public class ClientService {
 
   public Client create(Client client) {
     log.info("[ClientService#create] client={}", client);
+
+    // hashing password before saving so we never store plain text
+    client.setPasswordHash(passwordEncoder.encode(client.getPasswordHash()));
 
     Client result = this.clientRepository.create(client);
 

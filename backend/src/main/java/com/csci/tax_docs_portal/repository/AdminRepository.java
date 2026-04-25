@@ -23,6 +23,22 @@ public class AdminRepository {
     this.mapper = new AdminMapper();
   }
 
+  // same idea but for admins so login can check every role in the backend
+  public Admin findByEmail(String email) {
+    String sql = """
+        SELECT *
+        FROM admins
+        WHERE LOWER(email) = LOWER(:email)
+        """;
+
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("email", email);
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
+
+    return mapper.mapRowSetToAdmin(results);
+  }
+
   public List<Admin> findAll() {
     String sql = "SELECT * FROM admins";
 

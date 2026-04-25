@@ -1,5 +1,6 @@
 package com.csci.tax_docs_portal.controller;
 
+import com.csci.tax_docs_portal.auth.ClientResponse;
 import com.csci.tax_docs_portal.entity.Client;
 import com.csci.tax_docs_portal.service.ClientService;
 import java.util.List;
@@ -31,48 +32,51 @@ public class ClientController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Client>> index() {
+  public ResponseEntity<List<ClientResponse>> index() {
     log.info("[ClientController#index]");
 
-    List<Client> response = this.clientService.list();
+    List<ClientResponse> response = this.clientService.list()
+        .stream()
+        .map(this::toClientResponse)
+        .toList();
 
     return ResponseEntity.status(200)
         .body(response);
   }
 
   @PostMapping
-  public ResponseEntity<Client> create(@RequestBody Client request) {
-    log.info("[ClientController#create] request={}", request);
+  public ResponseEntity<ClientResponse> create(@RequestBody Client request) {
+    log.info("[ClientController#create]");
 
-    Client response = this.clientService.create(request);
+    Client client = this.clientService.create(request);
 
     return ResponseEntity.status(201)
-        .body(response);
+        .body(toClientResponse(client));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Client> show(@PathVariable UUID id) {
+  public ResponseEntity<ClientResponse> show(@PathVariable UUID id) {
     log.info("[ClientController#show] id={}", id);
 
-    Client response = this.clientService.get(id);
+    Client client = this.clientService.get(id);
 
     return ResponseEntity.status(200)
-        .body(response);
+        .body(toClientResponse(client));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Client> update(
+  public ResponseEntity<ClientResponse> update(
       @PathVariable UUID id,
       @RequestBody Client request
   ) {
-    log.info("[ClientController#update] id={}, request={}", id, request);
+    log.info("[ClientController#update] id={}", id);
 
     request.setId(id);
 
-    Client response = this.clientService.update(request);
+    Client client = this.clientService.update(request);
 
     return ResponseEntity.status(200)
-        .body(response);
+        .body(toClientResponse(client));
   }
 
   @DeleteMapping("/{id}")
@@ -86,7 +90,7 @@ public class ClientController {
   }
 
   @GetMapping("/accountant/{accountantId}/clients")
-  public ResponseEntity<List<Client>> getClientsByAccountant(
+  public ResponseEntity<List<ClientResponse>> getClientsByAccountant(
       @PathVariable UUID accountantId
   ) {
     log.info(
@@ -94,17 +98,26 @@ public class ClientController {
         accountantId
     );
 
-    List<Client> response =
-        this.clientService.getClientsByAccountant(accountantId);
+    List<ClientResponse> response =
+        this.clientService.getClientsByAccountant(accountantId)
+            .stream()
+            .map(this::toClientResponse)
+            .toList();
 
     return ResponseEntity.status(200)
         .body(response);
   }
 
-  /*
-   * @GetMapping("/accountant/null") public ResponseEntity<List<Client>>
-   * unassignedClients() { log.info("[ClientController#unassignedClients]");
-   * List<Client> response = clientService.getUnassignedClients(); return
-   * ResponseEntity.ok(response); }
-   */
+  // mapping client entity to response object so passwordHash never gets sent
+  // back
+  private ClientResponse toClientResponse(Client client) {
+    return new ClientResponse(
+        client.getId(),
+        client.getFirstName(),
+        client.getLastName(),
+        client.getEmail(),
+        client.getUsername(),
+        client.getAccountantId()
+    );
+  }
 }

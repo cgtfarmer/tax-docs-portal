@@ -23,6 +23,22 @@ public class AccountantRepository {
     this.mapper = new AccountantMapper();
   }
 
+  // same idea but for accountants so we can check login role
+  public Accountant findByEmail(String email) {
+    String sql = """
+        SELECT *
+        FROM accountants
+        WHERE LOWER(email) = LOWER(:email)
+        """;
+
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("email", email);
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
+
+    return mapper.mapRowSetToAccountant(results);
+  }
+
   public List<Accountant> findAll() {
     String sql = """
         SELECT *

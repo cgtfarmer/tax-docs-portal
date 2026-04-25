@@ -23,6 +23,22 @@ public class ClientRepository {
     this.mapper = new ClientMapper();
   }
 
+  // backend grabbing client by email so login isn't done in frontend anymore
+  public Client findByEmail(String email) {
+    String sql = """
+        SELECT *
+        FROM clients
+        WHERE LOWER(email) = LOWER(:email)
+        """;
+
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("email", email);
+
+    SqlRowSet results = jdbc.queryForRowSet(sql, params);
+
+    return mapper.mapRowSetToClient(results);
+  }
+
   public List<Client> findAll() {
     String sql = """
         SELECT *
