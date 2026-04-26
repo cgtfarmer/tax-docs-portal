@@ -71,14 +71,14 @@ CREATE TABLE messages (
 );
 
 -- Tasks Table
-CREATE TYPE task_status_enum AS ENUM ('OPEN', 'IN REVIEW', 'COMPLETED');
+CREATE TYPE task_status_enum AS ENUM ('In Progress', 'In Review', 'Completed');
 CREATE TABLE tasks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id UUID,
   accountant_id UUID,
   title VARCHAR(255),
   task_description TEXT,
-  task_status task_status_enum DEFAULT 'OPEN',
+  task_status task_status_enum DEFAULT 'In Progress',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NULL,
   deleted_at TIMESTAMP NULL,

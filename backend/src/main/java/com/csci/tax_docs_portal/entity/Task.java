@@ -23,7 +23,7 @@ public class Task {
 
   private String description;
 
-  private String taskStatus; // IN_PROGRESS, COMPLETED
+  private String taskStatus;
 
   private LocalDateTime createdAt;
 
