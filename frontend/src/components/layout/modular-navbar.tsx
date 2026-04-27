@@ -20,9 +20,20 @@ type NavVariant =
   | "accountant"
   | "admin";
 
+type BottomAction = "login" | "account-logout" | "none";
+const bottomAction: Record<NavVariant, BottomAction> = {
+  brochure: "login",
+  login: "none",
+  client: "account-logout",
+  accountant: "account-logout",
+  admin: "account-logout",
+};
+
 const navLinks: Record<NavVariant, NavPage[]> = {
   brochure: [
-    { name: "Login", path: "/login" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Services", path: "/services" },
   ],
 
   login: [
@@ -30,20 +41,20 @@ const navLinks: Record<NavVariant, NavPage[]> = {
   ],
 
   client: [
-    { name: "Home", path: "/client" },
+    { name: "Home", path: "/client/" },
     { name: "Messages", path: "/client/messages" },
     { name: "Tasks", path: "/client/tasks" },
-    { name: "Account", path: "/client/account" },
+    // { name: "Account", path: "/client/account" },
   ],
 
   accountant: [
     { name: "Home", path: "/accountant/" },
     { name: "View Clients", path: "/accountant/clients/" },
-    { name: "Account", path: "/accountant/account" },
+    // { name: "Account", path: "/accountant/account" },
   ],
 
   admin: [
-    { name: "Home", path: "/admin" },
+    { name: "Home", path: "/admin/" },
     { name: "View Accountants", path: "/admin/accountants" },
     { name: "View Clients", path: "/admin/clients" },
     { name: "View Admins", path: "/admin/admins" },
@@ -63,21 +74,24 @@ export default function ModularNav({
       variant="permanent"
       anchor="left"
       sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+
+        backgroundColor: "blue",
+        
         width: drawerWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: drawerWidth,
+          minHeight: "100vh",
           boxSizing: "border-box",
           backgroundColor: "#ffffff",
         },
       }}
     >
-      {/*<Toolbar>
-        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-          TSoA
-        </Typography>
-      </Toolbar>*/}
-
+    
+    {/* top logo */}
       <Box
         sx={{
           px: 2,
@@ -86,7 +100,6 @@ export default function ModularNav({
           justifyContent: "center",
         }}
       >
-        
         <img
           src="/images/tsoa_logo_crop.png"
           alt="TSoA Logo"
@@ -100,10 +113,11 @@ export default function ModularNav({
         
       <Divider />
 
+    {/* page specific navLinks */}
       <Box
         sx={{
           px: 2,
-          py: 2,
+          py: 1,
           display: "flex",
           flexDirection: "column",
           gap: 1,
@@ -120,18 +134,92 @@ export default function ModularNav({
               justifyContent: "flex-start",
               textAlign: "left",
               px: 2,
-
-              ...(variant === "brochure" &&
-                page.name === "Login" && {
-                  border: "1px solid black",
-                  backgroundColor: "transparent",
-                }),
             }}
           >
             {page.name}
           </Button>
         ))}
       </Box>
+      
+      <Divider />
+      
+
+      {/* bottom navbar actions */}
+        {bottomAction[variant] === "login" && (
+          <Box
+          sx={{
+            color: "black",
+            display: "flex",
+            flexDirection: "column",
+            justifySelf: "flex-end",
+            mt: "auto",
+            px: 2,
+            py: 1,
+            gap: 1,
+          }}
+        >
+          <Divider sx={{ mx: -2 }} />
+          <Button 
+          component={Link} 
+          to="/login" 
+          fullWidth
+          sx={{
+            justifyContent: "flex-start",
+            textAlign: "left",
+            px: 2,
+          }}
+          >
+            Login
+          </Button>
+        </Box>
+        )}
+
+        {bottomAction[variant] === "account-logout" && (
+          <Box
+            sx={{
+              color: "black",
+              display: "flex",
+              flexDirection: "column",
+              justifySelf: "flex-end",
+              mt: "auto",
+              px: 2,
+              py: 1,
+              gap: 1,
+            }}
+          >
+            <Divider sx={{ mx: -2 }} />
+            <Button 
+            component={Link} 
+            to={`/${variant}/account`} 
+            fullWidth
+            sx={{
+              justifyContent: "flex-start",
+              textAlign: "left",
+              px: 2,
+            }}
+            >
+              Account
+            </Button>
+
+            <Divider sx={{ mx: -2 }} />
+
+            <Button 
+            fullWidth 
+            sx={{
+              justifyContent: "flex-start",
+              textAlign: "left",
+              px: 2,
+            }}
+            component={Link} 
+            to={`/`} 
+            // onClick={() => { /* logout logic */ }}
+            >
+              Logout
+            </Button>
+          </Box>
+        )}
+
+
     </Drawer>
   );
 }
