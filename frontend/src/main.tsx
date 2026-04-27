@@ -33,6 +33,12 @@ import About from './pages/brochure/About.tsx';
 import Contact from './pages/brochure/Contact.tsx';
 import Services from './pages/brochure/Services.tsx';
 import ClientDocuments from './pages/clients/ClientDocuments.tsx';
+import NewAccountant from "./pages/admin/accountants/NewAccountant.tsx";
+import EditAccountant from "./pages/admin/accountants/EditAccountant.tsx";
+import Admins from "./pages/admin/admins/Admins.tsx";
+import Admin from "./pages/admin/admins/Admin.tsx";
+import NewAdmin from "./pages/admin/admins/NewAdmin.tsx";
+import EditAdmin from "./pages/admin/admins/EditAdmin.tsx";
 // import RegisterPage from "./pages/register/RegisterPage";
 // import AccountantHome from './pages/accountants/AccountantHome.tsx';
 // import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';
@@ -103,7 +109,22 @@ createRoot(rootElement).render(
 
             <Route path="accountants">
               <Route index element={<Accountants />} />
-              <Route path=":accountantId" element={<Accountant />} />
+              <Route path="new" element={<NewAccountant />} />
+
+                <Route path=":accountantId">
+                  <Route index element={<Accountant />} />
+                  <Route path="edit" element={<EditAccountant />} />
+                </Route>
+              </Route>
+
+            <Route path="admins">
+              <Route index element={<Admins />} />
+              <Route path="new" element={<NewAdmin />} />
+
+              <Route path=":adminId">
+                <Route index element={<Admin />} />
+                <Route path="edit" element={<EditAdmin />} />
+              </Route>
             </Route>
           </Route>
 

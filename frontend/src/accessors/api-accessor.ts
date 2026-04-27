@@ -125,6 +125,58 @@ export default class ApiAccessor {
     return data;
   }
 
+
+  public async createAccountant(accountant: Accountant): Promise<Accountant> {
+    const path = `${this.API_URL}/accountants`;
+    const method = 'POST';
+    const body = JSON.stringify(accountant);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
+    });
+
+    const data: Accountant = await response.json();
+
+    return data;
+  }
+
+  public async updateAccountant(accountant: Accountant): Promise<Accountant> {
+    const path = `${this.API_URL}/accountants/${accountant.id ?? ''}`;
+    const method = 'PUT';
+    const body = JSON.stringify(accountant);
+    this.logRequest(method, path, body);
+
+    const response = await fetch(path, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body
+    });
+
+    const data: Accountant = await response.json();
+
+    return data;
+  }
+
+  public async destroyAccountant(accountantId: string): Promise<boolean> {
+    const path = `${this.API_URL}/accountants/${accountantId}`;
+    const method = 'DELETE';
+    this.logRequest(method, path);
+
+    const response = await fetch(
+      path,
+      { method: method }
+    );
+
+    return (response.status == 204);
+  }
+
   /* Clients API */
   public async listClients(): Promise<Client[]> {
     const path = `${this.API_URL}/clients`;

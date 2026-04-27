@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router';
 import {
   Link,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -28,11 +29,30 @@ export default function Page() {
     void fetchAccountants();
   }, []);
 
+  const handleDestroyAccountant = async (accountantId: string | undefined) => {
+    const confirmation = window.confirm('Are you sure you want to delete this accountant?');
+
+    if (!confirmation) return;
+    if (!accountantId) return;
+
+    const deleteSuccessful = await apiAccessor.destroyAccountant(accountantId);
+
+    if (!deleteSuccessful) return;
+
+    const accountants = await apiAccessor.listAccountants();
+
+    setAccountants(accountants);
+  };
+
   return (
     <>
       <Typography component="h1" variant="h4" gutterBottom>
         Accountants
       </Typography>
+
+      <Link component={RouterLink} to="/admin/accountants/new">
+        Create
+      </Link>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="accountants table">
@@ -43,6 +63,7 @@ export default function Page() {
               <TableCell>Last Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Username</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,6 +79,25 @@ export default function Page() {
                   <TableCell>{accountant.lastName}</TableCell>
                   <TableCell>{accountant.email}</TableCell>
                   <TableCell>{accountant.username}</TableCell>
+                  <TableCell>
+                    <Stack direction="row" gap="0.5rem">
+                      <Link component={RouterLink} to={`/admin/accountants/${accountant.id ?? ''}`}>
+                        Show
+                      </Link>
+
+                      <Link component={RouterLink} to={`/admin/accountants/${accountant.id ?? ''}/edit`}>
+                        Edit
+                      </Link>
+
+                      <Link
+                        component="button"
+                        variant="body2"
+                        onClick={() => void handleDestroyAccountant(accountant.id)}
+                      >
+                        Delete
+                      </Link>
+                    </Stack>
+                  </TableCell>
                 </TableRow>
               ))
             )}

@@ -56,14 +56,17 @@ export default function Page() {
     void fetchAccountants();
   }, [params.clientId]);
 
-  const handleUpdateClient = async () => {
-    const client = clientMapper.mapInputToModel(clientInput);
+    const handleUpdateClient = async () => {
+      const client = clientMapper.mapInputToModel(clientInput);
 
-    const newClient = await apiAccessor.updateClient(client);
+      if (clientInput.passwordHash.trim() === '') {
+        client.passwordHash = '';
+      }
 
-    await navigate('/admin/clients');
-  };
+      await apiAccessor.updateClient(client);
 
+      await navigate('/admin/clients');
+    };
   return (
     <>
       <Typography component="h1" variant="h4" gutterBottom>

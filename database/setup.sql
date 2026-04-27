@@ -132,4 +132,5 @@ INSERT INTO admins (first_name, last_name, email, username, password_hash)
 VALUES
 ('System', 'Admin', 'sysadmin@taxportal.com', 'sysadmin', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.'),
 ('Laura', 'Mitchell', 'laura.mitchell@taxportal.com', 'lmitchell', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.'),
-('Brian', 'Turner', 'brian.turner@taxportal.com', 'bturner', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.');
+('Brian', 'Turner', 'brian.turner@taxportal.com', 'bturner', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.'),
+('Kaleb', 'Mallory', 'Kmallory03@example.com', 'kmallory03', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.' );
