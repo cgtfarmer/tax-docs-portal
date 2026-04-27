@@ -7,7 +7,7 @@ import ModularNav from "./modular-navbar";
 
 export default function Component() {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'}}>
       <CssBaseline />
 
       <ModularNav variant='admin' />
