@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import ApiAccessor from "../../accessors/api-accessor";
@@ -134,6 +134,7 @@ const handleLogin = async (): Promise<void> => {
               variant="outlined"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") void handleLogin(); }}
               sx={{
               width: "300px",
               marginBottom: "20px",
@@ -155,12 +156,12 @@ const handleLogin = async (): Promise<void> => {
               </Box>
             )}
 
-            <Box
+            <Button
               sx={loginButtonStyle}
               onClick={() => void handleLogin()}
             >
               Login
-            </Box>
+            </Button>
           </Box>
         </Box>
       </Box>
