@@ -1,4 +1,4 @@
-export type TaskStatus = "In Progress" | "Completed";
+export type TaskStatus = "In Progress" | "In Review" | "Completed";
 
 export interface TaskInput {
   id: string | undefined;

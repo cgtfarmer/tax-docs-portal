@@ -45,10 +45,6 @@ public class TaskService {
     return this.tasksRepository.destroy(id);
   }
 
-  // -------------------------
-  // New Combined Functionality
-  // -------------------------
-
   public Task updateStatus(UUID taskId, String status) {
     log.info("[TaskService#updateStatus] taskId={}, status={}", taskId, status);
 

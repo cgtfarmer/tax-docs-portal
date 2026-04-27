@@ -66,7 +66,7 @@ public class MessageRepository {
     String sql =
         """
             INSERT INTO messages (client_id, accountant_id, sender_type, message_text)
-            VALUES (:clientId, :accountantId, :senderType, :messageText)
+            VALUES (:clientId, :accountantId, CAST(:senderType AS sender_type_enum), :messageText)
             """;
 
     MapSqlParameterSource params = new MapSqlParameterSource();

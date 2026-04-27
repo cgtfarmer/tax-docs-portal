@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class ClientService {
+
+  @Autowired
+  private BCryptPasswordEncoder passwordEncoder;
 
   private final ClientRepository clientRepository;
 
@@ -34,6 +38,9 @@ public class ClientService {
   public Client create(Client client) {
     log.info("[ClientService#create] client={}", client);
 
+    // hashing password before saving so we never store plain text
+    client.setPasswordHash(passwordEncoder.encode(client.getPasswordHash()));
+
     Client result = this.clientRepository.create(client);
 
     return result;
@@ -42,9 +49,15 @@ public class ClientService {
   public Client update(Client client) {
     log.info("[ClientService#update] client={}", client);
 
-    Client result = this.clientRepository.update(client);
+    // only hash if password is NOT already hashed
+    if (
+      !client.getPasswordHash()
+          .startsWith("$2a$")
+    ) {
+      client.setPasswordHash(passwordEncoder.encode(client.getPasswordHash()));
+    }
 
-    return result;
+    return this.clientRepository.update(client);
   }
 
   public boolean destroy(UUID id) {

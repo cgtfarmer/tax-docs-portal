@@ -1,20 +1,22 @@
-import { Link } from "react-router";
+//import { Link } from "react-router";
+import { Navigate } from "react-router";
+import { useAuth } from "../../App";
 
 export default function AccountantHome() {
+  
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+  
+  if (user.role !== "ACCOUNTANT") {
+    return <Navigate to="/" />;
+  }
+  
   return (
     <div>
-      <h1>Welcome, Mary Jane</h1>
-
-      <Link to="/app/accountant/account">
-        <button>My Account</button>
-      </Link>
-
-      <br />
-      <br />
-
-      <Link to="/app/accountant/clients">
-        <button>View Clients</button>
-      </Link>
+      <h1>Welcome, {user.firstName}{" "}{user.lastName}</h1>
     </div>
   );
 }

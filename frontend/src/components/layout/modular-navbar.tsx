@@ -1,88 +1,224 @@
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-
+//import Toolbar from "@mui/material/Toolbar";
+import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+//import Typography from "@mui/material/Typography";
 import { Link } from "react-router";
+
+const drawerWidth = 240;
 
 interface NavPage {
   readonly name: string;
   readonly path: string;
 }
 
+type NavVariant =
+  | "brochure"
+  | "login"
+  | "client"
+  | "accountant"
+  | "admin";
 
-
-type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin" ;
+type BottomAction = "login" | "account-logout" | "none";
+const bottomAction: Record<NavVariant, BottomAction> = {
+  brochure: "login",
+  login: "none",
+  client: "account-logout",
+  accountant: "account-logout",
+  admin: "account-logout",
+};
 
 const navLinks: Record<NavVariant, NavPage[]> = {
   brochure: [
-    { name: "about", path: "/about" },
-    { name: "contact", path: "/contact" },
-    { name: "services", path: "/services" },
-    { name: "Login", path: "/login" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Services", path: "/services" },
   ],
+
   login: [
-    { name: "Brochure", path: "/" },
+    { name: "Home", path: "/" },
   ],
+
   client: [
-    { name: "Home", path: "/client/home" },
+    { name: "Home", path: "/client/" },
     { name: "Messages", path: "/client/messages" },
     { name: "Tasks", path: "/client/tasks" },
-    { name: "Account", path: "/client/account" },
+    // { name: "Account", path: "/client/account" },
   ],
+
   accountant: [
-    { name: "Home", path: "/accountant/home" },
-    { name: "View Clients", path: "/accountant/view-clients" },
-    { name: "Account", path: "/accountant/account" },
+    { name: "Home", path: "/accountant/" },
+    { name: "View Clients", path: "/accountant/clients/" },
+    // { name: "Account", path: "/accountant/account" },
   ],
+
   admin: [
-    { name: "Home", path: "/admin/home" },
-    { name: "View Accountants", path: "/admin/view-all-accountants" },
-    { name: "View Clients", path: "/admin/view-all-clients" },
-    { name: "Account", path: "/admin/account" },
+    { name: "Home", path: "/admin/" },
+    { name: "View Accountants", path: "/admin/accountants" },
+    { name: "View Clients", path: "/admin/clients" },
+    // { name: "Account", path: "/admin/account" },
   ],
 };
 
-
-export default function ModularNav({ variant }: { variant: NavVariant }) {
+export default function ModularNav({
+  variant,
+}: {
+  variant: NavVariant;
+}) {
   const pages = navLinks[variant];
 
   return (
-    <AppBar position="static" color="transparent" elevation={3}>
-      <Box sx={{ px: 1, }}>
-        <Toolbar disableGutters sx={{ backgroundColor: "#ffffff", height: 60 }}>
+    <Drawer
+      variant="permanent"
+      anchor="left"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
 
-          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
-            TSoA
-          </Box>
-
-          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
-            <img src="/images/tsoa_logo_crop.png" alt="TSoA Logo" height={60} />
-          </Box>
-
-          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                component={Link}
-                to={page.path}
-                sx={{
-                color: "black",
-
-                ...(variant === "brochure" && page.name === "Login" && {
-                  border: "1px solid black",
-                  px: 3,
-                  backgroundColor: "transparent",
-                }),
-                }}
-              >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
-
-        </Toolbar>
+        backgroundColor: "blue",
+        
+        width: drawerWidth,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          minHeight: "100vh",
+          boxSizing: "border-box",
+          backgroundColor: "#ffffff",
+        },
+      }}
+    >
+    
+    {/* top logo */}
+      <Box
+        sx={{
+          px: 2,
+          py: 1,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src="/images/tsoa_logo_crop.png"
+          alt="TSoA Logo"
+          style={{
+            maxWidth: "100%",
+            height: "60px",
+            objectFit: "contain",
+          }}
+        />
       </Box>
-    </AppBar>
+        
+      <Divider />
+
+    {/* page specific navLinks */}
+      <Box
+        sx={{
+          px: 2,
+          py: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
+        {pages.map((page) => (
+          <Button
+            key={page.name}
+            component={Link}
+            to={page.path}
+            fullWidth
+            sx={{
+              color: "black",
+              justifyContent: "flex-start",
+              textAlign: "left",
+              px: 2,
+            }}
+          >
+            {page.name}
+          </Button>
+        ))}
+      </Box>
+      
+      <Divider />
+      
+
+      {/* bottom navbar actions */}
+        {bottomAction[variant] === "login" && (
+          <Box
+          sx={{
+            color: "black",
+            display: "flex",
+            flexDirection: "column",
+            justifySelf: "flex-end",
+            mt: "auto",
+            px: 2,
+            py: 1,
+            gap: 1,
+          }}
+        >
+          <Divider sx={{ mx: -2 }} />
+          <Button 
+          component={Link} 
+          to="/login" 
+          fullWidth
+          sx={{
+            justifyContent: "flex-start",
+            textAlign: "left",
+            px: 2,
+          }}
+          >
+            Login
+          </Button>
+        </Box>
+        )}
+
+        {bottomAction[variant] === "account-logout" && (
+          <Box
+            sx={{
+              color: "black",
+              display: "flex",
+              flexDirection: "column",
+              justifySelf: "flex-end",
+              mt: "auto",
+              px: 2,
+              py: 1,
+              gap: 1,
+            }}
+          >
+            <Divider sx={{ mx: -2 }} />
+            <Button 
+            component={Link} 
+            to={`/${variant}/account`} 
+            fullWidth
+            sx={{
+              justifyContent: "flex-start",
+              textAlign: "left",
+              px: 2,
+            }}
+            >
+              Account
+            </Button>
+
+            <Divider sx={{ mx: -2 }} />
+
+            <Button 
+            fullWidth 
+            sx={{
+              justifyContent: "flex-start",
+              textAlign: "left",
+              px: 2,
+            }}
+            component={Link} 
+            to={`/`} 
+            // onClick={() => { /* logout logic */ }}
+            >
+              Logout
+            </Button>
+          </Box>
+        )}
+
+
+    </Drawer>
   );
 }

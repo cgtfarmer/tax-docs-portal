@@ -29,8 +29,7 @@ export default function Page() {
 
     const newClient = await apiAccessor.createClient(client);
 
-    await navigate(`/clients/${newClient.id ?? ''}`);
-  };
+    await navigate(`/admin/clients/${newClient.id ?? ''}`);  };
 
   return (
     <>

@@ -71,14 +71,14 @@ CREATE TABLE messages (
 );
 
 -- Tasks Table
-CREATE TYPE task_status_enum AS ENUM ('OPEN', 'IN REVIEW', 'COMPLETED');
+CREATE TYPE task_status_enum AS ENUM ('In Progress', 'In Review', 'Completed');
 CREATE TABLE tasks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id UUID,
   accountant_id UUID,
   title VARCHAR(255),
   task_description TEXT,
-  task_status task_status_enum DEFAULT 'OPEN',
+  task_status task_status_enum DEFAULT 'In Progress',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NULL,
   deleted_at TIMESTAMP NULL,
@@ -114,22 +114,22 @@ VALUES
 -- Accountants
 INSERT INTO accountants (first_name, last_name, email, username, password_hash)
 VALUES 
-('Alex', 'Dawn', 'alex@example.com', 'adawn', 'fakepass1'),
-('George', 'Smith', 'george@example.com', 'gsmith', 'fakepass1'),
-('Gordon', 'Freeman', 'gordon@example.com', 'gfreeman', 'fakepass1');
+('Alex', 'Dawn', 'alex@example.com', 'adawn', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.'),
+('George', 'Smith', 'george@example.com', 'gsmith', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.'),
+('Gordon', 'Freeman', 'gordon@example.com', 'gfreeman', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.');
 
 -- Clients
 INSERT INTO clients (first_name, last_name, email, username, password_hash, accountant_id)
 VALUES 
-('Kaleb', 'Mallory', 'kaleb@example.com', 'kmall', 'fakepass2', NULL),
-('AnhPhat', 'Nguyen', 'anh@example.com', 'anguyen', 'fakepass2', NULL),
-('Joseph', 'Manno', 'joseph@example.com', 'jmanno', 'fakepass2', NULL),
-('Ryan', 'Dilley', 'ryan@example.com', 'rdilley', 'fakepass2', NULL),
-('John', 'Snyder', 'johns@example.com', 'jsnyder', 'fakepass2', NULL);
+('Kaleb', 'Mallory', 'kaleb@example.com', 'kmall', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.', NULL),
+('AnhPhat', 'Nguyen', 'anh@example.com', 'anguyen', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.', NULL),
+('Joseph', 'Manno', 'joseph@example.com', 'jmanno', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.', NULL),
+('Ryan', 'Dilley', 'ryan@example.com', 'rdilley', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.', NULL),
+('John', 'Snyder', 'johns@example.com', 'jsnyder', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.', NULL);
 
 -- Admins
 INSERT INTO admins (first_name, last_name, email, username, password_hash)
 VALUES
-('System', 'Admin', 'sysadmin@taxportal.com', 'sysadmin', 'hash_admin_001'),
-('Laura', 'Mitchell', 'laura.mitchell@taxportal.com', 'lmitchell', 'hash_admin_002'),
-('Brian', 'Turner', 'brian.turner@taxportal.com', 'bturner', 'hash_admin_003');
+('System', 'Admin', 'sysadmin@taxportal.com', 'sysadmin', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.'),
+('Laura', 'Mitchell', 'laura.mitchell@taxportal.com', 'lmitchell', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.'),
+('Brian', 'Turner', 'brian.turner@taxportal.com', 'bturner', '$2a$10$2pJIC5s/lzSvaHD.401DbuvAKtrVzV/dQ34yJyYTsEx4WDxSmzrK.');
