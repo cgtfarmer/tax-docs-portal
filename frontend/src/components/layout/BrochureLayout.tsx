@@ -1,15 +1,19 @@
 import { Outlet } from "react-router";
-import { Container, Stack, } from "@mui/material";
+import { Box, CssBaseline} from "@mui/material";
 import ModularNav from "./modular-navbar";
 
 export default function Component() {
   return (
-    <Stack sx={{ height: "100vh" }}>
+    <Box sx={{ display: "flex"}}>        
         <ModularNav variant="brochure" />
-        <Container component="main" sx={{ pt: 3 }}>
-            <Outlet />
-        </Container>
 
-    </Stack>
+        <Box 
+          component="main" 
+          sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+        >
+          <Outlet />
+        </Box>
+
+    </Box>
   );
 }
