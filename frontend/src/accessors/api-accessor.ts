@@ -523,6 +523,7 @@ public async authorize(email: string, password: string): Promise<any> {
     return (response.status === 204);
   }
 
+  // Log Request
   private logRequest(method: string, path: string, body?: string) {
     console.log(`Fetch: ${method} - ${path}`);
 
