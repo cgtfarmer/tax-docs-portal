@@ -1,7 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Container from "@mui/material/Container";
 
 import Button from "@mui/material/Button";
 import { Link } from "react-router";
@@ -17,6 +16,9 @@ type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin" ;
 
 const navLinks: Record<NavVariant, NavPage[]> = {
   brochure: [
+    { name: "about", path: "/about" },
+    { name: "contact", path: "/contact" },
+    { name: "services", path: "/services" },
     { name: "Login", path: "/login" },
   ],
   login: [
