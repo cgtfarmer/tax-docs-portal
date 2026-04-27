@@ -1,20 +1,20 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Link, Button, Stack, TextField, Typography, Box } from '@mui/material';
 import ApiAccessor from '../../../accessors/api-accessor';
-import { AccountantInput } from '../../../models/accountant-input';
-import { AccountantMapper } from '../../../mapper/accountant-mapper';
+import { AdminInput } from '../../../models/admin-input';
+import { AdminMapper } from '../../../mapper/admin-mapper';
 import { Link as RouterLink, Params, useParams, useNavigate } from 'react-router';
 
 interface RouteParams extends Params {
-  accountantId: string
+  adminId: string
 };
 
 const apiAccessor = new ApiAccessor();
 
-const accountantMapper = new AccountantMapper();
+const adminMapper = new AdminMapper();
 
 export default function Page() {
-  const [accountantInput, setAccountantInput] = useState<AccountantInput>({
+  const [adminInput, setAdminInput] = useState<AdminInput>({
     id: '',
     firstName: '',
     lastName: '',
@@ -27,50 +27,50 @@ export default function Page() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchAccountant(accountantId: string) {
-      const accountant = await apiAccessor.getAccountant(accountantId);
-      const input = accountantMapper.mapModelToInput(accountant);
+    async function fetchAdmin(adminId: string) {
+      const admin = await apiAccessor.getAdmin(adminId);
+      const input = adminMapper.mapModelToInput(admin);
 
-      setAccountantInput(input);
+      setAdminInput(input);
     }
 
-    if (!params.accountantId) return;
+    if (!params.adminId) return;
 
-    console.log(`Accountant ID: ${params.accountantId}`);
+    console.log(`Admin ID: ${params.adminId}`);
 
-    void fetchAccountant(params.accountantId);
-  }, [params.accountantId]);
+    void fetchAdmin(params.adminId);
+  }, [params.adminId]);
 
-    const handleUpdateAccountant = async () => {
-        const accountant = accountantMapper.mapInputToModel(accountantInput);
+    const handleUpdateAdmin = async () => {
+        const admin = adminMapper.mapInputToModel(adminInput);
 
-        if (accountantInput.passwordHash.trim() === '') {
-            accountant.passwordHash = '';
+        if (adminInput.passwordHash.trim() === '') {
+            admin.passwordHash = '';
         }
 
-        await apiAccessor.updateAccountant(accountant);
+        await apiAccessor.updateAdmin(admin);
 
-        await navigate('/admin/accountants');
+        await navigate('/admin/admins');
         };
 
   return (
     <>
       <Typography component="h1" variant="h4" gutterBottom>
-        Update accountant
+        Update admin
       </Typography>
 
       <Box sx={{ py: 3 }}>
-        <Link component={RouterLink} to="/admin/accountants">Back</Link>
+        <Link component={RouterLink} to="/admin/admins">Back</Link>
       </Box>
 
       <Stack gap="1rem" maxWidth="30rem">
         <TextField
           label="First Name"
           variant="outlined"
-          value={accountantInput.firstName}
+          value={adminInput.firstName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setAccountantInput(accountant => ({
-              ...accountant,
+            setAdminInput(admin => ({
+              ...admin,
               firstName: e.target.value
             }))
           }}
@@ -79,10 +79,10 @@ export default function Page() {
         <TextField
           label="Last Name"
           variant="outlined"
-          value={accountantInput.lastName}
+          value={adminInput.lastName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setAccountantInput(accountant => ({
-              ...accountant,
+            setAdminInput(admin => ({
+              ...admin,
               lastName: e.target.value
             }))
           }}
@@ -91,10 +91,10 @@ export default function Page() {
         <TextField
           label="Email"
           variant="outlined"
-          value={accountantInput.email}
+          value={adminInput.email}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setAccountantInput(accountant => ({
-              ...accountant,
+            setAdminInput(admin => ({
+              ...admin,
               email: e.target.value
             }))
           }}
@@ -103,10 +103,10 @@ export default function Page() {
         <TextField
           label="Username"
           variant="outlined"
-          value={accountantInput.username}
+          value={adminInput.username}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setAccountantInput(accountant => ({
-              ...accountant,
+            setAdminInput(admin => ({
+              ...admin,
               username: e.target.value
             }))
           }}
@@ -115,10 +115,10 @@ export default function Page() {
         <TextField
           label="Password"
           variant="outlined"
-          value={accountantInput.passwordHash}
+          value={adminInput.passwordHash}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setAccountantInput(accountant => ({
-              ...accountant,
+            setAdminInput(admin => ({
+              ...admin,
               passwordHash: e.target.value
             }))
           }}
@@ -126,7 +126,7 @@ export default function Page() {
 
         <Button
           variant="contained"
-          onClick={() => void handleUpdateAccountant()}
+          onClick={() => void handleUpdateAdmin()}
           sx={{ maxWidth: '10rem' }}
         >
           Submit
@@ -134,4 +134,4 @@ export default function Page() {
       </Stack>
     </>
   );
-};
+}

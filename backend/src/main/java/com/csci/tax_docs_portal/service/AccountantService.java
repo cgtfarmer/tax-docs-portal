@@ -50,20 +50,25 @@ public class AccountantService {
   public Accountant update(Accountant accountant) {
     log.info("[AccountantService#update] accountant={}", accountant);
 
-    // only hash password if it is not already a BCrypt hash
+    Accountant existingAccountant =
+        accountantRepository.findById(accountant.getId());
+
     if (
-      accountant.getPasswordHash() != null
-          && !accountant.getPasswordHash()
-              .startsWith("$2a$")
+      accountant.getPasswordHash() == null
+          || accountant.getPasswordHash()
+              .isBlank()
+    ) {
+      accountant.setPasswordHash(existingAccountant.getPasswordHash());
+    } else if (
+      !accountant.getPasswordHash()
+          .startsWith("$2a$")
     ) {
       accountant.setPasswordHash(
           passwordEncoder.encode(accountant.getPasswordHash())
       );
     }
 
-    Accountant result = this.accountantRepository.update(accountant);
-
-    return result;
+    return accountantRepository.update(accountant);
   }
 
   public boolean destroy(UUID id) {
