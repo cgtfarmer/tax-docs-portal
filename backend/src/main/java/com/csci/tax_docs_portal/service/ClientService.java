@@ -49,8 +49,16 @@ public class ClientService {
   public Client update(Client client) {
     log.info("[ClientService#update] client={}", client);
 
-    // only hash if password is NOT already hashed
+    Client existingClient = this.clientRepository.findById(client.getId());
+
+    // If password is blank/null, keep the old password.
     if (
+      client.getPasswordHash() == null
+          || client.getPasswordHash()
+              .isBlank()
+    ) {
+      client.setPasswordHash(existingClient.getPasswordHash());
+    } else if (
       !client.getPasswordHash()
           .startsWith("$2a$")
     ) {
