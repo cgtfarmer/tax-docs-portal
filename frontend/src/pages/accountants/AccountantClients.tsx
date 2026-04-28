@@ -1,30 +1,59 @@
-import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router';
-import { Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import ApiAccessor from '../../accessors/api-accessor';
-import { Client } from '../../models/client';
+import { useEffect, useState } from "react";
+
+import { Link as RouterLink } from "react-router";
+
+import {
+  Link,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  CircularProgress,
+  Box,
+} from "@mui/material";
+
+import ApiAccessor from "../../accessors/api-accessor";
+import { Client } from "../../models/client";
+import { useAuth } from "../../App";
 
 const apiAccessor = new ApiAccessor();
 
 export default function Page() {
+  const { user } = useAuth();
+
   const [clients, setClients] = useState<Client[]>([]);
 
-  // only grabs the clients assigned to the logged in accountant
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
+
   useEffect(() => {
     async function fetchClients() {
-      // const accountantId = localStorage.getItem('accountantId');
-      // TEMP: using fake logged-in accountant id until Login Verification works
-      const accountantId = 'f9762ee1-ec1e-442a-b5fe-6912e4849829';
+      try {
+        if (!user?.id || user.role !== "ACCOUNTANT") {
+          setLoading(false);
+          return;
+        }
 
-      if (!accountantId) return;
+        const result = await apiAccessor.getClientsByAccountant(user.id);
 
-      const clients = await apiAccessor.getClientsByAccountant(accountantId);
+        setClients(result);
+      } catch (error) {
+        console.error(error);
 
-      setClients(clients);
+        setError("Unable to load clients.");
+      } finally {
+        setLoading(false);
+      }
     }
 
     void fetchClients();
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -32,48 +61,95 @@ export default function Page() {
         My Clients
       </Typography>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>First Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Password</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {clients.map((client) => (
-              <TableRow
-                key={client.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {client.id}
-                </TableCell>
-                <TableCell>{client.firstName}</TableCell>
-                <TableCell>{client.lastName}</TableCell>
-                <TableCell>{client.email}</TableCell>
-                <TableCell>{client.username}</TableCell>
-                <TableCell>{client.passwordHash}</TableCell>
-                <TableCell>
-                  <Stack direction="row" gap="0.5rem">
-                    <Link
-                      component={RouterLink}
-                      to={`/app/accountant/clients/${client.id ?? ''}`}
-                    >
-                      Show
-                    </Link>
-                  </Stack>
-                </TableCell>
+      {loading && (
+        <Box
+          sx={{
+            py: 3,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
+      {error && (
+        <Typography color="error" gutterBottom>
+          {error}
+        </Typography>
+      )}
+
+      {!loading && !error && clients.length === 0 && (
+        <Typography>No clients are currently assigned to you.</Typography>
+      )}
+
+      {!loading && !error && clients.length > 0 && (
+        <TableContainer component={Paper}>
+          <Table
+            sx={{
+              minWidth: 650,
+            }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>First Name</TableCell>
+
+                <TableCell>Last Name</TableCell>
+
+                <TableCell>Email</TableCell>
+
+                <TableCell>Username</TableCell>
+
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+
+            <TableBody>
+              {clients.map((client) => (
+                <TableRow key={client.id}>
+                  <TableCell>{client.firstName}</TableCell>
+
+                  <TableCell>{client.lastName}</TableCell>
+
+                  <TableCell>{client.email}</TableCell>
+
+                  <TableCell>{client.username}</TableCell>
+
+                  {/*<TableCell>
+                    <Stack direction="row" gap="0.75rem" flexWrap="wrap">
+                      <Link
+                        component={RouterLink}
+                        to={`/app/accountant/clients/${client.id}`}
+                      >
+                        Show
+                      </Link>
+
+                      <Link
+                        component={RouterLink}
+                        to={`/app/accountant/clients/${client.id}/messages`}
+                      >
+                        Messages
+                      </Link>
+
+                      <Link
+                        component={RouterLink}
+                        to={`/app/accountant/clients/${client.id}/tasks`}
+                      >
+                        Tasks
+                      </Link>
+
+                      <Link
+                        component={RouterLink}
+                        to={`/app/accountant/clients/${client.id}/documents`}
+                      >
+                        Documents
+                      </Link>
+                    </Stack>
+                  </TableCell>*/}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 }

@@ -9,6 +9,7 @@ import { Client} from '../models/client'
 import { Admin } from '../models/admin'
 import { Message } from '../models/message'
 import { Task } from '../models/task'
+import { ClientDocument } from "../models/document";
 
 export default class ApiAccessor {
 
@@ -478,109 +479,366 @@ public async authorize(email: string, password: string): Promise<any> {
     return (response.status === 204);
   }
 
-  /* Task API */
-  public async listTasks(): Promise<Task[]> {
-    const path = `${this.API_URL}/tasks`;
-    const method = 'GET';
-    this.logRequest(method, path);
+/* Task API */
+public async listTasks(): Promise<Task[]> {
+  const path =
+    `${this.API_URL}/tasks`;
 
-    const response = await fetch(
+  const method =
+    "GET";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(
       path,
-      { method: method }
+      {
+        method: method
+      }
     );
 
-    const data: Task[] = await response.json();
-    return data;
-  }
+  const data: Task[] =
+    await response.json();
 
-  public async getTask(taskId: string): Promise<Task> {
-    const path = `${this.API_URL}/tasks/${taskId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
+  return data;
+}
 
-    const response = await fetch(
+public async getTask(
+  taskId: string
+): Promise<Task> {
+  const path =
+    `${this.API_URL}/tasks/${taskId}`;
+
+  const method =
+    "GET";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(
       path,
-      { method: method }
+      {
+        method: method
+      }
     );
 
-    const data: Task = await response.json();
-    return data;
-  }
+  const data: Task =
+    await response.json();
 
-  public async getTasksByClient(clientId: string): Promise<Task[]> {
-    const path = `${this.API_URL}/tasks/client/${clientId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
+  return data;
+}
 
-    const response = await fetch(
+public async getTasksByClient(
+  clientId: string
+): Promise<Task[]> {
+  const path =
+    `${this.API_URL}/tasks/client/${clientId}`;
+
+  const method =
+    "GET";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(
       path,
-      { method: method }
+      {
+        method: method
+      }
     );
 
-    const data: Task[] = await response.json();
-    return data;
+  const data: Task[] =
+    await response.json();
+
+  return data;
+}
+
+public async getActiveTasksByClient(
+  clientId: string
+): Promise<Task[]> {
+  const tasks =
+    await this.getTasksByClient(
+      clientId
+    );
+
+  return tasks.filter(
+    (task) =>
+      !task.deletedAt
+  );
+}
+
+public async createTask(
+  task: Task
+): Promise<Task> {
+  const path =
+    `${this.API_URL}/tasks`;
+
+  const method =
+    "POST";
+
+  const body =
+    JSON.stringify(task);
+
+  this.logRequest(
+    method,
+    path,
+    body
+  );
+
+  const response =
+    await fetch(
+      path,
+      {
+        method: method,
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: body
+      }
+    );
+
+  const data: Task =
+    await response.json();
+
+  return data;
+}
+
+public async updateTask(
+  task: Task
+): Promise<Task> {
+  const path =
+    `${this.API_URL}/tasks/${task.id}`;
+
+  const method =
+    "PUT";
+
+  const body =
+    JSON.stringify(task);
+
+  this.logRequest(
+    method,
+    path,
+    body
+  );
+
+  const response =
+    await fetch(
+      path,
+      {
+        method: method,
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: body
+      }
+    );
+
+  const data: Task =
+    await response.json();
+
+  return data;
+}
+
+public async deleteTask(
+  taskId: string
+): Promise<boolean> {
+  const path =
+    `${this.API_URL}/tasks/${taskId}`;
+
+  const method =
+    "DELETE";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(
+      path,
+      {
+        method: method
+      }
+    );
+
+  return (
+    response.status ===
+    204
+  );
+}
+
+/* Log Request */
+private logRequest(
+  method: string,
+  path: string,
+  body?: string
+) {
+  console.log(
+    `Fetch: ${method} - ${path}`
+  );
+
+  if (body) {
+    console.log(
+      `\n${body}`
+    );
   }
+}
 
-  public async getActiveTasksByClient(clientId: string): Promise<Task[]> {
-    const tasks = await this.getTasksByClient(clientId);
-    return tasks.filter(t => !t.deleted_at);
-  }
+/* Documents API */
 
-  public async createTask(task: Task): Promise<Task> {
-    const path = `${this.API_URL}/tasks`;
-    const method = 'POST';
-    const body = JSON.stringify(task);
-    this.logRequest(method, path, body);
+public async uploadDocument(
+  clientId: string,
+  documentType: string,
+  file: File
+): Promise<ClientDocument> {
+  const encodedType =
+    encodeURIComponent(
+      documentType
+    );
 
-    const response = await fetch(path, {
-      method: method,
+  const path =
+    `${this.API_URL}/clients/${clientId}/documents/${encodedType}`;
+
+  const method =
+    "POST";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type":
+          file.type ||
+          "application/octet-stream",
       },
-      body: body
+      body: file,
     });
 
-    const data: Task = await response.json();
-    return data;
-  }
+  const data: ClientDocument =
+    await response.json();
 
-  public async updateTask(task: Task): Promise<Task> {
-    const path = `${this.API_URL}/tasks/${task.id}`;
-    const method = 'PUT';
-    const body = JSON.stringify(task);
-    this.logRequest(method, path, body);
+  return data;
+}
 
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
-    });
-
-    const data: Task = await response.json();
-    return data;
-  }
-
-  public async deleteTask(taskId: string): Promise<boolean> {
-    const path = `${this.API_URL}/tasks/${taskId}`;
-    const method = 'DELETE';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
+public async getClientDocument(
+  clientId: string,
+  documentType: string
+): Promise<ClientDocument> {
+  const encodedType =
+    encodeURIComponent(
+      documentType
     );
 
-    return (response.status === 204);
-  }
+  const path =
+    `${this.API_URL}/clients/${clientId}/documents/${encodedType}`;
 
-  // Log Request
-  private logRequest(method: string, path: string, body?: string) {
-    console.log(`Fetch: ${method} - ${path}`);
+  const method =
+    "GET";
 
-    if (body) {
-      console.log("\n ${body}");
-    }
-  }
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method,
+    });
+
+  const data: ClientDocument =
+    await response.json();
+
+  return data;
+}
+
+public async downloadDocument(
+  documentId: string
+): Promise<Blob> {
+  const path =
+    `${this.API_URL}/clients/documents/${documentId}/download`;
+
+  const method =
+    "GET";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method,
+    });
+
+  const data =
+    await response.blob();
+
+  return data;
+}
+
+public async destroyDocument(
+  documentId: string
+): Promise<boolean> {
+  const path =
+    `${this.API_URL}/clients/documents/${documentId}`;
+
+  const method =
+    "DELETE";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method,
+    });
+
+  return (
+    response.status ===
+    204
+  );
+}
+
+public async getDocumentsByClient(
+  clientId: string
+): Promise<ClientDocument[]> {
+  const path =
+    `${this.API_URL}/clients/${clientId}/documents`;
+
+  const method =
+    "GET";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method,
+    });
+
+  const data: ClientDocument[] =
+    await response.json();
+
+  return data;
+}
+
 }

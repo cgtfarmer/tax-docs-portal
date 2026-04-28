@@ -1,21 +1,24 @@
-export type TaskStatus = "In Progress" | "In Review" | "Completed";
+export type TaskStatus =
+  | "In Progress"
+  | "In Review"
+  | "Completed";
 
 export interface TaskInput {
-  id: string | undefined;
+  id?: string;
 
-  clientId: string | undefined;
+  clientId?: string;
 
-  accountantId: string | undefined;
+  accountantId?: string;
 
-  title: string | undefined;
+  title?: string;
 
-  task_description: string | undefined;
+  description?: string;
 
-  task_status: TaskStatus | undefined;
+  taskStatus?: TaskStatus;
 
-  created_at: string | undefined;
+  createdAt?: string;
 
-  updated_at: string | null;
+  updatedAt?: string | null;
 
-  deleted_at: string | null;
+  deletedAt?: string | null;
 }
