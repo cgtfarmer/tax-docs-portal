@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-public class TasksMapper {
+public class TaskMapper {
 
   public Task mapRowSetToTask(SqlRowSet rowSet) {
 

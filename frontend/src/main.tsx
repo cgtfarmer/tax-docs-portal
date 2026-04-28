@@ -1,147 +1,121 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router";
-import App from "./App.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import Landing from "./pages/brochure/Landing.tsx";
-import BrochureLayout from "./components/layout/BrochureLayout.tsx";
-import ClientLayout from "./components/layout/ClientLayout.tsx";
-import LoginPage from "./pages/auth/LoginPage.tsx";
-import ClientDashboard from "./pages/clients/ClientDashboard.tsx";
-import ClientAccount from "./pages/clients/ClientAccount.tsx";
-import ClientMessages from "./pages/clients/ClientMessages.tsx";
-import ClientTasks from "./pages/clients/ClientTasks.tsx";
-import AdminLayout from "./components/layout/AdminLayout.tsx";
-import Clients from "./pages/admin/clients/Clients.tsx";
-import Client from "./pages/admin/clients/Client.tsx";
-import NewClient from "./pages/admin/clients/NewClient.tsx";
-import EditClient from "./pages/admin/clients/EditClient.tsx";
-import Accountants from "./pages/admin/accountants/Accountants.tsx";
-import Accountant from "./pages/admin/accountants/Accountant.tsx";
-import AdminHome from './pages/admin/AdminHome.tsx';
-import AccountantLayout from './components/layout/AccountantLayout.tsx';
-import AccountantHome from './pages/accountants/AccountantHome.tsx';
-import AccountantMessageBoard from './pages/accountants/AccountantClientMessages.tsx';
-import AccountantClients from './pages/accountants/AccountantClients.tsx';
-import AccountantAccount from './pages/accountants/AccountantAccount.tsx';
-import AccountantClientMessages from './pages/accountants/AccountantClientMessages.tsx';
-import AccountantClientTasks from './pages/accountants/AccountantClientTasks.tsx';
-import AccountantClientDocuments from './pages/accountants/AccountantClientDocuments.tsx';
-import AccountantClient from './pages/accountants/AccountantClient.tsx';
-import About from './pages/brochure/About.tsx';
-import Contact from './pages/brochure/Contact.tsx';
-import Services from './pages/brochure/Services.tsx';
-import ClientDocuments from './pages/clients/ClientDocuments.tsx';
-import NewAccountant from "./pages/admin/accountants/NewAccountant.tsx";
-import EditAccountant from "./pages/admin/accountants/EditAccountant.tsx";
-import Admins from "./pages/admin/admins/Admins.tsx";
-import Admin from "./pages/admin/admins/Admin.tsx";
-import NewAdmin from "./pages/admin/admins/NewAdmin.tsx";
-import EditAdmin from "./pages/admin/admins/EditAdmin.tsx";
-// import RegisterPage from "./pages/register/RegisterPage";
-// import AccountantHome from './pages/accountants/AccountantHome.tsx';
-// import AccountantMessageBoard from './pages/accountants/AccountantMessageBoard.tsx';
-// import Users from "./pages/users/Users.tsx";
-// import User from "./pages/users/User.tsx";
-// import NewUser from "./pages/users/NewUser.tsx";
-// import EditUser from "./pages/users/EditUser.tsx";
-// import ClientIndex from "./pages/clients/ClientIndex.tsx";
+import "./index.css";
+
+import * as Pages from "./route-imports";
 
 const rootElement = document.getElementById("root");
-if (!rootElement) throw new Error("Root element not present");
+
+if (!rootElement) {
+  throw new Error("Root element not present");
+}
 
 createRoot(rootElement).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route path="/" element={<Pages.App />}>
+          <Route element={<Pages.BrochureLayout />}>
+            <Route index element={<Pages.Landing />} />
 
-          <Route element={<BrochureLayout />}>
-            <Route index element={<Landing />} />
-            <Route path="about" element={<About />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="services" element={<Services />} />
+            <Route path="about" element={<Pages.About />} />
+
+            <Route path="contact" element={<Pages.Contact />} />
+
+            <Route path="services" element={<Pages.Services />} />
           </Route>
 
-          <Route path="login" element={<LoginPage />} />
-          {/* <Route path="register" element={<RegisterPage />} /> */}
+          <Route path="login" element={<Pages.LoginPage />} />
 
           <Route path="app">
-            <Route path="client" element={<ClientLayout />}>
-              <Route index element={<ClientDashboard />} />
-              <Route path="account" element={<ClientAccount />} />
-              <Route path="messages" element={<ClientMessages />} />
-              <Route path="tasks" element={<ClientTasks />} />
-              <Route path="documents" element={<ClientDocuments />} />
+            <Route path="client" element={<Pages.ClientLayout />}>
+              <Route index element={<Pages.ClientDashboard />} />
+
+              <Route path="account" element={<Pages.ClientAccount />} />
+
+              <Route path="messages" element={<Pages.ClientMessages />} />
+
+              <Route path="tasks" element={<Pages.ClientTasks />} />
+
+              <Route path="documents" element={<Pages.ClientDocuments />} />
             </Route>
 
-            <Route path="accountant" element={<AccountantLayout />}>
-              <Route index element={<AccountantHome />} />
+            <Route path="accountant" element={<Pages.AccountantLayout />}>
+              <Route index element={<Pages.AccountantHome />} />
 
               <Route path="clients">
-                <Route index element={<AccountantClients />} />
+                <Route index element={<Pages.AccountantClients />} />
 
                 <Route path=":clientId">
-                  <Route index element={<AccountantClient />} />
-                  <Route path="messages" element={<AccountantClientMessages />} />
-                  <Route path="tasks" element={<AccountantClientTasks />} />
-                  <Route path="documents" element={<AccountantClientDocuments />} />
+                  <Route index element={<Pages.AccountantClient />} />
+
+                  <Route
+                    path="messages"
+                    element={<Pages.AccountantClientMessages />}
+                  />
+
+                  <Route path="tasks">
+                    <Route index element={<Pages.AccountantClientTasks />} />
+
+                    <Route
+                      path="create"
+                      element={<Pages.AccountantCreateTasks />}
+                    />
+                  </Route>
+
+                  <Route
+                    path="documents"
+                    element={<Pages.AccountantClientDocuments />}
+                  />
                 </Route>
               </Route>
 
-              <Route path="messages" element={<AccountantMessageBoard />} />
-              <Route path="account" element={<AccountantAccount />} />
+              <Route path="account" element={<Pages.AccountantAccount />} />
             </Route>
           </Route>
 
-          <Route path="admin" element={<AdminLayout />}>
-            <Route index element={<AdminHome />} />
+          <Route path="admin" element={<Pages.AdminLayout />}>
+            <Route index element={<Pages.AdminHome />} />
 
             <Route path="clients">
-              <Route index element={<Clients />} />
-              <Route path="new" element={<NewClient />} />
+              <Route index element={<Pages.Clients />} />
+
+              <Route path="new" element={<Pages.NewClient />} />
+
               <Route path=":clientId">
-                <Route index element={<Client />} />
-                <Route path="edit" element={<EditClient />} />
+                <Route index element={<Pages.Client />} />
+
+                <Route path="edit" element={<Pages.EditClient />} />
               </Route>
             </Route>
 
             <Route path="accountants">
-              <Route index element={<Accountants />} />
-              <Route path="new" element={<NewAccountant />} />
+              <Route index element={<Pages.Accountants />} />
 
-                <Route path=":accountantId">
-                  <Route index element={<Accountant />} />
-                  <Route path="edit" element={<EditAccountant />} />
-                </Route>
+              <Route path="new" element={<Pages.NewAccountant />} />
+
+              <Route path=":accountantId">
+                <Route index element={<Pages.Accountant />} />
+
+                <Route path="edit" element={<Pages.EditAccountant />} />
               </Route>
+            </Route>
 
             <Route path="admins">
-              <Route index element={<Admins />} />
-              <Route path="new" element={<NewAdmin />} />
+              <Route index element={<Pages.Admins />} />
+
+              <Route path="new" element={<Pages.NewAdmin />} />
 
               <Route path=":adminId">
-                <Route index element={<Admin />} />
-                <Route path="edit" element={<EditAdmin />} />
+                <Route index element={<Pages.Admin />} />
+
+                <Route path="edit" element={<Pages.EditAdmin />} />
               </Route>
             </Route>
           </Route>
 
-          {/*
-          <Route path="users">
-            <Route index element={<Users />} />
-            <Route path="new" element={<NewUser />} />
-            <Route path=":userId">
-              <Route index element={<User />} />
-              <Route path="edit" element={<EditUser />} />
-            </Route>
-          </Route>
-
-          <Route path="clientIndex" element={<ClientIndex />} />
-          */}
-
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Pages.NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
