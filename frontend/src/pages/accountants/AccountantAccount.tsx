@@ -40,8 +40,12 @@ export default function Page() {
       <h2>My Account</h2>
 
       <div style={{ marginBottom: "10px" }}>
-        <Link component="button" onClick={() => navigate(-1)} sx={{ mr: 2 }}>
-          Back
+        <Link
+        component={RouterLink}
+        to="/app/accountant"
+        sx={{ mr: 2 }}
+        >
+        Back
         </Link>
 
         <Link component={RouterLink} to={`/app/accountant/${user.id}/edit`}>
