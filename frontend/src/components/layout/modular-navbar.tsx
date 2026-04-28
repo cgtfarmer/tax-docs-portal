@@ -48,9 +48,8 @@ const navLinks: Record<NavVariant, NavPage[]> = {
   ],
 
   accountant: [
-    { name: "Home", path: "/accountant/" },
-    { name: "View Clients", path: "/accountant/clients/" },
-    // { name: "Account", path: "/accountant/account" },
+    { name: "Home", path: "/app/accountant/" },
+    { name: "View Clients", path: "/app/accountant/clients/" },
   ],
 
   admin: [
@@ -187,19 +186,19 @@ export default function ModularNav({
               gap: 1,
             }}
           >
-            <Divider sx={{ mx: -2 }} />
-            <Button 
-            component={Link} 
-            to={`/${variant}/account`} 
-            fullWidth
-            sx={{
-              justifyContent: "flex-start",
-              textAlign: "left",
-              px: 2,
-            }}
-            >
-              Account
-            </Button>
+          <Divider sx={{ mx: -2 }} />
+          <Button
+          component={Link}
+          to={variant === "accountant" ? "/app/accountant/account" : `/${variant}/account`}
+          fullWidth
+          sx={{
+            justifyContent: "flex-start",
+            textAlign: "left",
+            px: 2,
+          }}
+        >
+            Account
+          </Button>
 
             <Divider sx={{ mx: -2 }} />
 
