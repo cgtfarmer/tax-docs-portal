@@ -1,87 +1,58 @@
 package com.csci.tax_docs_portal.service;
 
 import com.csci.tax_docs_portal.entity.Task;
-import com.csci.tax_docs_portal.repository.TasksRepository;
+import com.csci.tax_docs_portal.repository.TaskRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class TaskService {
 
-  private final TasksRepository tasksRepository;
+  private final TaskRepository taskRepository;
 
-  @Autowired
-  public TaskService(TasksRepository tasksRepository) {
-    this.tasksRepository = tasksRepository;
+  public TaskService(TaskRepository taskRepository) {
+    this.taskRepository = taskRepository;
   }
 
   public List<Task> list() {
-    log.info("[TaskService#list]");
-    return this.tasksRepository.findAll();
-  }
-
-  public Task get(UUID id) {
-    log.info("[TaskService#get] id={}", id);
-    return this.tasksRepository.findById(id);
-  }
-
-  public Task create(Task task) {
-    log.info("[TaskService#create] task={}", task);
-    return this.tasksRepository.create(task);
-  }
-
-  public Task update(Task task) {
-    log.info("[TaskService#update] task={}", task);
-    return this.tasksRepository.update(task);
-  }
-
-  public boolean destroy(UUID id) {
-    log.info("[TaskService#destroy] id={}", id);
-    return this.tasksRepository.destroy(id);
-  }
-
-  public Task updateStatus(UUID taskId, String status) {
-    log.info("[TaskService#updateStatus] taskId={}, status={}", taskId, status);
-
-    Task task = this.tasksRepository.findById(taskId);
-
-    if (task == null) {
-      return null;
-    }
-
-    task.setTaskStatus(status);
-    task.setUpdatedAt(LocalDateTime.now());
-
-    return this.tasksRepository.update(task);
-  }
-
-  public boolean softDelete(UUID taskId) {
-    log.info("[TaskService#softDelete] taskId={}", taskId);
-
-    Task task = this.tasksRepository.findById(taskId);
-
-    if (task == null) {
-      return false;
-    }
-
-    task.setDeletedAt(LocalDateTime.now());
-    task.setUpdatedAt(LocalDateTime.now());
-
-    this.tasksRepository.update(task);
-    return true;
+    return taskRepository.findAll();
   }
 
   public List<Task> listActive() {
-    log.info("[TaskService#listActive]");
+    return taskRepository.findActive();
+  }
 
-    List<Task> tasks = this.tasksRepository.findAll();
-    return tasks.stream()
-        .filter(task -> task.getDeletedAt() == null)
-        .toList();
+  public Task get(UUID id) {
+    return taskRepository.findById(id);
+  }
+
+  public List<Task> getByClient(UUID clientId) {
+    return taskRepository.findByClientId(clientId);
+  }
+
+  public Task create(Task task) {
+    return taskRepository.create(task);
+  }
+
+  public Task update(Task task) {
+    task.setUpdatedAt(LocalDateTime.now());
+
+    return taskRepository.update(task);
+  }
+
+  public void destroy(UUID id) {
+    taskRepository.softDelete(id);
+  }
+
+  public Task updateStatus(UUID id, String status) {
+    Task task = taskRepository.findById(id);
+
+    task.setTaskStatus(status);
+
+    task.setUpdatedAt(LocalDateTime.now());
+
+    return taskRepository.update(task);
   }
 }

@@ -1,62 +1,91 @@
-import { Stack, Container, Box, Typography, Button, Table, TableBody, TableCell, TableRow, Paper } from "@mui/material";
+import {
+  Button,
+  Container,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../App";
+import ApiAccessor from "../../accessors/api-accessor";
+import { Client } from "../../models/client";
 
-export default function ClientAccount() {
-  return (
-    <Stack sx={{ height: "100vh" }}>
+const apiAccessor = new ApiAccessor();
 
-      <Container component="main" sx={{ pt: 3 }}>
-        <Typography variant="h5" sx={{ mb: 2 }}>
-          Account Information
-        </Typography>
+export default function Page() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [client, setClient] = useState<Client | null>(null);
 
-        <Box sx={{ display: "flex", gap: 4 }}>
-          
-          <Paper sx={{ p: 2 }}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell><strong>First Name</strong></TableCell>
-                  <TableCell>John</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Last Name</strong></TableCell>
-                  <TableCell>Doe</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Email</strong></TableCell>
-                  <TableCell>John_Doe99@gmail.com</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Username</strong></TableCell>
-                  <TableCell>John_Doe9</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Password</strong></TableCell>
-                  <TableCell>***************</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Account Number</strong></TableCell>
-                  <TableCell>1005675673</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><strong>Account Type</strong></TableCell>
-                  <TableCell>Tax Client</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
+  useEffect(() => {
+    async function fetchClient() {
+      if (!user?.id) return;
 
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            <Button variant="outlined">edit</Button>
-            <Button variant="outlined">edit</Button>
-            <Button variant="outlined">change email</Button>
-            <Button variant="outlined">change username</Button>
-            <Button variant="outlined">reset password</Button>
-          </Box>
+      const data = await apiAccessor.getClient(user.id);
+      setClient(data);
+    }
 
-        </Box>
+    void fetchClient();
+  }, [user]);
 
+  if (!user || !client) {
+    return (
+      <Container sx={{ mt: 3 }}>
+        <Typography>Loading...</Typography>
       </Container>
-    </Stack>
+    );
+  }
+
+  return (
+    <Container sx={{ mt: 3 }}>
+      <Stack spacing={3}>
+        <Typography variant="h4">My Account</Typography>
+
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>First Name</TableCell>
+                <TableCell>{client.firstName}</TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell>Last Name</TableCell>
+                <TableCell>{client.lastName}</TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell>Email</TableCell>
+                <TableCell>{client.email}</TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell>Username</TableCell>
+                <TableCell>{client.username}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Stack direction="row" spacing={2}>
+          <Button variant="outlined" onClick={() => navigate("/app/client")}>
+            Back
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={() => navigate("/app/client/account/edit")}
+          >
+            Edit
+          </Button>
+        </Stack>
+      </Stack>
+    </Container>
   );
 }

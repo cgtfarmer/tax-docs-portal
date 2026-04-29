@@ -9,13 +9,13 @@ export interface Task {
 
   title: string;
 
-  task_description: string;
+  description: string;
 
-  task_status: TaskStatus;
+  taskStatus: TaskStatus;
 
-  created_at: string;
+  createdAt: string;
 
-  updated_at: string | null;
+  updatedAt: string | null;
 
-  deleted_at: string | null;
+  deletedAt: string | null;
 }

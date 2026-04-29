@@ -1,16 +1,16 @@
 import "../../App.css";
 import { Outlet } from "react-router";
-//import AdminNavbarLeft from './AdminNavbarLeft';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import ModularNav from "./modular-navbar";
+//import AccountantNavbarLeft from './AccountantNavbarLeft';
+import ModularNav from "../layout/modular-navbar";
 
 export default function Component() {
   return (
-    <Box sx={{ display: 'flex'}}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
 
-      <ModularNav variant='admin' />
+      <ModularNav variant='accountant' />
 
       <Box
         component="main"

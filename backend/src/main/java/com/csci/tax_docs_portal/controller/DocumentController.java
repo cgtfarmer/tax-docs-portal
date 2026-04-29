@@ -4,6 +4,7 @@ import com.csci.tax_docs_portal.entity.Document;
 import com.csci.tax_docs_portal.service.DocumentService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -29,10 +30,23 @@ public class DocumentController {
       @PathVariable String documentType,
       HttpServletRequest request
   ) throws IOException {
-    Document response = service.upload(clientId, documentType, request);
-
     return ResponseEntity.status(201)
-        .body(response);
+        .body(service.upload(clientId, documentType, request));
+  }
+
+  @GetMapping("/{clientId}/documents")
+  public ResponseEntity<List<Document>> getDocumentsByClient(
+      @PathVariable UUID clientId
+  ) {
+    return ResponseEntity.ok(service.getByClient(clientId));
+  }
+
+  @GetMapping("/{clientId}/documents/{documentType}")
+  public ResponseEntity<Document> getClientDocument(
+      @PathVariable UUID clientId,
+      @PathVariable String documentType
+  ) {
+    return ResponseEntity.ok(service.getClientDocument(clientId, documentType));
   }
 
   @GetMapping("/documents/{id}/download")
@@ -49,11 +63,11 @@ public class DocumentController {
   }
 
   @DeleteMapping("/documents/{id}")
-  public ResponseEntity<String> destroy(@PathVariable UUID id)
+  public ResponseEntity<Void> destroy(@PathVariable UUID id)
       throws IOException {
     service.destroy(id);
 
-    return ResponseEntity.status(204)
+    return ResponseEntity.noContent()
         .build();
   }
 }
