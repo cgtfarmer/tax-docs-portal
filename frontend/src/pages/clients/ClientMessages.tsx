@@ -1,146 +1,423 @@
-import { useState } from "react";
 import {
   Box,
+  CircularProgress,
+  IconButton,
   Paper,
-  Typography,
   Stack,
   TextField,
-  IconButton,
+  Typography
 } from "@mui/material";
+
 import SendIcon from "@mui/icons-material/Send";
 
-type Message = {
-  id: number;
-  sender: string;
-  text: string;
-  timestamp: string;
-  isUser: boolean;
-};
+import {
+  useEffect,
+  useRef,
+  useState
+} from "react";
+
+import ApiAccessor from "../../accessors/api-accessor";
+import { useAuth } from "../../App";
+import { Message } from "../../models/message";
+import { Client } from "../../models/client";
+import { Accountant } from "../../models/accountant";
+
+const apiAccessor =
+  new ApiAccessor();
 
 export default function ClientMessages() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      sender: "Mary Jane",
-      text: "a friendly remind to upload your W4",
-      timestamp: "Sent 2026.4.3",
-      isUser: false,
-    },
-    {
-      id: 2,
-      sender: "John Doe",
-      text: "Thank you! I’ll send that right away",
-      timestamp: "",
-      isUser: true,
-    },
-  ]);
+  const { user } =
+    useAuth();
 
-  const [input, setInput] = useState("");
+  const [
+    messages,
+    setMessages
+  ] = useState<
+    Message[]
+  >([]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const [
+    client,
+    setClient
+  ] = useState<
+    Client | null
+  >(null);
 
-    const newMessage: Message = {
-      id: Date.now(),
-      sender: "John Doe",
-      text: input,
-      timestamp: new Date().toLocaleString(),
-      isUser: true,
+  const [
+    accountant,
+    setAccountant
+  ] = useState<
+    Accountant | null
+  >(null);
+
+  const [
+    input,
+    setInput
+  ] = useState("");
+
+  const [
+    loading,
+    setLoading
+  ] = useState(true);
+
+  const [
+    sending,
+    setSending
+  ] = useState(false);
+
+  const [
+    errorMessage,
+    setErrorMessage
+  ] = useState("");
+
+  const scrollRef =
+    useRef<
+      HTMLDivElement | null
+    >(null);
+
+  useEffect(() => {
+    void initializePage();
+  }, [user]);
+
+  useEffect(() => {
+    scrollRef.current
+      ?.scrollTo({
+        top:
+          scrollRef.current
+            .scrollHeight,
+        behavior:
+          "smooth"
+      });
+  }, [messages]);
+
+  const initializePage =
+    async (): Promise<void> => {
+      try {
+        setLoading(true);
+        setErrorMessage("");
+
+        if (!user?.id) {
+          setErrorMessage(
+            "No client logged in."
+          );
+          return;
+        }
+
+        const clientResult =
+          await apiAccessor.getClient(
+            user.id
+          );
+
+        setClient(
+          clientResult
+        );
+
+        if (
+          !clientResult.accountantId
+        ) {
+          setErrorMessage(
+            "No accountant assigned."
+          );
+          return;
+        }
+
+        const accountantResult =
+          await apiAccessor.getAccountant(
+            clientResult.accountantId
+          );
+
+        setAccountant(
+          accountantResult
+        );
+
+        const messageResult =
+          await apiAccessor.getConversationMessages(
+            user.id,
+            clientResult.accountantId
+          );
+
+        setMessages(
+          messageResult
+        );
+      } catch (error) {
+        console.error(
+          error
+        );
+
+        setErrorMessage(
+          "Unable to load messages."
+        );
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setMessages((prev) => [...prev, newMessage]);
-    setInput("");
-  };
+  const loadMessages =
+    async (): Promise<void> => {
+      if (
+        !user?.id ||
+        !client?.accountantId
+      ) {
+        return;
+      }
+
+      try {
+        const result =
+          await apiAccessor.getConversationMessages(
+            user.id,
+            client.accountantId
+          );
+
+        setMessages(
+          result
+        );
+      } catch (error) {
+        console.error(
+          error
+        );
+      }
+    };
+
+  const handleSend =
+    async (): Promise<void> => {
+      try {
+        if (
+          !input.trim() ||
+          !user?.id ||
+          !client?.accountantId
+        ) {
+          return;
+        }
+
+        setSending(true);
+        setErrorMessage("");
+
+        await apiAccessor.createMessage({
+          clientId:
+            user.id,
+          accountantId:
+            client.accountantId,
+          senderType:
+            "CLIENT",
+          messageText:
+            input.trim()
+        });
+
+        setInput("");
+
+        await loadMessages();
+      } catch (error) {
+        console.error(
+          error
+        );
+
+        setErrorMessage(
+          "Unable to send message."
+        );
+      } finally {
+        setSending(false);
+      }
+    };
+
+  const formatDate =
+    (
+      value: string
+    ): string => {
+      if (!value) {
+        return "";
+      }
+
+      const parsed =
+        new Date(
+          value.replace(
+            " ",
+            "T"
+          )
+        );
+
+      if (
+        isNaN(
+          parsed.getTime()
+        )
+      ) {
+        return value;
+      }
+
+      return parsed.toLocaleString();
+    };
 
   return (
-    <Stack sx={{ height: "100%" }}>
-      {/* Header */}
-      <Typography variant="h4" fontWeight="bold">
+    <Stack
+      spacing={2}
+      sx={{
+        height:
+          "100%"
+      }}
+    >
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+      >
         Message Board
       </Typography>
 
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Accountant : Mary Jane
-      </Typography>
-
-      {/* Message container */}
       <Paper
         variant="outlined"
         sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
+          height:
+            "70vh",
+          display:
+            "flex",
+          flexDirection:
+            "column",
           p: 2,
-          height: "100%",
+          overflow:
+            "hidden"
         }}
       >
-        
+        {loading && (
+          <CircularProgress />
+        )}
+
+        {errorMessage && (
+          <Typography color="error">
+            {errorMessage}
+          </Typography>
+        )}
+
         <Box
+          ref={scrollRef}
           sx={{
             flex: 1,
-            overflowY: "auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
+            minHeight: 0,
+            overflowY:
+              "auto",
+            display:
+              "flex",
+            flexDirection:
+              "column",
+            gap: 2,
+            pr: 1,
+            scrollBehavior:
+              "smooth"
           }}
         >
-          {messages.map((msg) => (
-            <Box
-              key={msg.id}
-              sx={{
-                display: "flex",
-                justifyContent: msg.isUser ? "flex-end" : "flex-start",
-              }}
-            >
-              <Paper
-                variant="outlined"
-                sx={{
-                  p: 2,
-                  maxWidth: "50%",
-                }}
-              >
-                <Stack spacing={0.5}>
-                  <Typography fontWeight="bold">
-                    {msg.sender}
-                  </Typography>
+          {!loading &&
+            messages.map(
+              (msg) => {
+                const sender =
+                  String(
+                    msg.senderType
+                  )
+                    .trim()
+                    .toUpperCase();
 
-                  <Typography>{msg.text}</Typography>
+                const isUser =
+                  sender ===
+                  "CLIENT";
 
-                  {msg.timestamp && (
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
+                return (
+                  <Box
+                    key={
+                      msg.id
+                    }
+                    sx={{
+                      display:
+                        "flex",
+                      justifyContent:
+                        isUser
+                          ? "flex-end"
+                          : "flex-start"
+                    }}
+                  >
+                    <Paper
+                      variant="outlined"
+                      sx={{
+                        p: 2,
+                        maxWidth:
+                          "60%"
+                      }}
                     >
-                      {msg.timestamp}
-                    </Typography>
-                  )}
-                </Stack>
-              </Paper>
-            </Box>
-          ))}
+                      <Stack spacing={1}>
+                        <Typography fontWeight="bold">
+                          {isUser
+                            ? "You"
+                            : accountant?.firstName ||
+                              "Accountant"}
+                        </Typography>
+
+                        <Typography>
+                          {
+                            msg.messageText
+                          }
+                        </Typography>
+
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                        >
+                          {formatDate(
+                            msg.createdAt
+                          )}
+                        </Typography>
+                      </Stack>
+                    </Paper>
+                  </Box>
+                );
+              }
+            )}
         </Box>
 
         <Box
           sx={{
-            display: "flex",
+            display:
+              "flex",
             gap: 1,
             mt: 2,
-            borderTop: "1px solid #ccc",
             pt: 1,
+            borderTop:
+              "1px solid #ccc"
           }}
         >
           <TextField
             fullWidth
             size="small"
-            placeholder="Aa"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSend();
+            placeholder="Type a message..."
+            value={
+              input
+            }
+            disabled={
+              sending
+            }
+            onChange={(
+              e
+            ) =>
+              setInput(
+                e.target
+                  .value
+              )
+            }
+            onKeyDown={(
+              e
+            ) => {
+              if (
+                e.key ===
+                  "Enter" &&
+                !sending
+              ) {
+                void handleSend();
+              }
             }}
           />
 
-          <IconButton onClick={handleSend}>
+          <IconButton
+            disabled={
+              sending
+            }
+            onClick={() =>
+              void handleSend()
+            }
+          >
             <SendIcon />
           </IconButton>
         </Box>

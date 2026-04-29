@@ -35,6 +35,10 @@ const bottomAction: Record<NavVariant, BottomAction> = {
 const navLinks: Record<NavVariant, NavPage[]> = {
   brochure: [
     {
+      name: "Home",
+      path: "/",
+    },
+    {
       name: "About",
       path: "/about",
     },
@@ -53,6 +57,18 @@ const navLinks: Record<NavVariant, NavPage[]> = {
       name: "Home",
       path: "/",
     },
+    {
+      name: "About",
+      path: "/about",
+    },
+    {
+      name: "Contact",
+      path: "/contact",
+    },
+    {
+      name: "Services",
+      path: "/services",
+    }
   ],
 
   client: [
@@ -75,19 +91,15 @@ const navLinks: Record<NavVariant, NavPage[]> = {
   ],
 
   accountant: [
-    {
-      name: "Home",
-      path: "/app/accountant",
-    },
-    {
-      name: "View Clients",
-      path: "/app/accountant/clients",
-    },
-    {
-      name: "Messages",
-      path: "/app/accountant/messages",
-    },
-  ],
+  {
+    name: "Home",
+    path: "/app/accountant",
+  },
+  {
+    name: "View Clients",
+    path: "/app/accountant/clients",
+  }
+],
 
   admin: [
     {
