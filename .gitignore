@@ -82,3 +82,4 @@ infrastructure/node_modules
 # Private storage for uploaded files
 */backend/storage/
 */backend/storage/*
+backend/storage/
