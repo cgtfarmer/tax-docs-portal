@@ -27,9 +27,7 @@ export default function Page() {
   const { user } = useAuth();
 
   const [clients, setClients] = useState<Client[]>([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -45,7 +43,6 @@ export default function Page() {
         setClients(result);
       } catch (error) {
         console.error(error);
-
         setError("Unable to load clients.");
       } finally {
         setLoading(false);
@@ -62,11 +59,7 @@ export default function Page() {
       </Typography>
 
       {loading && (
-        <Box
-          sx={{
-            py: 3,
-          }}
-        >
+        <Box sx={{ py: 3 }}>
           <CircularProgress />
         </Box>
       )}
@@ -83,21 +76,13 @@ export default function Page() {
 
       {!loading && !error && clients.length > 0 && (
         <TableContainer component={Paper}>
-          <Table
-            sx={{
-              minWidth: 650,
-            }}
-          >
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
                 <TableCell>First Name</TableCell>
-
                 <TableCell>Last Name</TableCell>
-
                 <TableCell>Email</TableCell>
-
                 <TableCell>Username</TableCell>
-
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -106,44 +91,20 @@ export default function Page() {
               {clients.map((client) => (
                 <TableRow key={client.id}>
                   <TableCell>{client.firstName}</TableCell>
-
                   <TableCell>{client.lastName}</TableCell>
-
                   <TableCell>{client.email}</TableCell>
-
                   <TableCell>{client.username}</TableCell>
 
-                  {/*<TableCell>
+                  <TableCell>
                     <Stack direction="row" gap="0.75rem" flexWrap="wrap">
                       <Link
                         component={RouterLink}
                         to={`/app/accountant/clients/${client.id}`}
                       >
-                        Show
-                      </Link>
-
-                      <Link
-                        component={RouterLink}
-                        to={`/app/accountant/clients/${client.id}/messages`}
-                      >
-                        Messages
-                      </Link>
-
-                      <Link
-                        component={RouterLink}
-                        to={`/app/accountant/clients/${client.id}/tasks`}
-                      >
-                        Tasks
-                      </Link>
-
-                      <Link
-                        component={RouterLink}
-                        to={`/app/accountant/clients/${client.id}/documents`}
-                      >
-                        Documents
+                        View
                       </Link>
                     </Stack>
-                  </TableCell>*/}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
