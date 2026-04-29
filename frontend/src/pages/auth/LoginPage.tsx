@@ -36,20 +36,20 @@ const handleLogin = async (): Promise<void> => {
     });
 
     if (result.role === "ADMIN") {
-      navigate("/admin");
+      void navigate("/admin");
     }
     if (result.role === "ACCOUNTANT") {
-      navigate("/app/accountant");
+      void navigate("/app/accountant");
     }
     if (result.role === "CLIENT") {
-      navigate("/app/client/account");
+      void navigate("/app/client/account");
     }
     else {
       setLoginError("Unknown role.");
     }
   }
   catch (error) {
-    
+
     console.error("Login failed:", error);
 
     setLoginError(
@@ -118,7 +118,7 @@ const handleLogin = async (): Promise<void> => {
               label="Username / Email"
               variant="outlined"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); }}
               sx={{
               width: "300px",
               marginBottom: "20px",
@@ -133,7 +133,7 @@ const handleLogin = async (): Promise<void> => {
               type="password"
               variant="outlined"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => { setPassword(e.target.value); }}
               onKeyDown={(e) => { if (e.key === "Enter") void handleLogin(); }}
               sx={{
               width: "300px",
