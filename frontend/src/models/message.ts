@@ -1,4 +1,6 @@
-export type SenderType = "Client" | "Accountant";
+export type SenderType =
+  "CLIENT" |
+  "ACCOUNTANT";
 
 export interface Message {
   id: string;
@@ -7,9 +9,9 @@ export interface Message {
 
   accountantId: string;
 
-  sender_type: SenderType;
+  senderType: SenderType;
 
-  message_text: string;
+  messageText: string;
 
-  created_at: string;
+  createdAt: string;
 }

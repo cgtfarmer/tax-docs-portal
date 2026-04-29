@@ -1,15 +1,17 @@
-export type SenderType = "Client" | "Accountant";
+export type SenderType =
+  "CLIENT" |
+  "ACCOUNTANT";
 
 export interface MessageInput {
-  id: string | undefined;
+  id?: string;
 
-  clientId: string | undefined;
+  clientId?: string;
 
-  accountantId: string | undefined;
+  accountantId?: string;
 
-  sender_type: SenderType | undefined;
+  senderType?: SenderType;
 
-  message_text: string | undefined;
-  
-  created_at: string | undefined;
+  messageText?: string;
+
+  createdAt?: string;
 }

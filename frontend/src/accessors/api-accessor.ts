@@ -7,7 +7,8 @@ import { User } from '../models/user';
 import { Accountant } from '../models/accountant';
 import { Client} from '../models/client'
 import { Admin } from '../models/admin'
-import { Message } from '../models/message'
+import { Message } from "../models/message";
+import { MessageInput } from "../models/message-input";
 import { Task } from '../models/task'
 import { ClientDocument } from "../models/document";
 
@@ -388,96 +389,265 @@ public async authorize(email: string, password: string): Promise<any> {
   }
 
   /* Message API */
-  public async listMessages(): Promise<Message[]> {
-    const path = `${this.API_URL}/messages`;
-    const method = 'GET';
-    this.logRequest(method, path);
 
-    const response = await fetch(
-      path,
-      { method: method }
-    );
+public async listMessages(): Promise<Message[]> {
+  const path =
+    `${this.API_URL}/messages`;
 
-    const data: Message[] = await response.json();
-    return data;
-  }
+  const method =
+    "GET";
 
-  public async getMessage(messageId: string): Promise<Message> {
-    const path = `${this.API_URL}/messages/${messageId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
+  this.logRequest(
+    method,
+    path
+  );
 
-    const response = await fetch(
-      path,
-      { method: method }
-    );
-
-    const data: Message = await response.json();
-    return data;
-  }
-
-  public async getMessagesByClient(clientId: string): Promise<Message[]> {
-    const path = `${this.API_URL}/messages/client/${clientId}`;
-    const method = 'GET';
-    this.logRequest(method, path);
-
-    const response = await fetch(
-      path,
-      { method: method }
-    );
-
-    const data: Message[] = await response.json();
-    return data;
-  }
-
-  public async createMessage(message: Message): Promise<Message> {
-    const path = `${this.API_URL}/messages`;
-    const method = 'POST';
-    const body = JSON.stringify(message);
-    this.logRequest(method, path, body);
-
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
+  const response =
+    await fetch(path, {
+      method
     });
 
-    const data: Message = await response.json();
-    return data;
-  }
+  const data: Message[] =
+    await response.json();
 
-  public async updateMessage(message: Message): Promise<Message> {
-    const path = `${this.API_URL}/messages/${message.id}`;
-    const method = 'PUT';
-    const body = JSON.stringify(message);
-    this.logRequest(method, path, body);
+  return data;
+}
 
-    const response = await fetch(path, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body
+public async getMessage(
+  messageId: string
+): Promise<Message> {
+  const path =
+    `${this.API_URL}/messages/${messageId}`;
+
+  const method =
+    "GET";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method
     });
 
-    const data: Message = await response.json();
-    return data;
-  }
+  const raw =
+    await response.json();
 
-  public async destroyMessage(messageId: string): Promise<boolean> {
-    const path = `${this.API_URL}/messages/${messageId}`;
-    const method = 'DELETE';
-    this.logRequest(method, path);
+  const data: Message = {
+    id:
+      raw.id,
 
-    const response = await fetch(
-      path,
-      { method: method }
+    clientId:
+      raw.client_id,
+
+    accountantId:
+      raw.accountant_id,
+
+    senderType:
+      raw.sender_type,
+
+    messageText:
+      raw.message_text,
+
+    createdAt:
+      raw.created_at
+  };
+
+  return data;
+}
+
+public async getMessagesByClient(
+  clientId: string
+): Promise<Message[]> {
+  const path =
+    `${this.API_URL}/messages/client/${clientId}`;
+
+  const method =
+    "GET";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method
+    });
+
+  const raw =
+    await response.json();
+
+  const rows =
+    Array.isArray(raw)
+      ? raw
+      : raw
+        ? [raw]
+        : [];
+
+  return rows.map(
+    (message: any) => ({
+      id:
+        message.id,
+
+      clientId:
+        message.client_id,
+
+      accountantId:
+        message.accountant_id,
+
+      senderType:
+        message.sender_type,
+
+      messageText:
+        message.message_text,
+
+      createdAt:
+        message.created_at
+    })
+  );
+}
+
+public async getConversationMessages(
+  clientId: string,
+  accountantId: string
+): Promise<Message[]> {
+  const path =
+    `${this.API_URL}/messages/conversation?clientId=${clientId}&accountantId=${accountantId}`;
+
+  const method = "GET";
+
+  this.logRequest(method, path);
+
+  const response =
+    await fetch(path, { method });
+
+  const raw =
+    await response.json();
+
+  return raw.map(
+    (message: any) => ({
+      id:
+        message.id,
+
+      clientId:
+        message.clientId,
+
+      accountantId:
+        message.accountantId,
+
+      senderType:
+        String(
+          message.senderType
+        ).trim().toUpperCase(),
+
+      messageText:
+        message.messageText,
+
+      createdAt:
+        message.createdAt
+    })
+  );
+}
+
+public async createMessage(
+  message: MessageInput
+): Promise<Message> {
+  const path =
+    `${this.API_URL}/messages`;
+
+  const method =
+    "POST";
+
+  const body =
+    JSON.stringify(
+      message
     );
 
-    return (response.status === 204);
-  }
+  this.logRequest(
+    method,
+    path,
+    body
+  );
+
+  const response =
+    await fetch(path, {
+      method,
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+      body
+    });
+
+  const data: Message =
+    await response.json();
+
+  return data;
+}
+
+public async updateMessage(
+  message: Message
+): Promise<Message> {
+  const path =
+    `${this.API_URL}/messages/${message.id}`;
+
+  const method =
+    "PUT";
+
+  const body =
+    JSON.stringify(
+      message
+    );
+
+  this.logRequest(
+    method,
+    path,
+    body
+  );
+
+  const response =
+    await fetch(path, {
+      method,
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+      body
+    });
+
+  const data: Message =
+    await response.json();
+
+  return data;
+}
+
+public async destroyMessage(
+  messageId: string
+): Promise<boolean> {
+  const path =
+    `${this.API_URL}/messages/${messageId}`;
+
+  const method =
+    "DELETE";
+
+  this.logRequest(
+    method,
+    path
+  );
+
+  const response =
+    await fetch(path, {
+      method
+    });
+
+  return (
+    response.status ===
+    204
+  );
+}
 
 /* Task API */
 public async listTasks(): Promise<Task[]> {

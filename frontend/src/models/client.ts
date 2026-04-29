@@ -1,15 +1,15 @@
 export interface Client {
-  id: string | undefined;
+  id: string;
 
-  firstName: string | undefined;
+  firstName: string;
 
-  lastName: string | undefined;
+  lastName: string;
 
-  email: string | undefined;
+  email: string;
 
-  username: string | undefined;
+  username: string;
 
-  passwordHash: string | undefined;
+  passwordHash: string;
 
   accountantId: string | null;
 }
