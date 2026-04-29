@@ -8,10 +8,11 @@ export { default as Contact } from "./pages/brochure/Contact.tsx";
 export { default as Services } from "./pages/brochure/Services.tsx";
 
 /* layouts */
+export { default as AppLayout } from "./components/layout/AppLayout.tsx";
 export { default as BrochureLayout } from "./components/layout/BrochureLayout.tsx";
-export { default as ClientLayout } from "./components/layout/ClientLayout.tsx";
-export { default as AccountantLayout } from "./components/layout/AccountantLayout.tsx";
-export { default as AdminLayout } from "./components/layout/AdminLayout.tsx";
+// export { default as ClientLayout } from "./components/deprecated/ClientLayout.tsx";
+// export { default as AccountantLayout } from "./components/deprecated/AccountantLayout.tsx";
+// export { default as AdminLayout } from "./components/deprecated/AdminLayout.tsx";
 
 /* auth */
 export { default as LoginPage } from "./pages/auth/LoginPage.tsx";

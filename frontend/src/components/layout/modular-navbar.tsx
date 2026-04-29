@@ -20,7 +20,7 @@ interface NavPage {
   readonly path: string;
 }
 
-type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin";
+export type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin";
 
 type BottomAction = "login" | "account-logout" | "none";
 
@@ -163,7 +163,8 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
 
   const handleLogout = (): void => {
     logout();
-    navigate("/");
+
+    void navigate("/");
   };
 
   return (
@@ -261,7 +262,7 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
                 <Button
                   key={client.id}
                   component={Link}
-                  to={`/app/accountant/clients/${client.id}`}
+                  to={`/app/accountant/clients/${client.id ?? ''}`}
                   fullWidth
                   sx={{
                     color: "black",

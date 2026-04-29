@@ -29,7 +29,7 @@ createRoot(rootElement).render(
           <Route path="login" element={<Pages.LoginPage />} />
 
           <Route path="app">
-            <Route path="client" element={<Pages.ClientLayout />}>
+            <Route path="client" element={<Pages.AppLayout />}>
               <Route index element={<Pages.ClientDashboard />} />
 
               <Route path="account" element={<Pages.ClientAccount />} />
@@ -41,7 +41,7 @@ createRoot(rootElement).render(
               <Route path="documents" element={<Pages.ClientDocuments />} />
             </Route>
 
-            <Route path="accountant" element={<Pages.AccountantLayout />}>
+            <Route path="accountant" element={<Pages.AppLayout />}>
               <Route index element={<Pages.AccountantHome />} />
 
               <Route path="clients">
@@ -75,7 +75,7 @@ createRoot(rootElement).render(
             </Route>
           </Route>
 
-          <Route path="admin" element={<Pages.AdminLayout />}>
+          <Route path="admin" element={<Pages.AppLayout />}>
             <Route index element={<Pages.AdminHome />} />
 
             <Route path="clients">
