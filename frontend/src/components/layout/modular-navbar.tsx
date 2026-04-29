@@ -107,15 +107,15 @@ const navLinks: Record<NavVariant, NavPage[]> = {
       path: "/admin",
     },
     {
-      name: "View Accountants",
+      name: "Accountants",
       path: "/admin/accountants",
     },
     {
-      name: "View Clients",
+      name: "Clients",
       path: "/admin/clients",
     },
     {
-      name: "View Admins",
+      name: "Admins",
       path: "/admin/admins",
     },
   ],
