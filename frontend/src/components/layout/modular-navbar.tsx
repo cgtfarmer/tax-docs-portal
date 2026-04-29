@@ -327,7 +327,7 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
                   ? "/app/client/account"
                   : variant === "accountant"
                   ? "/app/accountant/account"
-                  : "/admin"
+                  : `/admin/admins/${user?.id ?? ""}`
               }
               fullWidth
               sx={{

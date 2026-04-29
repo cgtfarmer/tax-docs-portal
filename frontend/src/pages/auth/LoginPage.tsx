@@ -42,7 +42,7 @@ const handleLogin = async (): Promise<void> => {
       void navigate("/app/accountant");
     }
     if (result.role === "CLIENT") {
-      void navigate("/app/client/account");
+      void navigate("/app/client/");
     }
     else {
       setLoginError("Unknown role.");
