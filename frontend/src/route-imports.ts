@@ -33,6 +33,7 @@ export { default as AccountantClientTasks } from "./pages/accountants/Accountant
 export { default as AccountantCreateTasks } from "./pages/accountants/AccountantCreateTasks.tsx";
 export { default as AccountantClientDocuments } from "./pages/accountants/AccountantClientDocuments.tsx";
 export { default as AccountantAccount } from "./pages/accountants/AccountantAccount.tsx";
+export { default as EditAccountantAccount } from "./pages/accountants/EditAccountantAccount.tsx";
 
 /* admin */
 export { default as AdminHome } from "./pages/admin/AdminHome.tsx";

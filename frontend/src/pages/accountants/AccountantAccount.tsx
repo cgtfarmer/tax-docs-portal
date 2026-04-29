@@ -1,6 +1,6 @@
-import { Container, Table, TableBody, TableCell, TableRow, Link } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router";
+import { Button, Container, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useAuth } from "../../App";
 import ApiAccessor from "../../accessors/api-accessor";
 import { Accountant } from "../../models/accountant";
@@ -23,65 +23,58 @@ export default function Page() {
     void fetchAccountant();
   }, [user]);
 
-  if (!user) {
-    return <p>Loading...</p>;
-  }
-
-  if (user.role !== "ACCOUNTANT") {
-    return <p>Unauthorized</p>;
-  }
-
-  if (!accountant) {
-    return <p>Loading...</p>;
+  if (!user || !accountant) {
+    return (
+      <Container sx={{ mt: 3 }}>
+        <Typography>Loading...</Typography>
+      </Container>
+    );
   }
 
   return (
-    <Container className="mt-3">
-      <h2>My Account</h2>
+    <Container sx={{ mt: 3 }}>
+      <Stack spacing={3}>
+        <Typography variant="h4">My Account</Typography>
 
-      <div style={{ marginBottom: "10px" }}>
-        <Link
-        component={RouterLink}
-        to="/app/accountant"
-        sx={{ mr: 2 }}
-        >
-        Back
-        </Link>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>First Name</TableCell>
+                <TableCell>{accountant.firstName}</TableCell>
+              </TableRow>
 
-        <Link component={RouterLink} to={`/app/accountant/${user.id}/edit`}>
-          Edit
-        </Link>
-      </div>
+              <TableRow>
+                <TableCell>Last Name</TableCell>
+                <TableCell>{accountant.lastName}</TableCell>
+              </TableRow>
 
-      <Table>
-        <TableBody>
-          <TableRow>
-            <TableCell><strong>ID</strong></TableCell>
-            <TableCell>{accountant.id}</TableCell>
-          </TableRow>
+              <TableRow>
+                <TableCell>Email</TableCell>
+                <TableCell>{accountant.email}</TableCell>
+              </TableRow>
 
-          <TableRow>
-            <TableCell><strong>First Name</strong></TableCell>
-            <TableCell>{accountant.firstName}</TableCell>
-          </TableRow>
+              <TableRow>
+                <TableCell>Username</TableCell>
+                <TableCell>{accountant.username}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-          <TableRow>
-            <TableCell><strong>Last Name</strong></TableCell>
-            <TableCell>{accountant.lastName}</TableCell>
-          </TableRow>
+        <Stack direction="row" spacing={2}>
+          <Button variant="outlined" onClick={() => navigate("/app/accountant")}>
+            Back
+          </Button>
 
-          <TableRow>
-            <TableCell><strong>Email</strong></TableCell>
-            <TableCell>{accountant.email}</TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell><strong>Username</strong></TableCell>
-            <TableCell>{accountant.username}</TableCell>
-          </TableRow>
-
-        </TableBody>
-      </Table>
+          <Button
+            variant="contained"
+            onClick={() => navigate(`/app/accountant/${accountant.id}/edit`)}
+          >
+            Edit
+          </Button>
+        </Stack>
+      </Stack>
     </Container>
   );
 }
