@@ -105,6 +105,26 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
     void navigate("/");
   };
 
+
+  const handleLogoClick = () => {
+    switch (variant) {
+      case "brochure":
+        navigate("/");
+        break;
+      case "admin":
+        navigate("/admin");
+        break;
+      case "client":
+        navigate("/app/client");
+        break;
+      case "accountant":
+        navigate("/app/accountant");
+        break;
+      default:
+        navigate("/");
+    }
+  };
+
   return (
     <Drawer
       variant="permanent"
@@ -132,10 +152,12 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
         <img
           src="/images/tsoa_logo_crop.png"
           alt="TSoA Logo"
+          onClick={handleLogoClick}
           style={{
             maxWidth: "100%",
             height: "60px",
             objectFit: "contain",
+            cursor: "pointer",
           }}
         />
       </Box>
