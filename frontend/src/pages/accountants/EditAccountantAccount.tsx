@@ -1,4 +1,4 @@
-import { Container, TextField, Button, Box } from "@mui/material";
+import { Container, TextField, Button, Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import ApiAccessor from "../../accessors/api-accessor";
@@ -82,9 +82,24 @@ export default function Page() {
           fullWidth
         />
 
-        <Button variant="contained" onClick={handleSubmit}>
-          Submit
-        </Button>
+        {/* Buttons */}
+        <Stack direction="row" spacing={2} justifyContent="flex-start">
+          <Button
+            variant="outlined"
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </Button>
+
+          <Button
+            variant="contained"
+            size="medium"
+            sx={{ px: 4 }}
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </Stack>
       </Box>
     </Container>
   );
