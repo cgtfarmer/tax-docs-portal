@@ -1,10 +1,17 @@
 import Box from "@mui/material/Box";
-//import Toolbar from "@mui/material/Toolbar";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-//import Typography from "@mui/material/Typography";
-import { Link } from "react-router";
+
+import { Link, useParams, useLocation, useNavigate } from "react-router";
+
+import { useEffect, useState } from "react";
+
+import { useAuth } from "../../App";
+import ApiAccessor from "../../accessors/api-accessor";
+import { Client } from "../../models/client";
+
+const apiAccessor = new ApiAccessor();
 
 const drawerWidth = 240;
 
@@ -13,14 +20,10 @@ interface NavPage {
   readonly path: string;
 }
 
-type NavVariant =
-  | "brochure"
-  | "login"
-  | "client"
-  | "accountant"
-  | "admin";
+export type NavVariant = "brochure" | "login" | "client" | "accountant" | "admin";
 
 type BottomAction = "login" | "account-logout" | "none";
+
 const bottomAction: Record<NavVariant, BottomAction> = {
   brochure: "login",
   login: "none",
@@ -31,6 +34,7 @@ const bottomAction: Record<NavVariant, BottomAction> = {
 
 const navLinks: Record<NavVariant, NavPage[]> = {
   brochure: [
+    { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "Services", path: "/services" },
@@ -38,49 +42,77 @@ const navLinks: Record<NavVariant, NavPage[]> = {
 
   login: [
     { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Services", path: "/services" },
   ],
 
   client: [
-    { name: "Home", path: "/client/" },
-    { name: "Messages", path: "/client/messages" },
-    { name: "Tasks", path: "/client/tasks" },
-    // { name: "Account", path: "/client/account" },
+    { name: "Home", path: "/app/client" },
+    { name: "Messages", path: "/app/client/messages" },
+    { name: "Tasks", path: "/app/client/tasks" },
+    { name: "Documents", path: "/app/client/documents" },
   ],
 
   accountant: [
-    { name: "Home", path: "/app/accountant/" },
-    { name: "View Clients", path: "/app/accountant/clients/" },
+    { name: "Home", path: "/app/accountant" },
+    { name: "View Clients", path: "/app/accountant/clients" },
   ],
 
   admin: [
-    { name: "Home", path: "/admin/" },
-    { name: "View Accountants", path: "/admin/accountants" },
-    { name: "View Clients", path: "/admin/clients" },
-    { name: "View Admins", path: "/admin/admins" },
-    { name: "Account", path: "/admin/" },
+    { name: "Home", path: "/admin" },
+    { name: "Accountants", path: "/admin/accountants" },
+    { name: "Clients", path: "/admin/clients" },
+    { name: "Admins", path: "/admin/admins" },
   ],
 };
 
-export default function ModularNav({
-  variant,
-}: {
-  variant: NavVariant;
-}) {
-  const pages = navLinks[variant];
+export default function ModularNav({ variant }: { variant: NavVariant }) {
+  const { clientId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const [assignedClients, setAssignedClients] = useState<Client[]>([]);
+
+  useEffect(() => {
+    async function loadClients() {
+      if (user?.role !== "ACCOUNTANT" || !user.id) {
+        return;
+      }
+
+      const result = await apiAccessor.getClientsByAccountant(user.id);
+      setAssignedClients(result);
+    }
+
+    void loadClients();
+  }, [user]);
+
+  let pages = navLinks[variant];
+
+  if (variant === "accountant" && clientId) {
+    pages = [
+      { name: "Back To Clients", path: "/app/accountant/clients" },
+      { name: "Client Home", path: `/app/accountant/clients/${clientId}` },
+      { name: "Messages", path: `/app/accountant/clients/${clientId}/messages` },
+      { name: "View Tasks", path: `/app/accountant/clients/${clientId}/tasks` },
+      { name: "Documents", path: `/app/accountant/clients/${clientId}/documents` },
+    ];
+  }
+
+  const handleLogout = (): void => {
+    logout();
+    void navigate("/");
+  };
 
   return (
     <Drawer
       variant="permanent"
       anchor="left"
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-
-        backgroundColor: "blue",
-        
         width: drawerWidth,
         flexShrink: 0,
+
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           minHeight: "100vh",
@@ -89,8 +121,6 @@ export default function ModularNav({
         },
       }}
     >
-    
-    {/* top logo */}
       <Box
         sx={{
           px: 2,
@@ -109,14 +139,30 @@ export default function ModularNav({
           }}
         />
       </Box>
-        
+
       <Divider />
 
-    {/* page specific navLinks */}
+      {user && (
+        <Box
+          sx={{
+            px: 2,
+            py: 1,
+            fontSize: "14px",
+            fontWeight: "bold",
+          }}
+        >
+          {user.firstName} {user.lastName}
+          <br />
+          {user.role}
+        </Box>
+      )}
+
+      <Divider />
+
       <Box
         sx={{
           px: 2,
-          py: 1,
+          py: 2,
           display: "flex",
           flexDirection: "column",
           gap: 1,
@@ -133,92 +179,106 @@ export default function ModularNav({
               justifyContent: "flex-start",
               textAlign: "left",
               px: 2,
+
+              ...(location.pathname === page.path && {
+                fontWeight: "bold",
+                backgroundColor: "#f2f2f2",
+              }),
             }}
           >
             {page.name}
           </Button>
         ))}
-      </Box>
-      
-      <Divider />
-      
 
-      {/* bottom navbar actions */}
-        {bottomAction[variant] === "login" && (
-          <Box
-          sx={{
-            color: "black",
-            display: "flex",
-            flexDirection: "column",
-            justifySelf: "flex-end",
-            mt: "auto",
-            px: 2,
-            py: 1,
-            gap: 1,
-          }}
-        >
-          <Divider sx={{ mx: -2 }} />
-          <Button 
-          component={Link} 
-          to="/login" 
-          fullWidth
-          sx={{
-            justifyContent: "flex-start",
-            textAlign: "left",
-            px: 2,
-          }}
-          >
-            Login
-          </Button>
-        </Box>
+        {variant === "accountant" && !clientId && assignedClients.length > 0 && (
+          <>
+            <Divider />
+
+            {assignedClients.map((client) => (
+              <Button
+                key={client.id}
+                component={Link}
+                to={`/app/accountant/clients/${client.id ?? ""}`}
+                fullWidth
+                sx={{
+                  color: "black",
+                  justifyContent: "flex-start",
+                  textAlign: "left",
+                  px: 2,
+                }}
+              >
+                {client.firstName} {client.lastName}
+              </Button>
+            ))}
+          </>
         )}
+      </Box>
 
-        {bottomAction[variant] === "account-logout" && (
-          <Box
+      <Box
+        sx={{
+          mt: "auto",
+          px: 2,
+          py: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
+        <Divider />
+
+        {bottomAction[variant] === "login" && (
+          <Button
+            component={Link}
+            to="/login"
+            fullWidth
             sx={{
               color: "black",
-              display: "flex",
-              flexDirection: "column",
-              justifySelf: "flex-end",
-              mt: "auto",
-              px: 2,
-              py: 1,
-              gap: 1,
-            }}
-          >
-          <Divider sx={{ mx: -2 }} />
-          <Button
-          component={Link}
-          to={variant === "accountant" ? "/app/accountant/account" : `/${variant}/account`}
-          fullWidth
-          sx={{
-            justifyContent: "flex-start",
-            textAlign: "left",
-            px: 2,
-          }}
-        >
-            Account
-          </Button>
-
-            <Divider sx={{ mx: -2 }} />
-
-            <Button 
-            fullWidth 
-            sx={{
               justifyContent: "flex-start",
               textAlign: "left",
               px: 2,
             }}
-            component={Link} 
-            to={`/`} 
-            // onClick={() => { /* logout logic */ }}
+          >
+            Login
+          </Button>
+        )}
+
+        {bottomAction[variant] === "account-logout" && (
+          <>
+            <Button
+              component={Link}
+              to={
+                variant === "client"
+                  ? "/app/client/account"
+                  : variant === "accountant"
+                  ? "/app/accountant/account"
+                  : `/admin/admins/${user?.id ?? ""}`
+              }
+              fullWidth
+              sx={{
+                color: "black",
+                justifyContent: "flex-start",
+                textAlign: "left",
+                px: 2,
+              }}
+            >
+              Account
+            </Button>
+
+            <Button
+              onClick={handleLogout}
+              fullWidth
+              sx={{
+                color: "black",
+                justifyContent: "flex-start",
+                textAlign: "left",
+                px: 2,
+              }}
             >
               Logout
             </Button>
-          </Box>
+          </>
         )}
-
-
+      </Box>
     </Drawer>
   );
 }

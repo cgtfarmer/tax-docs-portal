@@ -32,12 +32,10 @@ export default function Page() {
   if (!client) return null;
 
   const rows = [
-    { key: 'ID', value: client.id },
     { key: 'First Name', value: client.firstName },
     { key: 'Last Name', value: client.lastName },
     { key: 'Email', value: client.email },
-    { key: 'Username', value: client.username },
-    { key: 'Password', value: client.passwordHash }
+    { key: 'Username', value: client.username }
   ];
 
   return (
@@ -45,22 +43,6 @@ export default function Page() {
       <Typography component="h1" variant="h4" gutterBottom>
         Client
       </Typography>
-
-      <Stack direction="row" gap="0.5rem" sx={{ py: 3 }}>
-        <Link component={RouterLink} to="/app/accountant/clients">Back</Link>
-
-        <Divider orientation="vertical" variant="middle" flexItem />
-
-        <Link component={RouterLink} to={`/app/accountant/clients/${client.id ?? ''}/messages`}>Messages</Link>
-
-        <Divider orientation="vertical" variant="middle" flexItem />
-
-        <Link component={RouterLink} to={`/app/accountant/clients/${client.id ?? ''}/tasks`}>Tasks</Link>
-
-        <Divider orientation="vertical" variant="middle" flexItem />
-
-        <Link component={RouterLink} to={`/app/accountant/clients/${client.id ?? ''}/documents`}>Documents</Link>
-      </Stack>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

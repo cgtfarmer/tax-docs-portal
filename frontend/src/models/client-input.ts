@@ -1,15 +1,17 @@
+// src/models/client-input.ts
+
 export interface ClientInput {
-  id: string;
+  id?: string;
 
-  firstName: string;
+  firstName?: string;
 
-  lastName: string;
+  lastName?: string;
 
-  email: string;
+  email?: string;
 
-  username: string;
+  username?: string;
 
-  passwordHash: string;
+  passwordHash?: string;
 
-  accountantId: string | null;
+  accountantId?: string | null;
 }

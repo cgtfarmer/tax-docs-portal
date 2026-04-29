@@ -25,12 +25,14 @@ public class TaskController {
   @GetMapping
   public ResponseEntity<List<Task>> index() {
     log.info("[TaskController#index]");
+
     return ResponseEntity.ok(this.taskService.list());
   }
 
   @PostMapping
   public ResponseEntity<Task> create(@RequestBody Task request) {
     log.info("[TaskController#create] request={}", request);
+
     return ResponseEntity.status(201)
         .body(this.taskService.create(request));
   }
@@ -38,17 +40,26 @@ public class TaskController {
   @GetMapping("/{id}")
   public ResponseEntity<Task> show(@PathVariable UUID id) {
     log.info("[TaskController#show] id={}", id);
+
     return ResponseEntity.ok(this.taskService.get(id));
+  }
+
+  @GetMapping("/client/{clientId}")
+  public ResponseEntity<List<Task>> getByClient(@PathVariable UUID clientId) {
+    log.info("[TaskController#getByClient] clientId={}", clientId);
+
+    return ResponseEntity.ok(this.taskService.getByClient(clientId));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Task> update(
       @PathVariable UUID id,
+
       @RequestBody Task request
   ) {
-    log.info("[TaskController#update] id={}, request={}", id, request);
-
     request.setId(id);
+
+    log.info("[TaskController#update] id={}, request={}", id, request);
 
     return ResponseEntity.ok(this.taskService.update(request));
   }
@@ -57,7 +68,7 @@ public class TaskController {
   public ResponseEntity<Void> destroy(@PathVariable UUID id) {
     log.info("[TaskController#destroy] id={}", id);
 
-    this.taskService.destroy(id); // soft delete
+    this.taskService.destroy(id);
 
     return ResponseEntity.noContent()
         .build();
@@ -66,13 +77,12 @@ public class TaskController {
   @PutMapping("/{id}/status")
   public ResponseEntity<Task> updateStatus(
       @PathVariable UUID id,
+
       @RequestParam String status
   ) {
     log.info("[TaskController#updateStatus] id={}, status={}", id, status);
 
-    Task updated = this.taskService.updateStatus(id, status);
-
-    return ResponseEntity.ok(updated);
+    return ResponseEntity.ok(this.taskService.updateStatus(id, status));
   }
 
   @GetMapping("/active")

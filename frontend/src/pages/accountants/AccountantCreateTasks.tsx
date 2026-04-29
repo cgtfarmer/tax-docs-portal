@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Container,
-  MenuItem,
   Paper,
   Stack,
   TextField,
@@ -10,26 +9,29 @@ import {
 } from "@mui/material";
 
 import {
-  useEffect,
   useState
 } from "react";
 
+import {
+  useNavigate,
+  useParams
+} from "react-router";
+
 import ApiAccessor from "../../accessors/api-accessor";
 import { useAuth } from "../../App";
-import { Client } from "../../models/client";
 
 const apiAccessor =
   new ApiAccessor();
 
-export default function AccountantCreateTaskPage() {
+export default function AccountantCreateTasks() {
   const { user } =
     useAuth();
 
-  const [clients, setClients] =
-    useState<Client[]>([]);
+  const navigate =
+    useNavigate();
 
-  const [clientId, setClientId] =
-    useState("");
+  const { clientId } =
+    useParams();
 
   const [title, setTitle] =
     useState("");
@@ -46,29 +48,6 @@ export default function AccountantCreateTaskPage() {
   const [loading, setLoading] =
     useState(false);
 
-  useEffect(() => {
-    void loadClients();
-  }, []);
-
-  const loadClients =
-    async (): Promise<void> => {
-      try {
-        if (!user?.id) {
-          return;
-        }
-
-        const result =
-          await apiAccessor.getClientsByAccountant(
-            user.id
-          );
-
-        setClients(result);
-      }
-      catch (error) {
-        console.error(error);
-      }
-    };
-
   const handleCreateTask =
     async (): Promise<void> => {
       try {
@@ -84,10 +63,17 @@ export default function AccountantCreateTaskPage() {
           return;
         }
 
+        if (!clientId) {
+          setErrorMessage(
+            "No client selected."
+          );
+
+          return;
+        }
+
         if (
-          !clientId ||
-          !title ||
-          !description
+          !title.trim() ||
+          !description.trim()
         ) {
           setErrorMessage(
             "Please complete all fields."
@@ -100,23 +86,26 @@ export default function AccountantCreateTaskPage() {
           id: "",
           clientId: clientId,
           accountantId: user.id,
-          title: title,
-          task_description:
-            description,
-          task_status: "In Progress",
-          created_at:
+          title: title.trim(),
+          description:
+            description.trim(),
+          taskStatus:
+            "In Progress",
+          createdAt:
             new Date().toISOString(),
-          updated_at: null,
-          deleted_at: null
+          updatedAt: null,
+          deletedAt: null
         });
 
         setSuccessMessage(
           "Task created successfully."
         );
 
-        setClientId("");
-        setTitle("");
-        setDescription("");
+        setTimeout(() => {
+          navigate(
+            `/app/accountant/clients/${clientId}/tasks`
+          );
+        }, 700);
       }
       catch (error) {
         console.error(error);
@@ -149,42 +138,12 @@ export default function AccountantCreateTaskPage() {
 
           <Typography
             variant="body2"
+            color="text.secondary"
           >
-            Assign a task to one of
-            your clients.
+            Create a new task
+            for the selected
+            client.
           </Typography>
-
-          <TextField
-            select
-            label="Select Client"
-            value={clientId}
-            onChange={(e) =>
-              setClientId(
-                e.target.value
-              )
-            }
-            fullWidth
-          >
-            {clients.map(
-              (client) => (
-                <MenuItem
-                  key={
-                    client.id
-                  }
-                  value={
-                    client.id
-                  }
-                >
-                  {
-                    client.firstName
-                  }{" "}
-                  {
-                    client.lastName
-                  }
-                </MenuItem>
-              )
-            )}
-          </TextField>
 
           <TextField
             label="Task Title"
@@ -206,7 +165,7 @@ export default function AccountantCreateTaskPage() {
               )
             }
             multiline
-            minRows={4}
+            minRows={5}
             fullWidth
           />
 
@@ -214,7 +173,8 @@ export default function AccountantCreateTaskPage() {
             <Typography
               variant="body2"
             >
-              Date Created:{" "}
+              Date Created:
+              {" "}
               {new Date().toLocaleDateString()}
             </Typography>
           </Box>
@@ -241,16 +201,27 @@ export default function AccountantCreateTaskPage() {
 
           <Button
             variant="contained"
-            onClick={() =>
-              void handleCreateTask()
-            }
             disabled={
               loading
+            }
+            onClick={() =>
+              void handleCreateTask()
             }
           >
             {loading
               ? "Creating..."
               : "Create Task"}
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() =>
+              navigate(
+                `/app/accountant/clients/${clientId}/tasks`
+              )
+            }
+          >
+            Cancel
           </Button>
         </Stack>
       </Paper>
