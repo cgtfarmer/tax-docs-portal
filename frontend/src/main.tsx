@@ -16,7 +16,7 @@ createRoot(rootElement).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Pages.App />}>
-          
+
           {/* Brochure */}
           <Route element={<Pages.BrochureLayout />}>
             <Route index element={<Pages.Landing />} />
@@ -35,6 +35,7 @@ createRoot(rootElement).render(
             <Route path="client" element={<Pages.AppLayout />}>
               <Route index element={<Pages.ClientDashboard />} />
               <Route path="account" element={<Pages.ClientAccount />} />
+              <Route path="account/edit" element={<Pages.EditClientAccount />} />
               <Route path="messages" element={<Pages.ClientMessages />} />
               <Route path="tasks" element={<Pages.ClientTasks />} />
               <Route path="documents" element={<Pages.ClientDocuments />} />

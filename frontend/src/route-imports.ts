@@ -43,6 +43,7 @@ export { default as Clients } from "./pages/admin/clients/Clients.tsx";
 export { default as Client } from "./pages/admin/clients/Client.tsx";
 export { default as NewClient } from "./pages/admin/clients/NewClient.tsx";
 export { default as EditClient } from "./pages/admin/clients/EditClient.tsx";
+export { default as EditClientAccount } from "./pages/clients/EditClientAccount.tsx";
 
 /* admin accountants */
 export { default as Accountants } from "./pages/admin/accountants/Accountants.tsx";
