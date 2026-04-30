@@ -123,9 +123,9 @@ const handleLogin = async (): Promise<void> => {
 
           <Box sx={formContainerStyle}>
             <FormControl sx={{ width: "300px", marginBottom: "20px" }} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Username / Email</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password">Email</InputLabel>
               <OutlinedInput
-                label="Username / Email"
+                label="Email"
                 id="outlined-adornment-password"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); }}
