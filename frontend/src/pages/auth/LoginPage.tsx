@@ -1,11 +1,10 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, OutlinedInput, IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import ApiAccessor from "../../accessors/api-accessor";
 import ModularNav from "../../components/layout/modular-navbar";
 import { useAuth } from "../../App";
-import { FormControl, InputLabel, OutlinedInput, IconButton, InputAdornment } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const apiAccessor = new ApiAccessor();
 

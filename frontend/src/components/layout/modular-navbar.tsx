@@ -1,12 +1,8 @@
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-
+import { Box, Drawer, Button, Divider, IconButton, useMediaQuery, SwipeableDrawer } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useTheme } from "@mui/material/styles";
 import { Link, useParams, useLocation, useNavigate } from "react-router";
-
 import { useEffect, useState } from "react";
-
 import { useAuth } from "../../App";
 import ApiAccessor from "../../accessors/api-accessor";
 import { Client } from "../../models/client";
@@ -39,26 +35,22 @@ const navLinks: Record<NavVariant, NavPage[]> = {
     { name: "Contact", path: "/contact" },
     { name: "Services", path: "/services" },
   ],
-
   login: [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "Services", path: "/services" },
   ],
-
   client: [
     { name: "Home", path: "/app/client" },
     { name: "Messages", path: "/app/client/messages" },
     { name: "Tasks", path: "/app/client/tasks" },
     { name: "Documents", path: "/app/client/documents" },
   ],
-
   accountant: [
     { name: "Home", path: "/app/accountant" },
     { name: "View Clients", path: "/app/accountant/clients" },
   ],
-
   admin: [
     { name: "Home", path: "/admin" },
     { name: "Accountants", path: "/admin/accountants" },
@@ -72,7 +64,6 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-
   const [assignedClients, setAssignedClients] = useState<Client[]>([]);
 
   useEffect(() => {
@@ -105,7 +96,6 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
     void navigate("/");
   };
 
-
   const handleLogoClick = () => {
     switch (variant) {
       case "brochure":
@@ -125,22 +115,18 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
     }
   };
 
-  return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
+  // mobile hamburger menu
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          minHeight: "100vh",
-          boxSizing: "border-box",
-          backgroundColor: "#ffffff",
-        },
-      }}
-    >
+  // Close the mobile drawer whenever the route changes
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  const drawerContents = (
+    <>
       <Box
         sx={{
           px: 2,
@@ -184,7 +170,7 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
       <Box
         sx={{
           px: 2,
-          py: 2,
+          py: 1,
           display: "flex",
           flexDirection: "column",
           gap: 1,
@@ -236,9 +222,12 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
         )}
       </Box>
 
+      <Divider />
+      <Box sx={{margin: "auto"}} />
+      <Divider />
+
       <Box
         sx={{
-          mt: "auto",
           px: 2,
           py: 1,
           display: "flex",
@@ -246,7 +235,6 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
           gap: 1,
         }}
       >
-        <Divider />
 
         {bottomAction[variant] === "login" && (
           <Button
@@ -301,6 +289,70 @@ export default function ModularNav({ variant }: { variant: NavVariant }) {
           </>
         )}
       </Box>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <>
+      {/* Hamburger button — only visible on mobile */}
+      {isMobile && (
+        <IconButton
+          onClick={() => setMobileOpen(true)}
+          sx={{
+            position: "fixed",
+            top: 12,
+            left: 12,
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            backgroundColor: "#ffffff",
+            boxShadow: 2,
+            display: mobileOpen ? "none" : "flex", // hide when drawer is open
+            opacity: 0.5,  // 👈 adjust to taste
+
+            "&:hover": { backgroundColor: "#f2f2f2" },
+          }}
+          aria-label="Open navigation menu"
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
+
+      {/* Mobile: temporary drawer (slides in/out) */}
+      {isMobile ? (
+      <SwipeableDrawer // swipeableDrawer only lets you swipe back
+        disableBackdropTransition={true}  // better performance on iOS
+        anchor="left"
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        onOpen={() => setMobileOpen(true)}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            backgroundColor: "#ffffff",
+          },
+        }}
+      >
+        {drawerContents}
+      </SwipeableDrawer>
+      ) : (
+        /* Desktop: permanent drawer (always visible) */
+        <Drawer
+          variant="permanent"
+          anchor="left"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              minHeight: "100vh",
+              boxSizing: "border-box",
+              backgroundColor: "#ffffff",
+            },
+          }}
+        >
+          {drawerContents}
+        </Drawer>
+      )}
+    </>
   );
 }
