@@ -1,21 +1,32 @@
 services:
+  gateway:
+    environment:
+      DEFAULT_HOST: localhost
+    image: nginxproxy/nginx-proxy:1.6.0
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/proxy.conf:/etc/nginx/proxy.conf
+
   frontend:
     build:
       context: ./frontend
       target: development
     environment:
       ENV: development
+      PORT: 5173
       VIRTUAL_HOST: localhost
       VIRTUAL_PROTO: http
       VIRTUAL_PATH: /
-      VITE_API_URL: 'http://localhost'
+      VITE_API_URL: '/api'
     expose:
       - 5173
     tty: true
     extra_hosts:
       - host.docker.internal:host-gateway
-    ports:
-      - 5173:5173
+    # ports:
+    #   - 5173:5173
     volumes:
       - ./frontend:/home/node/app
 
@@ -30,11 +41,17 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_PROFILES_ACTIVE: local
+      SERVER_SERVLET_CONTEXT_PATH: /api
+      VIRTUAL_HOST: localhost
+      VIRTUAL_PROTO: http
+      VIRTUAL_PATH: /api
     tty: true
     extra_hosts:
       - host.docker.internal:host-gateway
-    ports:
-      - 80:80
+    expose:
+      - 80
+    # ports:
+    #   - 80:80
     volumes:
       - ./backend:/usr/local/app
       - gradle-cache:/home/gradle/.gradle

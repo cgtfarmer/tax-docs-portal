@@ -7,6 +7,7 @@ export default defineConfig({
 
   server: {
     host: '0.0.0.0',
-    allowedHosts: ['frontend']
+    allowedHosts: ['frontend'],
+    port: Number(process.env.PORT) || 5173,
   }
 })
