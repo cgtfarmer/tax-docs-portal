@@ -7,6 +7,13 @@ export default defineConfig({
 
   server: {
     host: '0.0.0.0',
-    allowedHosts: ['frontend']
+    allowedHosts: ['frontend'],
+    proxy: {
+      '/api': {
+        target: 'http://backend:80',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   }
 })
