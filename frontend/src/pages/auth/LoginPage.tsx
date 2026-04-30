@@ -4,10 +4,20 @@ import { useNavigate } from "react-router";
 import ApiAccessor from "../../accessors/api-accessor";
 import ModularNav from "../../components/layout/modular-navbar";
 import { useAuth } from "../../App";
+import { FormControl, InputLabel, OutlinedInput, IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const apiAccessor = new ApiAccessor();
 
+
+
 export default function LoginPage() {
+/* for password visablity */
+const [showPassword, setShowPassword] = useState(false);
+const handleClickShowPassword = () => setShowPassword(!showPassword);
+const handleMouseDownPassword = (e: React.MouseEvent) => e.preventDefault();
+const handleMouseUpPassword = (e: React.MouseEvent) => e.preventDefault();
+
 const navigate = useNavigate();
 const { login } = useAuth();
 
@@ -69,8 +79,7 @@ const handleLogin = async (): Promise<void> => {
   const cardStyle = {
     width: "500px",
     height: "300px",
-    backgroundColor: "#F7F7F7",
-    border: "1px solid #000000",
+    border: "1px solid #E0E0E0",
     overflow: "hidden"
   };
 
@@ -113,48 +122,41 @@ const handleLogin = async (): Promise<void> => {
         <Box sx={cardStyle}>
 
           <Box sx={formContainerStyle}>
+            <FormControl sx={{ width: "300px", marginBottom: "20px" }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Username / Email</InputLabel>
+              <OutlinedInput
+                label="Username / Email"
+                id="outlined-adornment-password"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); }}
 
-            <TextField
-              label="Username / Email"
-              variant="outlined"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); }}
-              sx={{
-              width: "300px",
-              marginBottom: "20px",
-              backgroundColor: "#E6E6E6",
-              input: { color: "#000000" },
-              label: { color: "#9ca3af" }
-              }}
-            />
+              />
+            </FormControl>
 
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              value={password}
-              onChange={(e) => { setPassword(e.target.value); }}
-              onKeyDown={(e) => { if (e.key === "Enter") void handleLogin(); }}
-              sx={{
-              width: "300px",
-              marginBottom: "20px",
-              backgroundColor: "#E6E6E6",
-              input: { color: "#000000" },
-              label: { color: "#9ca3af" }
-              }}
-            />
-
-            {loginError && (
-              <Box
-                sx={{
-                color: "#ff6b6b",
-                fontSize: "14px",
-                marginBottom: "5px"
-                }}
-                >
-                {loginError}
-              </Box>
-            )}
+            <FormControl sx={{ width: "300px", marginBottom: "20px" }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <OutlinedInput
+                label="Password"
+                id="outlined-adornment-password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); }}
+                onKeyDown={(e) => { if (e.key === "Enter") void handleLogin(); }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={showPassword ? 'hide the password' : 'display the password'}
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      onMouseUp={handleMouseUpPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
 
             <Button
               sx={loginButtonStyle}
@@ -162,6 +164,20 @@ const handleLogin = async (): Promise<void> => {
             >
               Login
             </Button>
+
+            {loginError && (
+              <Box
+                sx={{
+                color: "#ff6b6b",
+                fontSize: "14px",
+                marginTop: "10px"
+                }}
+                >
+                {loginError}
+              </Box>
+            )}
+
+
           </Box>
         </Box>
       </Box>
