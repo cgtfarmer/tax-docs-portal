@@ -9,7 +9,7 @@ test('create user', async ({ request }) => {
     weight: 185.3
   };
 
-  const response = await request.post('/users', { data: inputData });
+  const response = await request.post('users', { data: inputData });
 
   expect(response.status()).toBe(201);
 
@@ -27,7 +27,7 @@ test('retrieve user', async ({ request }) => {
   const createUserBody = await PwHelpers.createDefaultUser(request);
   const newUserId = createUserBody.id;
 
-  const response = await request.get(`/users/${newUserId}`);
+  const response = await request.get(`users/${newUserId}`);
 
   expect(response.status()).toBe(200);
 
@@ -48,7 +48,7 @@ test('update user', async ({ request }) => {
     weight: 155.1
   };
 
-  const response = await request.put(`/users/${inputData.id}`, { data: inputData });
+  const response = await request.put(`users/${inputData.id}`, { data: inputData });
 
   expect(response.status()).toBe(200);
 
@@ -66,13 +66,13 @@ test('destroy user', async ({ request }) => {
   const createUserBody = await PwHelpers.createDefaultUser(request);
   const newUserId = createUserBody.id;
 
-  const response = await request.delete(`/users/${newUserId}`);
+  const response = await request.delete(`users/${newUserId}`);
 
   expect(response.status()).toBe(204);
 });
 
 test('list users', async ({ request }) => {
-  const response = await request.get('/users');
+  const response = await request.get('users');
 
   expect(response.status()).toBe(200);
 

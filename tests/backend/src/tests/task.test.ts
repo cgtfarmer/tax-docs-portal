@@ -13,7 +13,7 @@ test('create task', async ({ request }) => {
     taskStatus: 'In Progress'
   };
 
-  const response = await request.post('/tasks', { data: inputData });
+  const response = await request.post('tasks', { data: inputData });
 
   expect(response.status()).toBe(201);
 
@@ -33,7 +33,7 @@ test('retrieve task', async ({ request }) => {
 
   const task = await PwHelpers.createDefaultTask(request, client.id, accountant.id);
 
-  const response = await request.get(`/tasks/${task.id}`);
+  const response = await request.get(`tasks/${task.id}`);
 
   expect(response.status()).toBe(200);
 
@@ -49,7 +49,7 @@ test('update task status', async ({ request }) => {
   const task = await PwHelpers.createDefaultTask(request, client.id, accountant.id);
 
   const response = await request.put(
-    `/tasks/${task.id}/status?status=Completed`
+    `tasks/${task.id}/status?status=Completed`
   );
 
   expect(response.status()).toBe(200);
@@ -65,13 +65,13 @@ test('destroy task (soft delete)', async ({ request }) => {
 
   const task = await PwHelpers.createDefaultTask(request, client.id, accountant.id);
 
-  const response = await request.delete(`/tasks/${task.id}`);
+  const response = await request.delete(`tasks/${task.id}`);
 
   expect(response.status()).toBe(204);
 });
 
 test('list tasks', async ({ request }) => {
-  const response = await request.get('/tasks');
+  const response = await request.get('tasks');
 
   expect(response.status()).toBe(200);
 
@@ -81,7 +81,7 @@ test('list tasks', async ({ request }) => {
 });
 
 test('list active tasks', async ({ request }) => {
-  const response = await request.get('/tasks/active');
+  const response = await request.get('tasks/active');
 
   expect(response.status()).toBe(200);
 

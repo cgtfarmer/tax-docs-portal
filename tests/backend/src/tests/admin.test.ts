@@ -10,7 +10,7 @@ test('create admin', async ({ request }) => {
     passwordHash: 'hashed-password-123'
   };
 
-  const response = await request.post('/admins', { data: inputData });
+  const response = await request.post('admins', { data: inputData });
 
   expect(response.status()).toBe(201);
 
@@ -29,7 +29,7 @@ test('retrieve admin', async ({ request }) => {
   const createAdminBody = await PwHelpers.createDefaultAdmin(request);
   const newAdminId = createAdminBody.id;
 
-  const response = await request.get(`/admins/${newAdminId}`);
+  const response = await request.get(`admins/${newAdminId}`);
 
   expect(response.status()).toBe(200);
 
@@ -51,7 +51,7 @@ test('update admin', async ({ request }) => {
     passwordHash: 'updated-hashed-password-456'
   };
 
-  const response = await request.put(`/admins/${inputData.id}`, { data: inputData });
+  const response = await request.put(`admins/${inputData.id}`, { data: inputData });
 
   expect(response.status()).toBe(200);
 
@@ -70,13 +70,13 @@ test('destroy admin', async ({ request }) => {
   const createAdminBody = await PwHelpers.createDefaultAdmin(request);
   const newAdminId = createAdminBody.id;
 
-  const response = await request.delete(`/admins/${newAdminId}`);
+  const response = await request.delete(`admins/${newAdminId}`);
 
   expect(response.status()).toBe(204);
 });
 
 test('list admins', async ({ request }) => {
-  const response = await request.get('/admins');
+  const response = await request.get('admins');
 
   expect(response.status()).toBe(200);
 

@@ -8,12 +8,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     allowedHosts: ['frontend'],
-    proxy: {
-      '/api': {
-        target: 'http://backend:80',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
+    port: Number(process.env.PORT) || 5173,
   }
 })

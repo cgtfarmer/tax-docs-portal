@@ -3,7 +3,7 @@ import { APIRequestContext, expect } from '@playwright/test';
 export default class PwHelpers {
 
   static async createDefaultUser(request: APIRequestContext) {
-    const response = await request.post('/users', {
+    const response = await request.post('users', {
       data: {
         firstName: 'John',
         lastName: 'Doe',
@@ -20,7 +20,7 @@ export default class PwHelpers {
   static async createDefaultAccountant(request: APIRequestContext) {
     const unique = Date.now();
 
-    const response = await request.post('/accountants', {
+    const response = await request.post('accountants', {
       data: {
         firstName: 'John',
         lastName: 'Doe',
@@ -38,7 +38,7 @@ export default class PwHelpers {
   static async createDefaultClient(request: APIRequestContext) {
     const unique = Date.now();
 
-    const response = await request.post('/clients', {
+    const response = await request.post('clients', {
       data: {
         firstName: 'John',
         lastName: 'Doe',
@@ -56,7 +56,7 @@ export default class PwHelpers {
   static async createDefaultAdmin(request: APIRequestContext) {
     const unique = Date.now();
 
-    const response = await request.post('/admins', {
+    const response = await request.post('admins', {
       data: {
         firstName: 'Admin',
         lastName: 'User',
@@ -76,7 +76,7 @@ export default class PwHelpers {
     clientId: string,
     accountantId: string
   ) {
-    const response = await request.post('/messages', {
+    const response = await request.post('messages', {
       data: {
         clientId,
         accountantId,
@@ -95,7 +95,7 @@ export default class PwHelpers {
     clientId: string,
     accountantId: string
   ) {
-    const response = await request.post('/tasks', {
+    const response = await request.post('tasks', {
       data: {
         clientId,
         accountantId,

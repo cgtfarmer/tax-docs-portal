@@ -10,7 +10,7 @@ test('create accountant', async ({ request }) => {
     passwordHash: 'hashed-password-123'
   };
 
-  const response = await request.post('/accountants', { data: inputData });
+  const response = await request.post('accountants', { data: inputData });
 
   expect(response.status()).toBe(201);
 
@@ -29,7 +29,7 @@ test('retrieve accountant', async ({ request }) => {
   const createAccountantBody = await PwHelpers.createDefaultAccountant(request);
   const newAccountantId = createAccountantBody.id;
 
-  const response = await request.get(`/accountants/${newAccountantId}`);
+  const response = await request.get(`accountants/${newAccountantId}`);
 
   expect(response.status()).toBe(200);
 
@@ -51,7 +51,7 @@ test('update accountant', async ({ request }) => {
     passwordHash: 'updated-hashed-password-456'
   };
 
-  const response = await request.put(`/accountants/${inputData.id}`, { data: inputData });
+  const response = await request.put(`accountants/${inputData.id}`, { data: inputData });
 
   expect(response.status()).toBe(200);
 
@@ -70,13 +70,13 @@ test('destroy accountant', async ({ request }) => {
   const createAccountantBody = await PwHelpers.createDefaultAccountant(request);
   const newAccountantId = createAccountantBody.id;
 
-  const response = await request.delete(`/accountants/${newAccountantId}`);
+  const response = await request.delete(`accountants/${newAccountantId}`);
 
   expect(response.status()).toBe(204);
 });
 
 test('list accountants', async ({ request }) => {
-  const response = await request.get('/accountants');
+  const response = await request.get('accountants');
 
   expect(response.status()).toBe(200);
 
