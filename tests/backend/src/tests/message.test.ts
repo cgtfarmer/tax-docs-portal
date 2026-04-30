@@ -12,7 +12,7 @@ test('create message', async ({ request }) => {
     messageText: 'Hello world'
   };
 
-  const response = await request.post('/messages', { data: inputData });
+  const response = await request.post('messages', { data: inputData });
 
   expect(response.status()).toBe(201);
 
@@ -30,7 +30,7 @@ test('retrieve message', async ({ request }) => {
   const accountant = await PwHelpers.createDefaultAccountant(request);
   const message = await PwHelpers.createDefaultMessage(request, client.id, accountant.id);
 
-  const response = await request.get(`/messages/${message.id}`);
+  const response = await request.get(`messages/${message.id}`);
 
   expect(response.status()).toBe(200);
 
@@ -44,13 +44,13 @@ test('destroy message', async ({ request }) => {
   const accountant = await PwHelpers.createDefaultAccountant(request);
   const message = await PwHelpers.createDefaultMessage(request, client.id, accountant.id);
 
-  const response = await request.delete(`/messages/${message.id}`);
+  const response = await request.delete(`messages/${message.id}`);
 
   expect(response.status()).toBe(204);
 });
 
 test('list messages', async ({ request }) => {
-  const response = await request.get('/messages');
+  const response = await request.get('messages');
 
   expect(response.status()).toBe(200);
 
@@ -66,7 +66,7 @@ test('get conversation', async ({ request }) => {
   await PwHelpers.createDefaultMessage(request, client.id, accountant.id);
 
   const response = await request.get(
-    `/messages/conversation?clientId=${client.id}&accountantId=${accountant.id}`
+    `messages/conversation?clientId=${client.id}&accountantId=${accountant.id}`
   );
 
   expect(response.status()).toBe(200);

@@ -10,7 +10,7 @@ test('create client', async ({ request }) => {
     passwordHash: 'hashed-password-123'
   };
 
-  const response = await request.post('/clients', { data: inputData });
+  const response = await request.post('clients', { data: inputData });
 
   expect(response.status()).toBe(201);
 
@@ -29,7 +29,7 @@ test('retrieve client', async ({ request }) => {
   const createClientBody = await PwHelpers.createDefaultClient(request);
   const newClientId = createClientBody.id;
 
-  const response = await request.get(`/clients/${newClientId}`);
+  const response = await request.get(`clients/${newClientId}`);
 
   expect(response.status()).toBe(200);
 
@@ -51,7 +51,7 @@ test('update client', async ({ request }) => {
     passwordHash: 'updated-hashed-password-456'
   };
 
-  const response = await request.put(`/clients/${inputData.id}`, { data: inputData });
+  const response = await request.put(`clients/${inputData.id}`, { data: inputData });
 
   expect(response.status()).toBe(200);
 
@@ -70,13 +70,13 @@ test('destroy client', async ({ request }) => {
   const createClientBody = await PwHelpers.createDefaultClient(request);
   const newClientId = createClientBody.id;
 
-  const response = await request.delete(`/clients/${newClientId}`);
+  const response = await request.delete(`clients/${newClientId}`);
 
   expect(response.status()).toBe(204);
 });
 
 test('list clients', async ({ request }) => {
-  const response = await request.get('/clients');
+  const response = await request.get('clients');
 
   expect(response.status()).toBe(200);
 
